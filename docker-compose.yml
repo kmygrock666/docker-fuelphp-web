@@ -1,0 +1,82 @@
+version: '3' # 目前使用的版本，可以參考官網：
+networks:
+  dev-net:
+    driver: bridge
+services:
+  mysql:
+    image: ${MYSQL_IMAGE}
+    command: --default-authentication-plugin=mysql_native_password
+    # restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ${HOME_DIR}/mysql/data:/var/lib/mysql
+      - ${HOME_DIR}/logs/mysql:/data/mysql/logs
+    ports:
+      - ${MYSQL_PORTS}
+    networks:
+      - dev-net
+  nginx:
+    build: nginx
+    # restart: always
+    ports: # 外部露出開放的 port 對應到 docker container 的 port
+      - ${NGINX_PORTS}
+    volumes: # 要從本地資料夾 mount 掛載進去的資料
+      # - ${HOME_DIR}/www/:/usr/share/nginx/html
+      - ${HOME_DIR}/logs/nginx:/var/log/nginx
+      - ${HOME_DIR}/www:/var/www
+    depends_on:
+      - mysql
+      - redis
+    links:
+      - php-fpm5.5:fpm55
+      - php-fpm7.3:fpm73
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - dev-net
+  php-fpm5.5:
+    build: php/php5.5
+    volumes:
+      - ${HOME_DIR}/www:/var/www
+      - ${HOME_DIR}/logs/php/php5.5:/var/log/php/:rw
+    links:
+      - mysql:mysql
+    networks:
+      - dev-net
+  php-fpm7.3:
+    build: php/php7.3
+    volumes:
+      - ${HOME_DIR}/www/html:/var/www/html
+      - ${HOME_DIR}/logs/php/php7.3:/var/log/php/:rw
+    links:
+      - mysql:mysql
+    networks:
+      - dev-net
+  redis:
+    image: ${REDIS_IMAGE}
+    ports:
+      - ${REDIS_PORTS}
+    volumes:
+      - ${HOME_DIR}/redis/redis.conf/:/usr/local/etc/redis.conf
+      # - ${HOME_DIR}/redis/data:/data
+      - ${HOME_DIR}/logs/redis:/usr/local/redis
+    networks:
+      - dev-net
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on: 
+    - mysql
+    ports:
+      - ${PHPMYADMIN_PORTS}
+    environment:
+      PMA_HOST: "mysql"
+      PMA_USER: "root"
+      PMA_PASSWORD: "root"
+    networks:
+      - dev-net
+  composer:
+    image: composer
+    volumes:
+        - .:/app
+    command: install
