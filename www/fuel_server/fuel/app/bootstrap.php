@@ -7,8 +7,12 @@ Autoloader::add_classes(array(
 	// Add classes you want to override here
 	// Example: 'View' => APPPATH.'classes/view.php',
 	'Controller_Base' => APPPATH. 'classes/controller/base/base.php',
+	'Controller_Apibase' => APPPATH. 'classes/controller/base/apibase.php',
 	'game\GamePlay' => APPPATH. 'game/gamePlay.php',
 	'game\BetImpl' => APPPATH. 'game/betImpl.php',
+	'game\play\SDPlay' => APPPATH.'game/play/sDPlay.php',
+	'game\play\NumberPlay' => APPPATH.'game/play/numberPlay.php',
+	'game\play\Deal' => APPPATH.'game/play/deal.php',
 	
 ));
 

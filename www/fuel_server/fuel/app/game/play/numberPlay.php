@@ -3,8 +3,7 @@
 namespace game\play;
 use game\GamePlay;
 
-use Model_Period;
-use Model_Round;
+use game\play\Deal;
 use Model_Bet;
 
 class NumberPlay extends GamePlay{
@@ -22,6 +21,11 @@ class NumberPlay extends GamePlay{
         $this->all_number = $total;
     }
 
+    function getRate()
+    {
+        return $this->getPlayRate();
+    }
+
     public function getResult()
     {
         return $this->getBets();
@@ -29,22 +33,28 @@ class NumberPlay extends GamePlay{
 
     private function getBets()
     {
-        $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round);
+        $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round, 0);
         $flag = false;
         if($bets->count() == 0)
         {
-            echo "not found <br>";
+            echo "not found from NumberPlay <br>";
         }
         else
         {
+            // Autoloader::add_class('game\play\Deal', APPPATH.'game/play/deal.php');
+            $deal = new Deal();
             foreach($bets as $bet)
             {
                 if($bet->bet_number == $this->answer)
                 {
-                    $bet->isWin = true;
-                    $bet->payout = $bet->amount * (($this->getPlayRate() / 100) + 1) ;
-                    $bet->save();
+                    $payout = $bet->amount * ($this->getPlayRate() + 1) ;
+                    $deal->send_bonus($bet, $payout);
                     $flag = true;
+                }
+                else
+                {
+                    $bet->isWin = 2;
+                    $bet->save();
                 }
             }
         }

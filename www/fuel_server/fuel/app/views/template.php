@@ -29,6 +29,9 @@
                 <span>余额: </span>
                 <span id="balance"><?php echo $amount; ?></span>
             </div>
+            <div class="navbar-brand">
+                <a href="/user/logout"><span>登出</span></a>
+            </div>
         </div>
     </nav>
     <!-- container -->

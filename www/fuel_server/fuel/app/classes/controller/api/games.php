@@ -1,8 +1,6 @@
 <?php
 
-use game\play\NumberPlay;
-
-class Controller_Api_Games extends Controller_Rest
+class Controller_Api_Games extends Controller_Apibase
 {
     protected $pid = "pid";
 
@@ -22,6 +20,7 @@ class Controller_Api_Games extends Controller_Rest
             'totalTime' => $period->totalTime,
             'min' => $period->min,
             'max' => $period->max,
+            'rate' => $period->rate,
             'pwd' => '',
         );
 

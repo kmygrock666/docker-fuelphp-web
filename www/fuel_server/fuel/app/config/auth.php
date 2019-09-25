@@ -2,7 +2,7 @@
 
 return array(
     // 驅动程序
-    'driver' => array('Simpleauth'),
+    'driver' => array('Ormauth'),
 
     // 設定为 true 以允許多个登入
     'verify_multiple_logins' => true,

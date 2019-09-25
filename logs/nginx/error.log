@@ -220,3 +220,13 @@
 2019/09/20 09:23:40 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/09/23 09:22:01 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/09/23 09:22:01 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/24 11:27:11 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/24 11:27:11 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/24 14:09:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/24 14:09:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/24 16:44:14 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/24 16:44:14 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/24 16:56:25 [error] 6#0: *102 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET /game/ulp HTTP/1.1", upstream: "fastcgi://172.21.0.5:9000", host: "localhost", referrer: "http://localhost/"
+2019/09/24 16:57:37 [error] 6#0: *128 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET /game/ulp HTTP/1.1", upstream: "fastcgi://172.21.0.5:9000", host: "localhost", referrer: "http://localhost/"
+2019/09/25 08:33:33 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/25 08:33:33 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored

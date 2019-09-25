@@ -1,10 +1,11 @@
 <?php
 
 use Auth\Auth;
+use Fuel\Core\Debug;
 use Fuel\Core\Input;
 use game\play\Deal;
 
-class Controller_Api_Bet extends Controller_Rest
+class Controller_Api_Bet extends Controller_Apibase
 {
     protected $pid = "pid";
 
@@ -48,11 +49,15 @@ class Controller_Api_Bet extends Controller_Rest
 
             if($params_vailure)
             {
-                Autoloader::add_class('game\play\Deal', APPPATH.'game/play/deal.php');
+                // Autoloader::add_class('game\play\Deal', APPPATH.'game/play/deal.php');
                 $deal = new Deal();
-                $deal_result = $deal->do_deal($amount, $user_id[1], $user_bet, $rid, $pid, $type);
+                $deal_result = $deal->bet_deal($amount, $user_id[1], $user_bet, $rid, $pid, $type);
                 if($deal_result['code'])
                     return $this->response(array('code' => '3', 'message' => $deal_result['message']));
+            }
+            else
+            {
+                return $this->response(array('code' => '5', 'message' => "params invailure"));
             }
         }
         else
@@ -61,10 +66,33 @@ class Controller_Api_Bet extends Controller_Rest
         return $this->response(array(
             'code' => "0",
             'message' => 'success',
-            'data' => array(),
+            'data' => $deal_result['data'],
         ));
         
     }
 
-    
+    public function get_result()
+    {
+        $redis = Redis_Db::instance();
+        $periodList = $redis->get($this->pid);
+        $period = json_decode($periodList);
+
+        $user_id = Auth::get_user_id();
+        $bet_win = Model_Bet::find_bet_win($user_id[1], 1, $period->round);
+        $data = array();
+        foreach($bet_win as $bet)
+        {
+            $tmp = array();
+            $tmp['type'] = $bet->type;
+            $tmp['num'] = $bet->bet_number;
+            $tmp['payout'] = $bet->payout;
+            array_push($data, $tmp);
+        }
+        
+        return $this->response(array(
+            'code' => 0,
+            'message' => 'success',
+            'data' => $data,
+        ));
+    }
 }

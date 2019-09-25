@@ -6,6 +6,7 @@ use game\GamePlay;
 use Model_Period;
 use Model_Round;
 use Model_Bet;
+use game\play\Deal;
 
 class SDPlay extends GamePlay{
 
@@ -23,11 +24,23 @@ class SDPlay extends GamePlay{
         $this->answer = $ans;
         $this->max = $max;
         $this->min = $min;
+        $this->getSingleDouble();
+    }
+
+    function getRate()
+    {
+        return $this->getPlayRate();
     }
 
     public function getResult()
     {
         return $this->getBets();
+    }
+
+    public function setSelected($cmd)
+    {
+        if($cmd == 0) $this->optional_number = $this->even; //double
+        else $this->optional_number = $this->odd; //single
     }
 
     private function getSingleDouble()
@@ -42,36 +55,41 @@ class SDPlay extends GamePlay{
 
     private function getBets()
     {
-        $this->getSingleDouble();
-        $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round);
+        $sd = $this->setSingle_or_double();
+        $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round, 0);
         $flag = false;
         if($bets->count() == 0)
         {
-            echo "not found <br>";
+            echo "not found from SDPlay<br>";
         }
         else
         {
-            $isSingleDouble = $this->answer % 2;
-            if($isSingleDouble == 0) $this->optional_number = $this->even; //double
-            else $this->optional_number = $this->odd; //single
-
-
+            $deal = new Deal();
             foreach($bets as $bet)
             {
-                
-                if ($bet->bet_number == $isSingleDouble)
+                if ($bet->bet_number == $sd)
                 {
-                    $bet->isWin = true;
-                    $bet->payout = $bet->amount * (($this->getPlayRate() / 100) + 1) ;
-                    $bet->save();
+                    $payout = $bet->amount * ($this->getPlayRate() + 1) ;
+                    $r = $deal->send_bonus($bet, $payout);
                     $flag = true;
+                }
+                else
+                {
+                    $bet->isWin = 2;
+                    $bet->save();
                 }
                 
             }
         }
-
         return $flag;
+    }
 
+    private function setSingle_or_double()
+    {
+        $isSingleDouble = $this->answer % 2;
+        if($isSingleDouble == 0) $this->optional_number = $this->even; //double
+        else $this->optional_number = $this->odd; //single
+        return $isSingleDouble;
     }
 
 }

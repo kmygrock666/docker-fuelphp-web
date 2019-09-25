@@ -1,6 +1,6 @@
 <?php
 
-class Model_User extends Orm\Model 
+class Model_User extends \Auth\Model\Auth_User 
 {
     // protected static $_table_name = 'user';
 
@@ -8,13 +8,14 @@ class Model_User extends Orm\Model
         'id',
         'username',
         'password',
-        'group',
+        'group_id',
         'email',
         'last_login',
         'login_hash',
-        'profile_fields',
+        'previous_login',
         'created_at',
         'updated_at',
+        'user_id',
     );
 
     public static function find_by_username($name)

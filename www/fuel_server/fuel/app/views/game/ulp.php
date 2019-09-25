@@ -3,6 +3,13 @@
         期数
         <span id="pid"><?php echo $period; ?></span>
         <span id="time" style="position:absolute;right:200px">倒数 <?php echo $time % 60; ?></span>
+        <div>
+        <p>赔率 </p>
+            <span>终极密码<span id="n"><?php echo $rate->n; ?></span></span>&nbsp;
+            <span>单<span id="s"><?php echo $rate->s; ?></span></span>&nbsp;
+            <span>双<span id="d"><?php echo $rate->d; ?></span></span>&nbsp;
+        </div>
+        
     </div>
     <div class="ball">
         <?php
@@ -22,11 +29,18 @@
             <label class="input-group-text" for="inputGroupSelect01">下注金额</label>
         </div>
         <select class="custom-select" id="inputGroupSelect01">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
         </select>
     </div>
+    <!-- <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">下注金额</span>
+        </div>
+        <input type="text" id="inputGroupSelect01" value="1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+    </div> -->
 
     <button type="button" class="btn btn-primary" onclick="change(0)">选号</button>
     <button type="button" class="btn btn-info" onclick="change(1)">单双</button>
@@ -34,11 +48,13 @@
 
 <script>
     var status = true;
+    var open_result = true;
     $(function() {
         let max = <?php echo $max; ?>;
         let min = <?php echo $min; ?>;
         enable_ball(min, max);
-        getStatus();
+        if(st_) getStatus();
+        st_ = false;
     });
 
     function enable_ball(min, max) {
@@ -87,20 +103,26 @@
                         {
                             $('#pid').text(d.pid);
                             enable_ball(d.min, d.max);
+                            $('#n').text(d.rate.n);
+                            $('#s').text(d.rate.s);
+                            $('#d').text(d.rate.d);
                         }
                         $('#time').text("计时 "+ (60 - d.time));
                         status = true;
+                        open_result = true;
                     }
                     else if(d.time > 60)
                     {
                         $('#time').text("结算中 "+ (10 - (d.time % 60)));
                         status = false;
+                        runOpen();
                     }
                 }
                 else
                 {
                     $('#time').text("下一盘 "+ (10 - (d.time % 60)));
                     $('#b' + d.pwd).addClass("winPwd");
+                    runOpen();
                 }
                 
             }
@@ -108,11 +130,25 @@
 
     }
 
+    function runOpen()
+    {
+        if(open_result)
+        {
+            open_result = false;
+            getResult();
+        }
+    }
+
     function send(number) {
         // console.log(number);
         let type = 1;
         if(isNaN(number)) type = 2;
         let amount = $('#inputGroupSelect01').val();
+        if(checkAmount(amount)) 
+        {
+            alert('余额不足');
+            return;
+        }
         $.ajax({
             url: "api/bet/send",
             type: 'get',
@@ -121,7 +157,8 @@
             success: function (msg) {
                 if(msg.code == 0)
                 {
-                    // resfreshBalance(money);
+                    var object = msg.data;
+                    resfreshBalance(object.amount);
                     alert("下注成功");
                 }
                 else
@@ -129,6 +166,46 @@
                     alert("下注失败: " + msg.message);
                 }
                 console.log(msg);
+            }
+        })
+    }
+
+    function getResult() {
+        $.ajax({
+            url: "api/bet/result",
+            type: 'get',
+            dataType: "json",
+            data:{},
+            success: function (msg) {
+                console.log(msg);
+                if(msg.code == 0)
+                {
+                    var object = msg.data;
+                    if(object.length > 0)
+                    {
+                        object.forEach(function(e){
+                            addBalance(e['payout']);
+                            if(e['type'] == 1)
+                            {
+                                alert("下注号码 " + e['num'] + " 中奖金额" + e['payout']);
+                            }
+                            else
+                            {
+                                var text = "单";
+                                if(e['num'] == 0) text = "双";
+                                alert("下注单双 " + text + " 中奖金额" + e['payout']);
+                            }
+                            
+                        })
+                    }
+                }
+                else
+                {
+                    console.log(msg.message);
+                }
+            },
+            error: function(error){
+                console.log(error);
             }
         })
     }

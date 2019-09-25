@@ -18,13 +18,27 @@ class Model_Bet extends Orm\Model
         'amount',
     );
 
-    public static function find_bet($pid, $type, $round)
+    public static function find_bet($pid, $type, $round, $status)
     {
         return DB::select()->from('bets')->where('period_id', $pid)
-        ->where('type', $type)->where('round_id', $round)->as_object("Model_Bet")->execute();
+        ->where('type', $type)->where('round_id', $round)->where('isWin', $status)->as_object("Model_Bet")->execute();
     }
 
-    public static function insert_bet($user_id, $bet, $rid, $pid, $type, $amount)
+    public static function find_bet_win($uid, $isWin, $round)
+    {
+        return DB::select()->from('bets')->where('uid', $uid)
+        ->where('isWin', $isWin)->where('round_id', $round)->as_object("Model_Bet")->execute();
+    }
+
+    public static function find_bet_userId($uid, $start, $end)
+    {
+        return Model_Bet::query()->where('uid', $uid)
+                                    ->and_where_open()->where('created_at', '>=', $start)
+                                    ->where('created_at', '<=', $end)
+                                    ->and_where_close()->order_by('id', 'desc')->limit(20)->get();
+    }
+
+    public static function insert_bet_LastId($user_id, $bet, $rid, $pid, $type, $amount)
     {
         $bet = Model_Bet::forge(array(
             'uid' => $user_id,
@@ -39,7 +53,9 @@ class Model_Bet extends Orm\Model
             'updated_at' => strtotime('now'),
         ));
         $result = $bet->save();
-        return $result;
+        if( ! $result)  return null;    
+        
+        return $bet->id;
 
     }
 }

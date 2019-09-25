@@ -34,9 +34,10 @@ class Timer
         {
             $newPeriod = Timer::producePeriod();
             $openWin = Timer::getNumber(1,40);
-            Timer::insertPeriod($newPeriod, $openWin);
-            $r = Timer::insertRound($newPeriod, 40);
-            $period_redis = Timer::getFormate($newPeriod, $openWin, $r->id);
+            Model_Period::insert_Period($newPeriod, $openWin);
+            $rate = Timer::getRateTable(1,40);
+            $r = Model_Round::insert_Round($newPeriod, 40, $rate);
+            $period_redis = Timer::getFormate($newPeriod, $openWin, $r->id, $rate);
             //start timing
 
             $redis->set(Timer::$pid,$period_redis);
@@ -74,9 +75,10 @@ class Timer
         }
     }
 
-    private static function getFormate($period, $pwd, $r)
+    private static function getFormate($period, $pwd, $r, $rate)
     {
-        return json_encode(array('pid' => $period,'close' => false,'time' => 1, 'totalTime' => 1, 'pwd' => $pwd , 'round' => $r, 'min' => 1, 'max' => 40));
+        return json_encode(array('pid' => $period,'close' => false,'time' => 1, 'totalTime' => 1, 
+        'pwd' => $pwd , 'next_num' => 0, 'round' => $r, 'min' => 1, 'max' => 40, 'rate' => $rate));
     }
 
     private static function condition($val)
@@ -98,40 +100,22 @@ class Timer
             }
             else if($val->time == 60)
             {
+                $number_next = Timer::getNumber($val->min, $val->max);
+                $val->next_num = $number_next;
                 if(Timer::sendOut($val))
                 {
                     $val->close = true;
                     $val->time = 0;
                 }
+                $val = Timer::getNewNumber($val);
             }
             else if ($val->time == 70)
             {
                 $val->time = 0;
-                $number_next = Timer::getNumber($val->min, $val->max);
-                if($number_next == $val->pwd)
-                {
-                    $val->close = true;
-                }
-                else if($number_next > $val->pwd)
-                {
-                    $val->max = $number_next;
-                }
-                else
-                {
-                    $val->min = $number_next;
-                }
-
-                if(($val->max - $val->min + 1) == 3)
-                {
-                    $val->close = true;
-				}
-				
-				if( ! $val->close)
-                {
-                    $r = Timer::insertRound($val->pid, $number_next);
-                    $val->round = $r->id;
-                }
-
+                $rate = Timer::getRateTable($val->min, $val->max);
+                $r = Model_Round::insert_Round($val->pid, $val->next_num, $rate);
+                $val->round = $r->id;
+                $val->rate = $rate;
             }
         }
 
@@ -140,32 +124,28 @@ class Timer
         return $val;
     }
 
-    private static function insertPeriod($period, $openWin)
+    private static function getNewNumber(&$val)
     {
-        $p = Model_Period::forge(array(
-            'pid' => $period,
-            'openWin' => $openWin,
-            'isClose' => false,
-            'created_at' => strtotime('now'),
-            'updated_at' => strtotime('now'),
-        ));
+        if($val->next_num == $val->pwd)
+        {
+            $val->close = true;
+            $val->time = 0;
+        }
+        else if($val->next_num > $val->pwd)
+        {
+            $val->max = $val->next_num;
+        }
+        else
+        {
+            $val->min = $val->next_num;
+        }
 
-        $result = $p->save();
-        return $result;
-	}
-
-	private static function insertRound($period, $openWin)
-    {
-        $p = Model_Round::forge(array(
-            'openWin' => $openWin,
-            'isWin' => false,
-            'period_id' => $period,
-            'created_at' => strtotime('now'),
-            'updated_at' => strtotime('now'),
-        ));
-
-        $p->save();
-        return $p;
+        if(($val->max - $val->min + 1) == 3)
+        {
+            $val->close = true;
+            $val->time = 0;
+        }
+        return $val;
     }
 	
 	private static function closePeriod($pid)
@@ -177,11 +157,12 @@ class Timer
     
     private static function sendOut($val)
     {
-        Autoloader::add_class('game\play\SDPlay', APPPATH.'game/play/sDPlay.php');
-        $game_sD = new SDPlay($val->pid, $val->round, $val->pwd, $val->max, $val->min);
+
+        // Autoloader::add_class('game\play\SDPlay', APPPATH.'game/play/sDPlay.php');
+        $game_sD = new SDPlay($val->pid, $val->round, $val->next_num, $val->max, $val->min);
         $game_sD->getResult();
 
-        Autoloader::add_class('game\play\NumberPlay', APPPATH.'game/play/numberPlay.php');
+        // Autoloader::add_class('game\play\NumberPlay', APPPATH.'game/play/numberPlay.php');
         $game_number = new NumberPlay($val->pid, $val->round, $val->pwd, ($val->max - $val->min + 1));
 
         if($game_number->getResult())
@@ -189,6 +170,18 @@ class Timer
             return true;
         }
         return false;
+    }
+
+    private static function getRateTable($min, $max)
+    {
+        $game_sD = new SDPlay(0, 0, 0, $max, $min);
+        $game_number = new NumberPlay(0, 0, 0, ($max - $min + 1));
+        $game_sD->setSelected(1);
+        $single = $game_sD->getRate();
+        $game_sD->setSelected(0);
+        $double = $game_sD->getRate();
+        $number = $game_number->getRate();
+        return array('n' => $number, 's' => $single, 'd' => $double);
     }
 }
 

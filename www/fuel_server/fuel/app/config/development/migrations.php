@@ -13,6 +13,8 @@ return array(
         4 => '015_add_bet_column',
         5 => '016_add_round_column',
         6 => '017_create_amount_logs',
+        7 => '018_add_amount_logs_column',
+        8 => '019_add_amount_logs_column',
       ),
     ),
     'module' => 

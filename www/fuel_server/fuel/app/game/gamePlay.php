@@ -10,9 +10,12 @@ abstract class GamePlay implements BetImpl {
     protected $pid;
     protected $round;
 
-    public function getPlayRate()
+    protected function getPlayRate()
     {
         $c = pow(10, 2);
         return floor(((1 / ($this->optional_number / $this->all_number)) * 0.92) * $c) / $c;
     }
+
+    abstract function getRate();
+
 }

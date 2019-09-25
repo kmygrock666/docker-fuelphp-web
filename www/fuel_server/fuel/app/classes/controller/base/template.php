@@ -10,12 +10,15 @@ class Controller_Base_Template extends Controller_Template
         $data = array();
         array_push($data, array('title' => 'Home', 'href' => '/', 'active' => 'active', 'url' => ''));
         array_push($data, array('title' => 'Play', 'href' => '#', 'active' => '', 'url' => 'game/ulp'));
+        array_push($data, array('title' => '交易纪录', 'href' => '#', 'active' => '', 'url' => 'mem/search/deal'));
+        array_push($data, array('title' => '下注纪录', 'href' => '#', 'active' => '', 'url' => 'mem/search/record'));
+        array_push($data, array('title' => '期数查询', 'href' => '#', 'active' => '', 'url' => 'mem/search/period'));
 
-        $user = Auth::instance()->get_user_array();
+        $user_profile_fields = Auth::get_profile_fields();
         $this->template->title = 'LG';
         $this->template->nav = $data;
-        $this->template->username = $user['screen_name'];
-        $this->template->amount = $user['profile_fields']['amount'];
+        $this->template->username = $user_profile_fields['nickname'];
+        $this->template->amount = $user_profile_fields['amount'];
         $this->template->header = View::forge('baseTemplate/header');
         $this->template->content = View::forge('index/index');
         $this->template->footer = View::forge('baseTemplate/footer');
