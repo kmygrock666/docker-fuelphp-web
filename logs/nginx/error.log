@@ -236,3 +236,5 @@
 2019/09/26 14:18:22 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/09/27 09:16:10 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/09/27 09:16:10 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/27 13:35:26 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/27 13:35:26 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
