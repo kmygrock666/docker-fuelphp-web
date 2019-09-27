@@ -80,7 +80,7 @@ class Controller_Mem_Search extends Controller_Base
 
 		$data = array();
 
-		$data['pdata'] = Model_Period::find_logs($start, $end);
+		$data['pdata'] = Model_Period::find_period($start, $end);
 		foreach($data['pdata'] as $bet)
 		{
 			$bet->created_at = Date::forge($bet->created_at)->format("%Y-%m-%d %H:%M:%S");

@@ -1,12 +1,16 @@
 <?php
 
 namespace Fuel\Tasks;
+
+use ___PHPSTORM_HELPERS\object;
 use Fuel\Core\Redis_Db;
 use Model_Period;
 use Model_Round;
 use game\play\NumberPlay;
 use game\play\SDPlay;
 use Fuel\Core\Autoloader;
+use Fuel\Core\Debug;
+use Fuel\Core\Date;
 
 class Timer
 {
@@ -29,18 +33,23 @@ class Timer
         
         $redis = Redis_Db::instance();
         $periodList = $redis->get(Timer::$pid);
-        // var_dump($periodList);
+        $period_redis = '';
         if($periodList == null)
         {
-            $newPeriod = Timer::producePeriod();
-            $openWin = Timer::getNumber(1,40);
-            Model_Period::insert_Period($newPeriod, $openWin);
-            $rate = Timer::getRateTable(1,40);
-            $r = Model_Round::insert_Round($newPeriod, 40, $rate);
-            $period_redis = Timer::getFormate($newPeriod, $openWin, $r->id, $rate);
+            //find db period
+            if( ! Timer::getPeriodByDB($period_redis))
+            {
+                $newPeriod = Timer::producePeriod();
+                $openWin = Timer::getNumber(1,40);
+                $pid = Model_Period::insert_Period($newPeriod, $openWin);
+                $rate = Timer::getRateTable(1,40);
+                $r = Model_Round::insert_Round($pid, 40, $rate);
+                $period_redis = Timer::getFormate($pid, $newPeriod, $openWin, $r->id, $rate);
+            }
+            
             //start timing
 
-            $redis->set(Timer::$pid,$period_redis);
+            $redis->set(Timer::$pid,json_encode($period_redis));
         }
         else
         {
@@ -75,10 +84,10 @@ class Timer
         }
     }
 
-    private static function getFormate($period, $pwd, $r, $rate)
+    private static function getFormate($pid_, $period, $pwd, $r, $rate)
     {
-        return json_encode(array('pid' => $period,'close' => false,'time' => 1, 'totalTime' => 1, 
-        'pwd' => $pwd , 'next_num' => 0, 'round' => $r, 'min' => 1, 'max' => 40, 'rate' => $rate));
+        return array('pid_' => $pid_,'pid' => $period,'close' => false,'time' => 1, 'totalTime' => 1, 
+        'pwd' => $pwd , 'next_num' => 0, 'round' => $r, 'min' => 1, 'max' => 40, 'rate' => $rate);
     }
 
     private static function condition($val)
@@ -102,20 +111,26 @@ class Timer
             {
                 $number_next = Timer::getNumber($val->min, $val->max);
                 $val->next_num = $number_next;
+                //insert new round
+                $min = ($number_next < $val->pwd)? $number_next : $val->min;
+                $max = ($number_next > $val->pwd)? $number_next : $val->max;
+                $rate = Timer::getRateTable($min, $max);
+                $r = Model_Round::insert_Round($val->pid_, $val->next_num, $rate);
+                //settle
                 if(Timer::sendOut($val))
                 {
                     $val->close = true;
                     $val->time = 0;
                 }
-                $val = Timer::getNewNumber($val);
+                //refresh redis round
+                Timer::getNewNumber($val);
+                $val->round = $r->id;
+                $val->rate = $rate;
+                
             }
             else if ($val->time == 70)
             {
                 $val->time = 0;
-                $rate = Timer::getRateTable($val->min, $val->max);
-                $r = Model_Round::insert_Round($val->pid, $val->next_num, $rate);
-                $val->round = $r->id;
-                $val->rate = $rate;
             }
         }
 
@@ -164,8 +179,14 @@ class Timer
 
         // Autoloader::add_class('game\play\NumberPlay', APPPATH.'game/play/numberPlay.php');
         $game_number = new NumberPlay($val->pid, $val->round, $val->pwd, ($val->max - $val->min + 1));
-
-        if($game_number->getResult())
+        $response = $game_number->getResult();
+        
+        $round = Model_Round::find_by_id($val->round);
+        $round->isWin = true;
+        $round->updated_at = strtotime('now');
+        $round->save();
+        // Debug::dump(Date::forge($round->updated_at)->format("%Y-%m-%d %H:%M:%S"));exit();
+        if($response)
         {
             return true;
         }
@@ -182,6 +203,62 @@ class Timer
         $double = $game_sD->getRate();
         $number = $game_number->getRate();
         return array('n' => $number, 's' => $single, 'd' => $double);
+    }
+
+    private static function getPeriodByDB(&$period_redis)
+    {
+        $periodData = Model_Period::find_period_lastest();
+        if($periodData == null) return false;
+
+        $round = Model_Round::find_by_period($periodData->id);
+        ksort($round);
+        $round = array_values($round);
+        $round_count = count($round);
+        
+        if($round_count == 4 || $round_count > 1)
+        {
+            if($round[$round_count - 2]->isWin == false)
+            {
+                $tmp_round = $round;
+                array_pop($tmp_round);
+                Timer::settle($periodData, $tmp_round, $round[$round_count - 1]->openWin);
+                $round[$round_count - 2]->isWin = true;
+            }
+        }
+
+        if($round_count == 4) return false;
+        // Debug::dump($round);exit();
+        $period_redis = (object) Timer::getFormate($periodData->id, $periodData->pid, $periodData->openWin, $round[$round_count-1]->id, array());
+        $time = 0;
+        
+        
+        foreach($round as $r)
+        {
+            if($r->isWin) $time++;
+            $period_redis->next_num = $r->openWin;
+            $period_redis->rate = json_decode($r->rate);
+            Timer::getNewNumber($period_redis);
+        }
+
+        if($time > 0)
+            $period_redis->totalTime = $time * 70;
+
+        return true;
+    }
+
+    private static function settle($periodData, $round, $next)
+    {
+        $r_count = count($round);
+        $period_value = (object) Timer::getFormate($periodData->id, $periodData->pid, $periodData->openWin, $round[$r_count - 1]->id, array());
+        foreach($round as $r)
+        {
+            $period_value->next_num = $r->openWin;
+            $period_value->rate = json_decode($r->rate);
+            Timer::getNewNumber($period_value);
+        }
+        $period_value->next_num = $next;
+        Timer::sendOut($period_value);
+        return true;
     }
 }
 

@@ -47,7 +47,7 @@ class NumberPlay extends GamePlay{
             {
                 if($bet->bet_number == $this->answer)
                 {
-                    $payout = $bet->amount * ($this->getPlayRate() + 1) ;
+                    $payout = $bet->amount * $this->getPlayRate() ;
                     $deal->send_bonus($bet, $payout);
                     $flag = true;
                 }

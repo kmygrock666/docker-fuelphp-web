@@ -75,10 +75,13 @@ class Controller_Api_Bet extends Controller_Apibase
     {
         $redis = Redis_Db::instance();
         $periodList = $redis->get($this->pid);
+        if($periodList == null) return $this->response(array('code' => 1, 'message' => 'not period'));
         $period = json_decode($periodList);
-
+        $this_round = Model_Round::find_by_open($period->pid_);
+        if($this_round == null) return $this->response(array('code' => 2, 'message' => 'not round'));
+        
         $user_id = Auth::get_user_id();
-        $bet_win = Model_Bet::find_bet_win($user_id[1], 1, $period->round);
+        $bet_win = Model_Bet::find_bet_win($user_id[1], 1, $this_round->id);
         $data = array();
         foreach($bet_win as $bet)
         {

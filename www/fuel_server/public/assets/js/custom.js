@@ -21,7 +21,7 @@ function resfreshBalance(money)
 function addBalance(money)
 {
     var before = $('#balance').text();
-    $('#balance').text(parseFloat(before) + parseFloat(money));
+    $('#balance').text((parseFloat(before) + parseFloat(money)).toFixed(4));
 }
 
 function checkAmount(betAmount)

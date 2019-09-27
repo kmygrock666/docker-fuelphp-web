@@ -23,15 +23,20 @@ class Model_Period extends Orm\Model
             'updated_at' => strtotime('now'),
         ));
 
-        $result = $p->save();
-        return $result;
+        $p->save();
+        return $p->id;
     }
     
-    public static function find_logs($start, $end)
+    public static function find_period($start, $end)
     {
         return Model_Period::query()->and_where_open()->where('created_at', '>=', $start)
         ->where('created_at', '<=', $end)
         ->and_where_close()->order_by('id', 'desc')->limit(20)->get();
+    }
+
+    public static function find_period_lastest()
+    {
+        return Model_Period::query()->where('isClose', 0)->order_by('created_at', 'desc')->get_one();
     }
 
 }

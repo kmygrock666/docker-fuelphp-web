@@ -134,7 +134,6 @@
     {
         if(open_result)
         {
-            open_result = false;
             getResult();
         }
     }
@@ -180,6 +179,7 @@
                 console.log(msg);
                 if(msg.code == 0)
                 {
+                    open_result = false;
                     var object = msg.data;
                     if(object.length > 0)
                     {

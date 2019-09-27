@@ -230,3 +230,9 @@
 2019/09/24 16:57:37 [error] 6#0: *128 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET /game/ulp HTTP/1.1", upstream: "fastcgi://172.21.0.5:9000", host: "localhost", referrer: "http://localhost/"
 2019/09/25 08:33:33 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/09/25 08:33:33 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/26 09:45:18 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/26 09:45:18 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/26 14:18:22 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/26 14:18:22 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/27 09:16:10 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/09/27 09:16:10 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored

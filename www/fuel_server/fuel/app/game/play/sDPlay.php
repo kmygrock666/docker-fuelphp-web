@@ -69,7 +69,7 @@ class SDPlay extends GamePlay{
             {
                 if ($bet->bet_number == $sd)
                 {
-                    $payout = $bet->amount * ($this->getPlayRate() + 1) ;
+                    $payout = $bet->amount * $this->getPlayRate() ;
                     $r = $deal->send_bonus($bet, $payout);
                     $flag = true;
                 }

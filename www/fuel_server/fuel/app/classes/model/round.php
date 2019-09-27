@@ -1,5 +1,7 @@
 <?php
 
+use Fuel\Core\Debug;
+
 class Model_Round extends Orm\Model 
 {
     // protected static $_table_name = 'user';
@@ -32,5 +34,20 @@ class Model_Round extends Orm\Model
     public static function find_by_id($id)
     {
         return Model_Round::query()->where('id', $id)->get_one();
+    }
+
+    public static function find_by_period($period)
+    {
+        return Model_Round::query()->where("period_id", $period)->order_by('created_at', 'desc')->get();
+    }
+
+    public static function find_by_open($period)
+    {
+        $start = strtotime("-10 second");
+        $end = strtotime("+10 second");
+        return Model_Round::query()->where("period_id", $period)->where("isWin", true)
+                        ->and_where_open()->where('updated_at', '>=', $start)
+                        ->where('updated_at', '<=', $end)
+                        ->and_where_close()->get_one();
     }
 }

@@ -19,11 +19,10 @@ class Controller_Api_Timer extends Controller_Apibase
     {
         $redis = Redis_Db::instance();
         $periodList = $redis->get($this->pid);
-        $period = json_decode($periodList);
-        if($this->closePeriod($period->pid))
-        {
-            $redis->del($this->pid);
-        }
+        if($periodList == null) return $this->response(array('code' => '1', 'message' => 'no data'));
+        $redis->del($this->pid);
+        return $this->response(array('code' => '0', 'message' => 'Success delete'));
+        
     }
 
     private function closePeriod($pid)

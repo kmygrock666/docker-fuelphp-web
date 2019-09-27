@@ -18,7 +18,7 @@ class Controller_Base_Template extends Controller_Template
         $this->template->title = 'LG';
         $this->template->nav = $data;
         $this->template->username = $user_profile_fields['nickname'];
-        $this->template->amount = $user_profile_fields['amount'];
+        $this->template->amount = round($user_profile_fields['amount'],4);
         $this->template->header = View::forge('baseTemplate/header');
         $this->template->content = View::forge('index/index');
         $this->template->footer = View::forge('baseTemplate/footer');
