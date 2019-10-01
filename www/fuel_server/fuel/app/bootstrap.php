@@ -13,6 +13,7 @@ Autoloader::add_classes(array(
 	'game\play\SDPlay' => APPPATH.'game/play/sDPlay.php',
 	'game\play\NumberPlay' => APPPATH.'game/play/numberPlay.php',
 	'game\play\Deal' => APPPATH.'game/play/deal.php',
+	'game\play\UltimatPassword' => APPPATH.'game/play/ultimatPassword.php',
 	
 ));
 

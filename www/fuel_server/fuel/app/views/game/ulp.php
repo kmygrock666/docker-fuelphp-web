@@ -9,12 +9,22 @@
             <span>单<span id="s"><?php echo $rate->s; ?></span></span>&nbsp;
             <span>双<span id="d"><?php echo $rate->d; ?></span></span>&nbsp;
         </div>
-        
+        <div id="round" style="float:left">
+            <?php
+                foreach($round_number as $k => $r)
+                {
+                    echo '<p> 第 ' + ($k + 1) + ' 回合 獎號： ' + $r+ ' </p>';
+                }
+            ?>
+        </div>
+        <div id="history" style="float:right"></div>
     </div>
     <div class="ball">
         <?php
         for ($i = 1; $i <= $total; $i++) {
-            echo '<div class="circle" id="b' . $i . '"><a href="#" onClick="send(' . $i . ')"><span>' . $i . '</span></a></div>';
+            $class = "disablediv";
+            if($i >= $min and $i <= $max) $class = '';
+            echo '<div class="circle '.$class.'" id="b' . $i . '"><a href="#" onClick="send(' . $i . ')"><span>' . $i . '</span></a></div>';
         }
         ?>
     </div>
@@ -49,22 +59,18 @@
 <script>
     var status = true;
     var open_result = true;
+    var last_period_enable = true;
     $(function() {
-        let max = <?php echo $max; ?>;
-        let min = <?php echo $min; ?>;
-        enable_ball(min, max);
+        getLastPeriod();
         if(st_) getStatus();
         st_ = false;
     });
 
     function enable_ball(min, max) {
-        for (var i = 1; i <= 40; i++) {
-            if (min <= i && i <= max) {
-                $('#b' + i).removeClass("disablediv");
-                $('#b' + i).removeClass("winPwd");
-            } else {
-                $('#b' + i).addClass("disablediv");
-            }
+        $('.ball>div').addClass("disablediv");
+        for (var i = min; i <= max; i++) {
+            $('#b' + i).removeClass("disablediv");
+            $('#b' + i).removeClass("winPwd");
         }
     }
 
@@ -97,32 +103,28 @@
                 console.log(d);
                 if(d.close == false)
                 {
-                    if (d.time <= 60)
+                    if (d.status == "bet")
                     {
-                        if(d.time < 5)
-                        {
-                            $('#pid').text(d.pid);
-                            enable_ball(d.min, d.max);
-                            $('#n').text(d.rate.n);
-                            $('#s').text(d.rate.s);
-                            $('#d').text(d.rate.d);
-                        }
-                        $('#time').text("计时 "+ (60 - d.time));
+                        $('#time').text("计时 "+ d.time);
+                        refresh(d);
+                        if(last_period_enable)
+                            getLastPeriod();
                         status = true;
                         open_result = true;
                     }
-                    else if(d.time > 60)
+                    else if(d.status == "stop")
                     {
-                        $('#time').text("结算中 "+ (10 - (d.time % 60)));
+                        $('#time').text("结算中 "+ d.time);
                         status = false;
                         runOpen();
                     }
                 }
                 else
                 {
-                    $('#time').text("下一盘 "+ (10 - (d.time % 60)));
+                    $('#time').text("下一盘 "+ d.time);
                     $('#b' + d.pwd).addClass("winPwd");
-                    runOpen();
+                    refresh(d);
+                    last_period_enable = true;
                 }
                 
             }
@@ -130,8 +132,42 @@
 
     }
 
-    function runOpen()
+    function refresh(d){
+        if($('#round>p').length != d.round_number.length)
+        {
+            $('#pid').text(d.pid);
+            enable_ball(d.min, d.max);
+            $('#n').text(d.rate.n);
+            $('#s').text(d.rate.s);
+            $('#d').text(d.rate.d);
+            update_round(d.round_number);
+        }
+    }
+
+    function update_round(round_number){
+        $('#round').html('');
+        var html = '';
+        round_number.forEach(function(e, index){
+            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + e+ ' </p>';
+        });
+         
+        $('#round').append(html);
+    }
+
+    function update_last_period(period)
     {
+        $('#history').html('');
+        var html = '<p> 上一期 期數：' + period.pid;
+        html += '<p> ' + ' 終極密碼：' + period.open + '</p>';
+        period.round.forEach(function(e, index){
+            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + e+ ' </p>';
+        });
+        
+        $('#history').append(html);
+        last_period_enable = false;
+    }
+
+    function runOpen(){
         if(open_result)
         {
             getResult();
@@ -198,6 +234,29 @@
                             
                         })
                     }
+                }
+                else
+                {
+                    console.log(msg.message);
+                }
+            },
+            error: function(error){
+                console.log(error);
+            }
+        })
+    }
+
+    function getLastPeriod() {
+        $.ajax({
+            url: "api/games/lastPeriod",
+            type: 'get',
+            dataType: "json",
+            data:{},
+            success: function (msg) {
+                console.log(msg);
+                if(msg.code == 0)
+                {
+                    update_last_period(msg.data);
                 }
                 else
                 {

@@ -3,6 +3,6 @@ namespace game;
 
 interface BetImpl {
     public function getResult();
-    // public function getBets();
+    // protected function init();
     // public function bet_number();
 }

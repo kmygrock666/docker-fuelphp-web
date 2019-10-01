@@ -12,8 +12,7 @@ class Deal
 {
     //amount_logs 1:下注,2:派彩
     public function bet_deal($amount, $user_id, $user_bet, $rid, $pid, $type){
-        try
-        {
+        try{
             DB::start_transaction();
             
             //get user amount
@@ -42,9 +41,7 @@ class Deal
             DB::commit_transaction();
             return $this->response_json(0, 'success', array('amount' => $after_amount));
 
-        }
-        catch (Exception $e)
-        {
+        }catch (Exception $e){
             DB::rollback_transaction();
             return $this->response_json(1, $e->getMessage());
         }

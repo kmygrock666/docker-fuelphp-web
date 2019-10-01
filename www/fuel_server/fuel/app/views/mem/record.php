@@ -20,7 +20,7 @@
         echo "<td>".$b->bet_number."</td>";
         echo "<td>".$b->amount."</td>";
         echo "<td>".$b->payout."</td>";
-        echo "<td>".$b->isWin."</td>";
+        echo "<td>".$b->status."</td>";
         echo "<td>".$b->created_at."</td>";
         echo "</tr>";
       }

@@ -71,8 +71,11 @@ services:
       - ${PHPMYADMIN_PORTS}
     environment:
       PMA_HOST: "mysql"
-      PMA_USER: "root"
-      PMA_PASSWORD: "root"
+      # PMA_USER: "root"
+      # PMA_PASSWORD: "root"
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - dev-net
   composer:

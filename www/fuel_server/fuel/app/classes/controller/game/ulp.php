@@ -1,15 +1,17 @@
 <?php
 
+use Fuel\Core\Debug;
+
 class Controller_Game_Ulp extends Controller_Base
 {
-	protected $pid = "pid";
-
-	public function action_index()
+	public function get_index()
 	{
-		$redis = Redis_Db::instance();
-		$periodList = $redis->get($this->pid);
+		$pid = Config::get('myconfig.period.pid');
+		$stop_time = Config::get('myconfig.period.stop_time');
+		$wait_time = Config::get('myconfig.period.wait_time');
+		$periodList = $this->redis->get($pid);
 		$period = json_decode($periodList);
-		$data = array('period' => '','time' => '','max' => '','min' => '','total' => 40, 'rate' => array('n'=> 0, 's'=> 0, 'd' => 0));
+		$data = array('period' => '','time' => '','max' => '','min' => '','total' => 40, 'round_number' => array(), 'rate' => array('n'=> 0, 's'=> 0, 'd' => 0));
 		if($period != null)
 		{
 			$data['period'] = $period->pid;
@@ -17,6 +19,11 @@ class Controller_Game_Ulp extends Controller_Base
 			$data['max'] = $period->max;
 			$data['min'] = $period->min;
 			$data['rate'] = $period->rate;
+			$data['round_number'] = $period->round_number;
+			if(count($period->round_number) > floor($period->totalTime / ($stop_time + $wait_time))){
+				array_pop($data['round_number']);
+			}
+			
 		}
 		
 		return View::forge('game/ulp', $data);

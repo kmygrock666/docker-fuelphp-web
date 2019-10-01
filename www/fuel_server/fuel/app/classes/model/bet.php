@@ -8,7 +8,7 @@ class Model_Bet extends Orm\Model
         'id',
         'uid',
         'bet_number',
-        'isWin',
+        'status',
         'payout',
         'round_id',
         'period_id',
@@ -21,13 +21,13 @@ class Model_Bet extends Orm\Model
     public static function find_bet($pid, $type, $round, $status)
     {
         return DB::select()->from('bets')->where('period_id', $pid)
-        ->where('type', $type)->where('round_id', $round)->where('isWin', $status)->as_object("Model_Bet")->execute();
+        ->where('type', $type)->where('round_id', $round)->where('status', $status)->as_object("Model_Bet")->execute();
     }
 
     public static function find_bet_win($uid, $isWin, $round)
     {
         return DB::select()->from('bets')->where('uid', $uid)
-        ->where('isWin', $isWin)->where('round_id', $round)->as_object("Model_Bet")->execute();
+        ->where('status', $isWin)->where('round_id', $round)->as_object("Model_Bet")->execute();
     }
 
     public static function find_bet_userId($uid, $start, $end)
@@ -43,7 +43,7 @@ class Model_Bet extends Orm\Model
         $bet = Model_Bet::forge(array(
             'uid' => $user_id,
             'bet_number' => $bet,
-            'isWin' => 0,
+            'status' => 0,
             'payout' => 0,
             'round_id' => $rid,
             'period_id' => $pid,

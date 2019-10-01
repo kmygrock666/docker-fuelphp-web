@@ -7,13 +7,12 @@ use game\play\Deal;
 
 class Controller_Api_Bet extends Controller_Apibase
 {
-    protected $pid = "pid";
+    protected $pid;
 
     public function get_send()
     {
-        
-        $redis = Redis_Db::instance();
-        $periodList = $redis->get($this->pid);
+        $this->pid = Config::get('myconfig.period.pid');
+        $periodList = $this->redis->get($this->pid);
 
         if($periodList == null) return $this->response(array('code' => '5', 'message' => 'period not open'));
         
@@ -73,8 +72,7 @@ class Controller_Api_Bet extends Controller_Apibase
 
     public function get_result()
     {
-        $redis = Redis_Db::instance();
-        $periodList = $redis->get($this->pid);
+        $periodList = $this->redis->get($this->pid);
         if($periodList == null) return $this->response(array('code' => 1, 'message' => 'not period'));
         $period = json_decode($periodList);
         $this_round = Model_Round::find_by_open($period->pid_);

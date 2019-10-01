@@ -6,7 +6,7 @@ class Controller_User extends Controller_Template
 {
     public $template = 'template_login';
 
-    public function action_index()
+    public function get_index()
     {
         Response::redircet('user/login');
     }
@@ -25,7 +25,6 @@ class Controller_User extends Controller_Template
                 $auth = Auth::instance();
                 if ($auth->login($val->validated('username'), $val->validated('password'))) {
                     Session::set_flash('success', 'You have logged in');
-
                     Response::redirect('/');
                 }
                 else
@@ -51,7 +50,7 @@ class Controller_User extends Controller_Template
         }
     }
 
-    public function action_logout()
+    public function get_logout()
     {
         if(Auth::check())
         {
@@ -96,11 +95,11 @@ class Controller_User extends Controller_Template
                     {
                         $current_user = Model_User::find_by_username(Auth::get_screen_name());
                         Session::set_flash('success', 'Welcome '.$current_user->username);
-                        Response::redirect('/');
+                        Response::redirect('');
                     }
                     else
                     {
-                        Response::redircet('user/login');
+                        Response::redirect('user/login');
                     }
                 }
                 else

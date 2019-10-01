@@ -11,7 +11,7 @@ class Model_Amount_Log extends \Orm\Model
 		'remark',
 		'created_at',
 		'updated_at',
-		'operate',
+		'user_id',
 	);
 
 	protected static $_observers = array(
@@ -37,7 +37,7 @@ class Model_Amount_Log extends \Orm\Model
             'after_amount' => $before_amount + $amount,
             'created_at' => strtotime('now'),
 			'updated_at' => strtotime('now'),
-			'operate' => $operate,
+			'user_id' => $operate,
 		));
         $result = $bet->save();
         return $result;
@@ -46,7 +46,7 @@ class Model_Amount_Log extends \Orm\Model
 	
 	public static function find_logs_userId($uid, $start, $end)
     {
-        return Model_Amount_Log::query()->where('operate', $uid)
+        return Model_Amount_Log::query()->where('user_id', $uid)
                                     ->and_where_open()->where('created_at', '>=', $start)
                                     ->where('created_at', '<=', $end)
                                     ->and_where_close()->order_by('id', 'desc')->limit(20)->get();

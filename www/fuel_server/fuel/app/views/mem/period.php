@@ -13,8 +13,8 @@
       {
         echo "<tr>";
         echo "<th scope='row'>".$b->pid."</th>";
-        echo "<td>".$b->openWin."</td>";
-        echo "<td>".$b->isClose."</td>";
+        echo "<td>".$b->open_win."</td>";
+        echo "<td>".$b->is_close."</td>";
         echo "<td>".$b->created_at."</td>";
         echo "</tr>";
       }

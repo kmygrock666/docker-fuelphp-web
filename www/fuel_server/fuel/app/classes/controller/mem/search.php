@@ -5,14 +5,12 @@ use Fuel\Core\Input;
 
 class Controller_Mem_Search extends Controller_Base
 {
-	protected $pid = "pid";
-
-	public function action_index()
+	public function get_index()
 	{
 		return Response::redirect('/');
 	}
 
-	public function action_record()
+	public function get_record()
 	{
 		$types = array('1' => '号码', '2' => '单双');
 		$winType = array('0' => '未开奖','1' => '中奖', '2' => '未中奖');
@@ -35,7 +33,7 @@ class Controller_Mem_Search extends Controller_Base
 			$bet->created_at = Date::forge($bet->created_at)->format("%Y-%m-%d %H:%M:%S");
 			$bet->bet_number = $bet->type == 1?  $bet->bet_number : $singleOrDouble[$bet->bet_number];
 			$bet->type = $types[$bet->type];
-			$bet->isWin = $winType[$bet->isWin];
+			$bet->status = $winType[$bet->status];
 		}			
 		
 		// echo \DB::last_query();
@@ -43,7 +41,7 @@ class Controller_Mem_Search extends Controller_Base
 		return View::forge('mem/record', $data);
 	}
 
-	public function action_deal()
+	public function get_deal()
 	{
 		$types = array('1' => '下注', '2' => '派彩');
 
@@ -68,7 +66,7 @@ class Controller_Mem_Search extends Controller_Base
 		return View::forge('mem/deal', $data);
 	}
 	
-	public function action_period()
+	public function get_period()
 	{
 		$types = array('0' => '开盘中', '1' => '关盘');
 
@@ -84,7 +82,8 @@ class Controller_Mem_Search extends Controller_Base
 		foreach($data['pdata'] as $bet)
 		{
 			$bet->created_at = Date::forge($bet->created_at)->format("%Y-%m-%d %H:%M:%S");
-			$bet->isClose = $types[$bet->isClose];
+			if($bet->is_close == 0) $bet->open_win = '';
+			$bet->is_close = $types[$bet->is_close];
 		}	
 
 		return View::forge('mem/period', $data);

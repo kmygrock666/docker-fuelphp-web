@@ -10,26 +10,32 @@ use game\play\Deal;
 
 class SDPlay extends GamePlay{
 
-    protected $gt = 2;
-    protected $max = 40;
-    protected $min = 1;
     protected $even = 0;
     protected $odd = 0;
 
+    protected function init()
+    {
+        $this->getSingleDouble();
+    }
+
     function __construct($pid, $r, $ans, $max, $min)
     {
-        
+        $this->gt = 2;
         $this->pid = $pid;
         $this->round = $r;
         $this->answer = $ans;
         $this->max = $max;
         $this->min = $min;
-        $this->getSingleDouble();
+        $this->init();
     }
 
     function getRate()
     {
-        return $this->getPlayRate();
+        $this->setSelected(0);
+        $even = $this->getPlayRate();
+        $this->setSelected(1);
+        $odd = $this->getPlayRate();
+        return array($even, $odd);
     }
 
     public function getResult()
@@ -37,7 +43,7 @@ class SDPlay extends GamePlay{
         return $this->getBets();
     }
 
-    public function setSelected($cmd)
+    private function setSelected($cmd)
     {
         if($cmd == 0) $this->optional_number = $this->even; //double
         else $this->optional_number = $this->odd; //single

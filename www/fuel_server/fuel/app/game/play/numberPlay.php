@@ -8,17 +8,18 @@ use Model_Bet;
 
 class NumberPlay extends GamePlay{
 
-    protected $gt = 1;
-    protected $bet_level = 5;
+    protected function init() {  }
 
-    function __construct($pid, $r, $ans, $total)
+    function __construct($pid, $r, $ans, $max, $min)
     {
-        
+        $this->gt = 1;
         $this->pid = $pid;
         $this->round = $r;
         $this->answer = $ans;
+        $this->max = $max;
+        $this->min = $min;
         $this->optional_number = 1;
-        $this->all_number = $total;
+        $this->all_number = $max - $min + 1;
     }
 
     function getRate()
