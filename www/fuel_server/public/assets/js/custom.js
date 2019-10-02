@@ -15,13 +15,13 @@ function touch(url)
 
 function resfreshBalance(money)
 {
-    $('#balance').text(money);
+    $('#balance').text(money.toFixed(3));
 }
 
 function addBalance(money)
 {
     var before = $('#balance').text();
-    $('#balance').text((parseFloat(before) + parseFloat(money)).toFixed(4));
+    $('#balance').text((parseFloat(before) + parseFloat(money)).toFixed(3));
 }
 
 function checkAmount(betAmount)

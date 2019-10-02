@@ -88,6 +88,7 @@ class Controller_Mem_Search extends Controller_Base
 			$bet->is_close = $types[$bet->is_close];
 			$bet->round_open = array();
 			$bet->round_ratio = array();
+			$bet->round_id = array();
 			foreach($round as $k =>$r)
 			{
 				if ($r->is_settle == 2) 
@@ -96,6 +97,7 @@ class Controller_Mem_Search extends Controller_Base
 				}
 
 				array_push($bet->round_ratio, json_decode($r->rate,true));
+				array_push($bet->round_id, $r->id);
 			}
 
 		}	

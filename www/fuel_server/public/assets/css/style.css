@@ -51,16 +51,21 @@ div.circle span{
   display: none;
   margin:0 auto;
   width:450px;
+  height: 55px;
 }
 
-.disablediv{
+.disablediv {
     pointer-events: none;
     opacity: 0.4;
 }
 
+.selected {
+   background-color:rgb(44, 255, 139) !important;;
+}
+
 .se {
   margin:0 auto;
-  width: 250px;
+  width: 400px;
   text-align:center;
   /* float: left; */
   /* float:right; */
