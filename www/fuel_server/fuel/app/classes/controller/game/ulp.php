@@ -1,5 +1,6 @@
 <?php
 
+use ___PHPSTORM_HELPERS\object;
 use Fuel\Core\Debug;
 
 class Controller_Game_Ulp extends Controller_Base
@@ -12,6 +13,7 @@ class Controller_Game_Ulp extends Controller_Base
 		$periodList = $this->redis->get($pid);
 		$period = json_decode($periodList);
 		$data = array('period' => '','time' => '','max' => '','min' => '','total' => 40, 'round_number' => array(), 'rate' => array('n'=> 0, 's'=> 0, 'd' => 0));
+		$data['rate'] = (object) $data['rate'];
 		if($period != null)
 		{
 			$data['period'] = $period->pid;

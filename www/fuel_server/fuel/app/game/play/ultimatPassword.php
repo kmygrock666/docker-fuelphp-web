@@ -18,17 +18,17 @@ class UltimatPassword
         return self::$instance;
     }
 
-    public function create_play($pid, $r, $ans, $max, $min)
+    public function create_play($pid, $r, $ans, $max, $min, $number)
     {
         if(count($this->games) == 0)
         {
-            $this->games['SDP'] = new SDPlay($pid, $r, $ans, $max, $min);
-            $this->games['NP'] = new NumberPlay($pid, $r, $ans, $max, $min);
+            $this->games['SDP'] = new SDPlay($pid, $r, $ans, $max, $min, $number);
+            $this->games['NP'] = new NumberPlay($pid, $r, $ans, $max, $min, $number);
         }
         else
         {
-            $this->games['SDP']->setGameParams($pid, $r, $ans, $max, $min);
-            $this->games['NP']->setGameParams($pid, $r, $ans, $max, $min);
+            $this->games['SDP']->setGameParams($pid, $r, $ans, $max, $min, $number);
+            $this->games['NP']->setGameParams($pid, $r, $ans, $max, $min, $number);
         }
         
     }

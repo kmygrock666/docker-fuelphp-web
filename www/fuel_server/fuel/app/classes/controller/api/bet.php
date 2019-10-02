@@ -7,14 +7,14 @@ use game\play\Deal;
 
 class Controller_Api_Bet extends Controller_Apibase
 {
-    protected $pid;
+    protected $deadline_time = 10;
 
     public function get_send()
     {
-        $this->pid = Config::get('myconfig.period.pid');
-        $periodList = $this->redis->get($this->pid);
+        $pid = Config::get('myconfig.period.pid');
+        $periodList = $this->redis->get($pid);
 
-        if($periodList == null) return $this->response(array('code' => '5', 'message' => 'period not open'));
+        if ($periodList == null) return $this->response(array('code' => '5', 'message' => 'period not open'));
         
         $period = json_decode($periodList);
 
@@ -25,10 +25,25 @@ class Controller_Api_Bet extends Controller_Apibase
         $amount = Input::get('m', null);
         $user_id = Auth::get_user_id();
 
-        if($user_bet == null || $type == null || $amount == null) return $this->response(array('code' => '1', 'message' => 'post has error'));
+        if ($user_bet == null || $type == null || $amount == null) return $this->response(array('code' => '1', 'message' => 'post has error'));
 
-        if($period->close == false && $period->time <= 60)
+        if ($period->close == false && $period->time <= 60)
         {
+            //限制n秒內不能連續下注
+            $userdata_redis = $this->redis->get($pid.":".$user_id[1]);
+            if ($userdata_redis != null)
+            {
+                $userdata = json_decode($userdata_redis, true);
+                if (strtotime('now') - $userdata['time'] < $this->deadline_time)
+                {
+                    $error = 1;
+                    if ($userdata['type'] == $type) $error++;
+                    if ($userdata['bet'] == $user_bet) $error ++;
+                    if ($userdata['amount'] == $amount) $error ++;
+                    if ($error >= count($userdata)) return $this->response(array('code' => '6', 'message' => "often bet"));;
+                }
+            }
+
             $params_vailure = false;
 
             switch($type)
@@ -46,7 +61,7 @@ class Controller_Api_Bet extends Controller_Apibase
                     break;
             }
 
-            if($params_vailure)
+            if ($params_vailure)
             {
                 // Autoloader::add_class('game\play\Deal', APPPATH.'game/play/deal.php');
                 $deal = new Deal();
@@ -62,6 +77,15 @@ class Controller_Api_Bet extends Controller_Apibase
         else
             return $this->response(array('code' => '4', 'message' => 'Prohibited bet, not within timing'));
         
+        $set_userdata = array(
+            'type' => $type,
+            'amount' => $amount,
+            'bet' => $user_bet,
+            'time' => strtotime('now'),
+        );
+        $this->redis->set($pid.":".$user_id[1], json_encode($set_userdata));
+        $this->redis->expire($pid.":".$user_id[1], $this->deadline_time);
+        
         return $this->response(array(
             'code' => "0",
             'message' => 'success',
@@ -72,7 +96,8 @@ class Controller_Api_Bet extends Controller_Apibase
 
     public function get_result()
     {
-        $periodList = $this->redis->get($this->pid);
+        $pid = Config::get('myconfig.period.pid');
+        $periodList = $this->redis->get($pid);
         if($periodList == null) return $this->response(array('code' => 1, 'message' => 'not period'));
         $period = json_decode($periodList);
         $this_round = Model_Round::find_by_open($period->pid_);

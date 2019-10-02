@@ -75,7 +75,9 @@ class Timer
             }
         }
     }
-
+    /**
+     * 產生期數規則
+     */
     private static function producePeriod()
     {
         $id = Model_Period::find_period_maxid();
@@ -84,30 +86,31 @@ class Timer
         $auto_id = str_pad($id, 4, "0", STR_PAD_LEFT);
         return date("Y").date("m").date("d").$auto_id;
     }
-
+    /**
+     * 產生每回合獎號
+     */
     private static function getNumber($min, $max)
     {
-
-        while(true)
-        {
-            $number = rand($min, $max);
-            if($number != $min && $number != $max)
-            {
-                return $number;
-            }
-        }
+        return mt_rand($min, $max);
     }
-
+    /**
+     * 初始化
+     */
     private static function getFormate($pid_, $period, $pwd, $r, $rate)
     {
         return array('pid_' => $pid_,'pid' => $period,'close' => false,'time' => 1, 'totalTime' => 1, 
         'pwd' => $pwd, 'round' => $r, 'round_number' => array(), 'next' => 0, 'min' => 1, 'max' => 40, 'rate' => $rate);
     }
-
+    /**
+     * 遊戲規則
+     * 每局最多 3分30秒
+     * 有人中獎(選號中獎)或僅剩一球即結束該局
+     * 結束後10秒再開新局，可下注60秒
+     */
     private static function condition($val)
     {
         if ($val->close)
-        {
+        {   //該局結束，等n秒後開新局
             if($val->time == Timer::$wait_time)
             {
 				Model_Period::save_period_status($val->pid_);
@@ -115,13 +118,13 @@ class Timer
             }
         }
         else
-        {
-            if ($val->totalTime == Timer::$period_deadline) //每一期限制時間
+        {   //每一期限制時間
+            if ($val->totalTime == Timer::$period_deadline) 
             {
                 $val->close = true;
                 $val->time = 0;
-            }
-            else if($val->time == Timer::$stop_time) //停止下注
+            }//停止下注
+            else if($val->time == Timer::$stop_time) 
             {
                 // 開下一回區間
                 $next_range_number = Timer::getNumber($val->min, $val->max);
@@ -129,13 +132,13 @@ class Timer
                 $val->next = $next_range_number;
                 array_push($val->round_number, $val->next);
 
-                //結算
+                //結算，若有人中終極密碼，開下一盤
                 if(Timer::sendOut($val, $next_range_number))
                 {
                     $val->close = true;
                     $val->time = 0;
                 }
-            }
+            }//等n秒後，開下一局
             else if ($val->time == (Timer::$wait_time + Timer::$stop_time)) 
             {
                 $val->time = 0;
@@ -184,15 +187,9 @@ class Timer
     private static function sendOut($val, $number)
     {
         $ultimatPasswordFactory = UltimatPassword::getInstance();
-        $ultimatPasswordFactory->create_play($val->pid, $val->round, $number, $val->max, $val->min);
+        $ultimatPasswordFactory->create_play($val->pid, $val->round, $val->pwd, $val->max, $val->min, $number);
         $ultimatPasswordFactory->settle('SDP');
         $response = $ultimatPasswordFactory->settle('NP');
-        // $game_sD = new SDPlay($val->pid, $val->round, $number, $val->max, $val->min);
-        // $game_sD->getResult();
-
-        // Autoloader::add_class('game\play\NumberPlay', APPPATH.'game/play/numberPlay.php');
-        // $game_number = new NumberPlay($val->pid, $val->round, $val->pwd, ($val->max - $val->min + 1));
-        // $response = $game_number->getResult();
         
         Model_Round::save_settle_status($val->round);
         // Debug::dump(Date::forge($round->updated_at)->format("%Y-%m-%d %H:%M:%S"));exit();
@@ -206,18 +203,11 @@ class Timer
     private static function getRateTable($min, $max)
     {
         $ultimatPasswordFactory = UltimatPassword::getInstance();
-        $ultimatPasswordFactory->create_play(0, 0, 0, $max, $min);
+        $ultimatPasswordFactory->create_play(0, 0, 0, $max, $min, 0);
         $number = $ultimatPasswordFactory->getRate('NP');
         $sdp = $ultimatPasswordFactory->getRate('SDP');
         $single = $sdp[1];
         $double = $sdp[0];
-        // $game_sD = new SDPlay(0, 0, 0, $max, $min);
-        // $game_number = new NumberPlay(0, 0, 0, ($max - $min + 1));
-        // $game_sD->setSelected(1);
-        // $single = $game_sD->getRate();
-        // $game_sD->setSelected(0);
-        // $double = $game_sD->getRate();
-        // $number = $game_number->getRate();
         return array('n' => $number, 's' => $single, 'd' => $double);
     }
 
@@ -241,20 +231,29 @@ class Timer
             // Debug::dump($round);exit();
             if($round[$round_count - 1]->is_settle == true)
             {
-                Timer::settle($periodData, $round);
+                $response = Timer::settle($periodData, $round);
+                //玩家中終極號碼，開新局
+                if($response) 
+                {
+                    Model_Period::save_period_status($periodData->id);
+                    return false; 
+                }
                 $round[$round_count - 1]->is_settle = 2;
             }
-
-            // if($round_count == 3 and $round[$round_count - 1]->is_settle == 2) return false;
             // Debug::dump($round, $round_count);exit();
             $period_redis = (object) Timer::getFormate($periodData->id, $periodData->pid, $periodData->open_win, $round[$round_count-1]->id, array());
             $time = 0;
             
             foreach($round as $r)
             {
-                if($r->is_settle == 2) $time++;
+                if($r->is_settle == 2) 
+                {
+                    $time++;
+                    Timer::getNewNumber($period_redis, $r->open_win);
+                    array_push($period_redis->round_number, $r->open_win);
+                }
                 $period_redis->rate = json_decode($r->rate);
-                Timer::getNewNumber($period_redis, $r->open_win);
+                
             }
             //檢查期數是否已結束
             if($period_redis->close) return false;
@@ -285,8 +284,8 @@ class Timer
             Timer::getNewNumber($period_value, $r->open_win);
         }
 
-        Timer::sendOut($period_value, $round[$r_count - 1]->open_win);
-        return true;
+        $response = Timer::sendOut($period_value, $round[$r_count - 1]->open_win);
+        return $response;
     }
 }
 

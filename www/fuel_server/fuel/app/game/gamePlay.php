@@ -12,6 +12,7 @@ abstract class GamePlay implements BetImpl {
     protected $answer = 1;
     protected $pid = 0;
     protected $round = 0;
+    protected $number = 0;
 
     protected function getPlayRate()
     {
@@ -19,13 +20,14 @@ abstract class GamePlay implements BetImpl {
         return floor(((1 / ($this->optional_number / $this->all_number)) * 0.92) * $c) / $c;
     }
 
-    public function setGameParams($pid, $r, $ans, $max, $min)
+    public function setGameParams($pid, $r, $ans, $max, $min, $number)
     {
         $this->pid = $pid;
         $this->round = $r;
         $this->answer = $ans;
         $this->max = $max;
         $this->min = $min;
+        $this->number = $number;
         $this->init();
     }
 

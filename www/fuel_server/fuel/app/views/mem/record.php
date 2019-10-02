@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th scope="col">单号</th>
+      <th scope="col">期數</th>
       <th scope="col">类型</th>
       <th scope="col">下注号码</th>
       <th scope="col">下注金额</th>
@@ -16,6 +17,7 @@
       {
         echo "<tr>";
         echo "<th scope='row'>".$b->id."</th>";
+        echo "<th scope='row'>".$b->period_id."</th>";
         echo "<td>".$b->type."</td>";
         echo "<td>".$b->bet_number."</td>";
         echo "<td>".$b->amount."</td>";

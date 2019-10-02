@@ -1,6 +1,8 @@
 <?php
 
 namespace game\play;
+
+use Fuel\Core\Debug;
 use game\GamePlay;
 
 use Model_Period;
@@ -18,7 +20,7 @@ class SDPlay extends GamePlay{
         $this->getSingleDouble();
     }
 
-    function __construct($pid, $r, $ans, $max, $min)
+    function __construct($pid, $r, $ans, $max, $min, $number)
     {
         $this->gt = 2;
         $this->pid = $pid;
@@ -26,6 +28,7 @@ class SDPlay extends GamePlay{
         $this->answer = $ans;
         $this->max = $max;
         $this->min = $min;
+        $this->number = $number;
         $this->init();
     }
 
@@ -81,7 +84,7 @@ class SDPlay extends GamePlay{
                 }
                 else
                 {
-                    $bet->isWin = 2;
+                    $bet->status = 2;
                     $bet->save();
                 }
                 
@@ -92,7 +95,7 @@ class SDPlay extends GamePlay{
 
     private function setSingle_or_double()
     {
-        $isSingleDouble = $this->answer % 2;
+        $isSingleDouble = $this->number % 2;
         if($isSingleDouble == 0) $this->optional_number = $this->even; //double
         else $this->optional_number = $this->odd; //single
         return $isSingleDouble;

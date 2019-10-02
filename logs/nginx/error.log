@@ -248,3 +248,6 @@
 2019/09/30 10:14:17 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/10/01 09:35:05 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/10/01 09:35:05 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/02 08:14:42 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/02 08:14:42 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/02 11:26:37 [warn] 6#0: *7889 an upstream response is buffered to a temporary file /var/cache/nginx/fastcgi_temp/1/00/0000000001 while reading upstream, client: 172.19.0.1, server: localhost, request: "GET /mem/search/period HTTP/1.1", upstream: "fastcgi://172.19.0.4:9000", host: "localhost", referrer: "http://localhost/"

@@ -54,7 +54,7 @@ class Deal
             DB::start_transaction();
             
             //insert bet
-            $bet->isWin = true;
+            $bet->status = true;
             $bet->payout = $payout;
             $bet->save();
             //get user amount

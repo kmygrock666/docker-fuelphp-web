@@ -1,6 +1,8 @@
 <?php
 
 namespace game\play;
+
+use Fuel\Core\Debug;
 use game\GamePlay;
 
 use game\play\Deal;
@@ -10,7 +12,7 @@ class NumberPlay extends GamePlay{
 
     protected function init() {  }
 
-    function __construct($pid, $r, $ans, $max, $min)
+    function __construct($pid, $r, $ans, $max, $min, $number)
     {
         $this->gt = 1;
         $this->pid = $pid;
@@ -20,6 +22,7 @@ class NumberPlay extends GamePlay{
         $this->min = $min;
         $this->optional_number = 1;
         $this->all_number = $max - $min + 1;
+        $this->number = $number;
     }
 
     function getRate()
@@ -42,8 +45,8 @@ class NumberPlay extends GamePlay{
         }
         else
         {
-            // Autoloader::add_class('game\play\Deal', APPPATH.'game/play/deal.php');
             $deal = new Deal();
+            
             foreach($bets as $bet)
             {
                 if($bet->bet_number == $this->answer)
@@ -54,7 +57,7 @@ class NumberPlay extends GamePlay{
                 }
                 else
                 {
-                    $bet->isWin = 2;
+                    $bet->status = 2;
                     $bet->save();
                 }
             }

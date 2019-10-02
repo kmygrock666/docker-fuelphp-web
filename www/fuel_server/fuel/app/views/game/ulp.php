@@ -34,23 +34,24 @@
     </div>
 </div>
 <div class="se">
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">下注金额</label>
+        <div class="input-group mb-3" style="float:left">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">下注金额</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+            </select>
         </div>
-        <select class="custom-select" id="inputGroupSelect01">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-        </select>
-    </div>
-    <!-- <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-default">下注金额</span>
-        </div>
-        <input type="text" id="inputGroupSelect01" value="1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-    </div> -->
+        <!-- <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">下注金额</span>
+            </div>
+            <input type="text" id="inputGroupSelect01" value="1" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div> -->
+    <div>
 
     <button type="button" class="btn btn-primary" onclick="change(0)">选号</button>
     <button type="button" class="btn btn-info" onclick="change(1)">单双</button>
@@ -124,6 +125,7 @@
                     $('#time').text("下一盘 "+ d.time);
                     $('#b' + d.pwd).addClass("winPwd");
                     refresh(d);
+                    runOpen();
                     last_period_enable = true;
                 }
                 
@@ -148,7 +150,8 @@
         $('#round').html('');
         var html = '';
         round_number.forEach(function(e, index){
-            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + e+ ' </p>';
+            let sd = (e % 2 == 0) ?"單":"雙";
+            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + sd + ' </p>';
         });
          
         $('#round').append(html);
@@ -160,7 +163,8 @@
         var html = '<p> 上一期 期數：' + period.pid;
         html += '<p> ' + ' 終極密碼：' + period.open + '</p>';
         period.round.forEach(function(e, index){
-            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + e+ ' </p>';
+            let sd = (e % 2 == 0) ?"單":"雙";
+            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + sd + ' </p>';
         });
         
         $('#history').append(html);
@@ -175,34 +179,39 @@
     }
 
     function send(number) {
-        // console.log(number);
         let type = 1;
-        if(isNaN(number)) type = 2;
+        if (isNaN(number)) type = 2;
         let amount = $('#inputGroupSelect01').val();
-        if(checkAmount(amount)) 
+        if (checkAmount(amount)) 
         {
             alert('余额不足');
             return;
         }
-        $.ajax({
-            url: "api/bet/send",
-            type: 'get',
-            dataType: "json",
-            data:{'b':number, 't': type, m: amount},
-            success: function (msg) {
-                if(msg.code == 0)
-                {
-                    var object = msg.data;
-                    resfreshBalance(object.amount);
-                    alert("下注成功");
+        if (doubleCheck("下注"))
+        {
+            $.ajax({
+                url: "api/bet/send",
+                type: 'get',
+                dataType: "json",
+                data:{'b':number, 't': type, m: amount},
+                success: function (msg) {
+                    if(msg.code == 0)
+                    {
+                        var object = msg.data;
+                        resfreshBalance(object.amount);
+                        alert("下注成功");
+                    }
+                    else
+                    {
+                        if(msg.code == 6)
+                            alert("下注失败: 請物頻繁下注");
+                        else    
+                            alert("下注失败: " + msg.message);
+                    }
+                    console.log(msg);
                 }
-                else
-                {
-                    alert("下注失败: " + msg.message);
-                }
-                console.log(msg);
-            }
-        })
+            })
+        }
     }
 
     function getResult() {
@@ -267,5 +276,15 @@
                 console.log(error);
             }
         })
+    }
+
+    function doubleCheck(message)
+    {
+        var msg = '確認' + message;
+        if (confirm(msg) == true){ 
+            return true; 
+        }else{ 
+            return false; 
+        } 
     }
 </script>

@@ -81,10 +81,25 @@ class Controller_Mem_Search extends Controller_Base
 		$data['pdata'] = Model_Period::find_period($start, $end);
 		foreach($data['pdata'] as $bet)
 		{
+			//TODO 可優化
+			$round = $bet->round;
 			$bet->created_at = Date::forge($bet->created_at)->format("%Y-%m-%d %H:%M:%S");
 			if($bet->is_close == 0) $bet->open_win = '';
 			$bet->is_close = $types[$bet->is_close];
+			$bet->round_open = array();
+			$bet->round_ratio = array();
+			foreach($round as $k =>$r)
+			{
+				if ($r->is_settle == 2) 
+				{
+					array_push($bet->round_open, $r->open_win);
+				}
+
+				array_push($bet->round_ratio, json_decode($r->rate,true));
+			}
+
 		}	
+		
 
 		return View::forge('mem/period', $data);
 	}
