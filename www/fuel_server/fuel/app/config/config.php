@@ -10,6 +10,7 @@
  * @link       http://fuelphp.com
  */
 
+use Fuel\Core\Session;
 
 return array(
 
@@ -78,9 +79,9 @@ return array(
 	/**
 	 * Localization & internationalization settings
 	 */
-	// 'language'           => 'en', // Default language
-	// 'language_fallback'  => 'en', // Fallback language when file isn't available for default language
-	// 'locale'             => 'en_US', // PHP set_locale() setting, null to not set
+	'language'           => Session::get('lang', 'tw'), // Default language
+	'language_fallback'  => 'tw', // Fallback language when file isn't available for default language
+	'locale'             => 'en_US', // PHP set_locale() setting, null to not set
 
 	/**
 	 * Internal string encoding charset
@@ -309,7 +310,7 @@ return array(
 		 * add it like 'validation' => 'forms'.
 		 * If you don't want the lang in a group use null as groupname.
 		 */
-		// 'language'  => array(),
+		'language'  => array('message', 'games'),
 	),
 
 );

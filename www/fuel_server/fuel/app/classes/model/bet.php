@@ -4,9 +4,11 @@ class Model_Bet extends Orm\Model
 {
     // protected static $_table_name = 'user';
 
+    protected static $_belongs_to  = array('user');
+
     protected static $_properties = array(
         'id',
-        'uid',
+        'user_id',
         'bet_number',
         'status',
         'payout',
@@ -26,13 +28,13 @@ class Model_Bet extends Orm\Model
 
     public static function find_bet_win($uid, $isWin, $round)
     {
-        return DB::select()->from('bets')->where('uid', $uid)
+        return DB::select()->from('bets')->where('user_id', $uid)
         ->where('status', $isWin)->where('round_id', $round)->as_object("Model_Bet")->execute();
     }
 
     public static function find_bet_userId($uid, $start, $end)
     {
-        return Model_Bet::query()->where('uid', $uid)
+        return Model_Bet::query()->where('user_id', $uid)
                                     ->and_where_open()->where('created_at', '>=', $start)
                                     ->where('created_at', '<=', $end)
                                     ->and_where_close()->order_by('id', 'desc')->limit(20)->get();
@@ -41,7 +43,7 @@ class Model_Bet extends Orm\Model
     public static function insert_bet_LastId($user_id, $bet, $rid, $pid, $type, $amount)
     {
         $bet = Model_Bet::forge(array(
-            'uid' => $user_id,
+            'user_id' => $user_id,
             'bet_number' => $bet,
             'status' => 0,
             'payout' => 0,
@@ -57,5 +59,18 @@ class Model_Bet extends Orm\Model
         
         return $bet->id;
 
+    }
+
+    public static function sum_member($uid, $start, $end)
+    {
+        $expr_1 = DB::expr('sum(payout) as payout');
+        $expr_2 = DB::expr('sum(amount) as amount');
+        $expr_3 = DB::expr('count(user_id) as count');
+        $query = DB::select('user_id', $expr_1, $expr_2, $expr_3)->from('bets');
+        if ( ! is_null($uid)) $query->where('user_id', $uid);
+        $query->where('status', ">", 0);
+        $query->and_where_open()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->and_where_close();
+        $query->group_by('user_id');
+        return $query->as_object('Model_Bet')->execute();
     }
 }

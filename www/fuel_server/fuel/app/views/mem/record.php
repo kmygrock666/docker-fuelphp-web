@@ -1,15 +1,15 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">单号</th>
-      <th scope="col">回合单号</th>
-      <th scope="col">期數</th>
-      <th scope="col">类型</th>
-      <th scope="col">下注号码</th>
-      <th scope="col">下注金额</th>
-      <th scope="col">中奖金额</th>
-      <th scope="col">状态</th>
-      <th scope="col">下注时间</th>
+      <th scope="col"><?php echo Lang::get('games.BET_ID'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.ROUND_ID'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.PERIOD'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.GAME_TYPE'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.BET_DATA'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.BET_AMOUNT'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.WIN_AMOUNT'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.STATUS'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.BET_TIMESTAMP'); ?></th>
     </tr>
   </thead>
   <tbody>

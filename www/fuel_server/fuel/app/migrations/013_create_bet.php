@@ -8,7 +8,7 @@ class Create_bet
     {
         \DBUtil::create_table('bets', array(
             'id' => array('type' => 'bigint', 'constraint' => 20, 'auto_increment' => true),
-            'uid' => array('type' => 'int', 'constraint' => 10, 'comment' => '用戶'),
+            'user_id' => array('type' => 'int', 'constraint' => 10, 'comment' => '用戶'),
             'type' => array('type' => 'varchar', 'constraint' => 3, 'comment' => '下注類型'),
             'bet_number' => array('type' => 'int', 'constraint' => 3, 'comment' => '下注號碼'),
             'amount' => array('type' => 'int', 'constraint' => 5, 'comment' => '下注金額'),

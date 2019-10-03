@@ -1,6 +1,6 @@
 <div>
     <div>
-        期数
+        <?php echo Lang::get('game.PERIOD'); ?>
         <span id="pid"><?php echo $period; ?></span>
         <span id="time" style="position:absolute;right:200px">倒数 <?php echo $time % 60; ?></span>
         <div>

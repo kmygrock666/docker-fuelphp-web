@@ -1,0 +1,26 @@
+<?php
+return array(
+    'HOME' => 'Home',
+    'PLAY' => 'Play',
+    'DEAL_RECORD' => 'DealRecord',
+    'BET_RECORD' => 'BetRecord',
+    'PERIOD_SEARCH' => 'PeriodSearch',
+    'LANG' => 'language',
+    'ACCOUNT' => 'account',
+    'BALANCE' => 'balance',
+    'LOGOUT' => 'logout',
+    'LOGIN' => 'login',
+    'LOGIN_MESSAGE' => 'Already have an account?',
+    'USERNAME' => 'username',
+    'PASSWORD' => 'password',
+    'CONFIRM_PASSWORD' => 'confirm_password',
+    'EMAIL' => 'email',
+    'REGISTER' => 'register',
+    'REGISTER_MESSAGE' => "Don't have an account? ",
+    'EN' => 'english',
+    'TW' => 'taiwan',
+    'CN' => 'chinese',
+    'REPORT' => '报表',
+    'ANALYSIS' => '分析',
+    
+);

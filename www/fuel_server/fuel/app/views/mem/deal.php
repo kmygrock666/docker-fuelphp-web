@@ -1,12 +1,12 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">类型</th>
-      <th scope="col">备注</th>
-      <th scope="col">原始余额</th>
-      <th scope="col">金额</th>
-      <th scope="col">变动后余额</th>
-      <th scope="col">交易时间</th>
+      <th scope="col"><?php echo Lang::get('games.GAME_TYPE'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.REMARK'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.ORIGINAL_BALANCE'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.AMOUNT'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.AFTER_BALANCE'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.DEAL_TIMESTAMP'); ?></th>
     </tr>
   </thead>
   <tbody>

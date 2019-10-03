@@ -17,20 +17,32 @@
                 <?php
                     foreach ($nav as $list)
                     {
-                        echo '<li class="nav-item nsearch '.$list['active'].'" ><a class="nav-link" href="'.$list['href'].'" onClick=touch("'.$list['url'].'")>'.$list['title'].'</a></li>';
+                        echo '<li class="nav-item nsearch '.$list['active'].'" ><a class="nav-link" href="'.$list['href'].'" onClick=touch("'.$list['url'].'")>'.Lang::get($list['title']).'</a></li>';
                     }
                 ?>
             </ul>
             <div class="navbar-brand">
-                <span>帐号: </span>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo Lang::get($lang); ?></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="?lang=en"><?php echo Lang::get('message.EN'); ?></a>
+                            <a class="dropdown-item" href="?lang=tw"><?php echo Lang::get('message.TW'); ?></a>
+                            <a class="dropdown-item" href="?lang=cn"><?php echo Lang::get('message.CN'); ?></a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-brand">
+                <span><?php echo Lang::get('message.ACCOUNT'); ?></span>
                 <span><?php echo $username; ?></span>
             </div>
             <div class="navbar-brand">
-                <span>余额: </span>
+                <span><?php echo Lang::get('message.BALANCE'); ?></span>
                 <span id="balance"><?php echo $amount; ?></span>
             </div>
             <div class="navbar-brand">
-                <a href="/user/logout"><span>登出</span></a>
+                <a href="/user/logout"><span><?php echo Lang::get('message.LOGOUT'); ?></span></a>
             </div>
         </div>
     </nav>

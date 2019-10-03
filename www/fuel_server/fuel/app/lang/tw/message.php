@@ -1,0 +1,26 @@
+<?php
+return array(
+    'HOME' => '首頁',
+    'PLAY' => '玩遊戲',
+    'DEAL_RECORD' => '交易紀錄',
+    'BET_RECORD' => '下注紀錄',
+    'PERIOD_SEARCH' => '期數查詢',
+    'LANG' => '語系',
+    'ACCOUNT' => '帳號',
+    'BALANCE' => '餘額',
+    'LOGOUT' => '登出',
+    'LOGIN' => '登入',
+    'LOGIN_MESSAGE' => '已經有照號了?',
+    'USERNAME' => '帳號',
+    'PASSWORD' => '密碼',
+    'CONFIRM_PASSWORD' => '密碼確認',
+    'EMAIL' => '信箱',
+    'REGISTER' => '註冊',
+    'REGISTER_MESSAGE' => '沒有帳號嗎 ？',
+    'EN' => '英文',
+    'TW' => '繁體',
+    'CN' => '簡體',
+    'REPORT' => '報表',
+    'ANALYSIS' => '分析',
+    
+);

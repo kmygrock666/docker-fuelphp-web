@@ -1,13 +1,13 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">期数</th>
-      <th scope="col">终极密码</th>
-      <th scope="col">回合單號</th>
-      <th scope="col">回合獎號</th>
-      <th scope="col">賠率</th>
-      <th scope="col">状态</th>
-      <th scope="col">开盘时间</th>
+      <th scope="col"><?php echo Lang::get('games.PERIOD'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.ULTIMATE_PASSWORD'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.ROUND_ID'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.ROUND_AWARD'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.RATIO'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.STATUS'); ?></th>
+      <th scope="col"><?php echo Lang::get('games.ENABLE_TIMESTAMP'); ?></th>
     </tr>
   </thead>
   <tbody>
@@ -22,10 +22,10 @@
         $html_id = '';
         for($i = 0; $i < count($b->round_open); $i++)
         {
-          $sd = ($b->round_open[$i] % 2 == 0)? '單':'雙';
+          $sd = ($b->round_open[$i] % 2 == 0)? Lang::get('games.DOUBLE'):Lang::get('games.SINGLE');
           $html_id .= "<p>".$b->round_id[$i]."</p>";
           $html_open .= "<p>".$sd."</p>";
-          $html_rate .= "<p>號碼：".$b->round_ratio[$i]['n']."/單：".$b->round_ratio[$i]['s']."/雙：".$b->round_ratio[$i]['d']."</p>";
+          $html_rate .= "<p>".Lang::get('games.NUMBER')."：".$b->round_ratio[$i]['n'].Lang::get('games.SINGLE')."：".$b->round_ratio[$i]['s'].Lang::get('games.DOUBLE')."：".$b->round_ratio[$i]['d']."</p>";
         }
         echo "<td>".$html_id."</td>";
         echo "<td>".$html_open."</td>";

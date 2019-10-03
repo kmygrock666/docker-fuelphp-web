@@ -1,0 +1,26 @@
+<?php
+return array(
+    'HOME' => '首页',
+    'PLAY' => '玩游戏',
+    'DEAL_RECORD' => '交易纪录',
+    'BET_RECORD' => '下注纪录',
+    'PERIOD_SEARCH' => '期数查询',
+    'LANG' => '语系',
+    'ACCOUNT' => '帐号',
+    'BALANCE' => '余额',
+    'LOGOUT' => '登出',
+    'LOGIN' => '登入',
+    'LOGIN_MESSAGE' => '已经有照号了?',
+    'USERNAME' => '帐号',
+    'PASSWORD' => '密码',
+    'CONFIRM_PASSWORD' => '密码确认',
+    'EMAIL' => '信箱',
+    'REGISTER' => '注册',
+    'REGISTER_MESSAGE' => '没有帐号吗 ？',
+    'EN' => '英文',
+    'TW' => '繁体',
+    'CN' => '简体',
+    'REPORT' => 'report',
+    'ANALYSIS' => 'analysis',
+    
+);

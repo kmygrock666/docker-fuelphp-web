@@ -12,10 +12,9 @@ class Controller_Mem_Search extends Controller_Base
 
 	public function get_record()
 	{
-		$types = array('1' => '号码', '2' => '单双');
-		$winType = array('0' => '未开奖','1' => '中奖', '2' => '未中奖');
-		$singleOrDouble = array('0' => '双', '1' => '单');
-
+		$types = array('1' => Lang::get('games.NUMBER'), '2' => Lang::get('games.SINGLE_DOUBLE'));//1.號碼 2.單爽
+		$winType = array('0' => Lang::get('games.NOT_OPEN'),'1' => Lang::get('games.WIN'), '2' => Lang::get('games.NOT_WIN'));//0.未開講 1.中獎 2.未中獎
+		$singleOrDouble = array('0' => Lang::get('games.DOUBLE'), '1' => Lang::get('games.SINGLE')); //0.單 1.雙
 		
 		$data = array();
 		$user_id = Auth::get_user_id();
@@ -43,7 +42,7 @@ class Controller_Mem_Search extends Controller_Base
 
 	public function get_deal()
 	{
-		$types = array('1' => '下注', '2' => '派彩');
+		$deal_types = array('1' => Lang::get('games.BET'), '2' => Lang::get('games.PAYOUT')); // 1.下注 2.派彩
 
 		$user_id = Auth::get_user_id();
 		$start_get = Input::get('start', date('Y-m-d',time())." 00:00:00");
@@ -60,7 +59,7 @@ class Controller_Mem_Search extends Controller_Base
 		foreach($data['dealdata'] as $bet)
 		{
 			$bet->created_at = Date::forge($bet->created_at)->format("%Y-%m-%d %H:%M:%S");
-			$bet->type = $types[$bet->type];
+			$bet->type = $deal_types[$bet->type];
 		}	
 		// Debug::dump($data['dealdata']);exit();
 		return View::forge('mem/deal', $data);
@@ -68,7 +67,7 @@ class Controller_Mem_Search extends Controller_Base
 	
 	public function get_period()
 	{
-		$types = array('0' => '开盘中', '1' => '关盘');
+		$period_types = array('0' => Lang::get('games.OPEN_PERIOD'), '1' => Lang::get('games.CLOSE_PERIOD')); //0.開盤中 1.關盤
 
 		$start_get = Input::get('start', date('Y-m-d',time())." 00:00:00");
 		$end_get = Input::get('end', date('Y-m-d')." 23:59:59");
@@ -85,7 +84,7 @@ class Controller_Mem_Search extends Controller_Base
 			$round = $bet->round;
 			$bet->created_at = Date::forge($bet->created_at)->format("%Y-%m-%d %H:%M:%S");
 			if($bet->is_close == 0) $bet->open_win = '';
-			$bet->is_close = $types[$bet->is_close];
+			$bet->is_close = $period_types[$bet->is_close];
 			$bet->round_open = array();
 			$bet->round_ratio = array();
 			$bet->round_id = array();
