@@ -188,12 +188,13 @@ class Timer
     {
         $ultimatPasswordFactory = UltimatPassword::getInstance();
         $ultimatPasswordFactory->create_play($val->pid, $val->round, $val->pwd, $val->max, $val->min, $number);
-        $ultimatPasswordFactory->settle('SDP');
-        $response = $ultimatPasswordFactory->settle('NP');
-        
-        Model_Round::save_settle_status($val->round);
+        $sdp_response = $ultimatPasswordFactory->settle('SDP');
+        $np_response = $ultimatPasswordFactory->settle('NP');
+
+        if (is_bool($sdp_response) && is_bool($np_response))
+            Model_Round::save_settle_status($val->round);
         // Debug::dump(Date::forge($round->updated_at)->format("%Y-%m-%d %H:%M:%S"));exit();
-        if($response)
+        if ($np_response)
         {
             return true;
         }

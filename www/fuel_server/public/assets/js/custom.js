@@ -8,7 +8,7 @@ $('li.nsearch').on('click', function(){
 var st_ = true;
 function touch(url)
 {
-    $('#container').html();
+    $('#container').html('');
     $('#container').load(url);
     // console.log(url);
 }

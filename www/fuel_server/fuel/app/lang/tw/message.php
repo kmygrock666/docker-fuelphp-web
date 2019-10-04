@@ -22,5 +22,6 @@ return array(
     'CN' => '簡體',
     'REPORT' => '報表',
     'ANALYSIS' => '分析',
+    'AMOUNT' => '金額',
     
 );

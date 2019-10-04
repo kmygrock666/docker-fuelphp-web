@@ -42,7 +42,11 @@ class Controller_Mem_Search extends Controller_Base
 
 	public function get_deal()
 	{
-		$deal_types = array('1' => Lang::get('games.BET'), '2' => Lang::get('games.PAYOUT')); // 1.下注 2.派彩
+		$deal_types = array(
+		    '1' => Lang::get('games.BET'),
+            '2' => Lang::get('games.PAYOUT'),
+            '3' => Lang::get('games.IN'),
+            '4' => Lang::get('games.OUT')); // 1.下注 2.派彩 3.存款 4.提款
 
 		$user_id = Auth::get_user_id();
 		$start_get = Input::get('start', date('Y-m-d',time())." 00:00:00");

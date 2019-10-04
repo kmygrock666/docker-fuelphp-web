@@ -81,7 +81,8 @@ return array(
 	 */
 	'language'           => Session::get('lang', 'tw'), // Default language
 	'language_fallback'  => 'tw', // Fallback language when file isn't available for default language
-	'locale'             => 'en_US', // PHP set_locale() setting, null to not set
+//	'locale'             => 'en_US', // PHP set_locale() setting, null to not set
+    'locale'            => '',
 
 	/**
 	 * Internal string encoding charset
@@ -107,9 +108,9 @@ return array(
 	 * Fuel::L_INFO
 	 * Fuel::L_ALL
 	 */
-	// 'log_threshold'    => Fuel::L_WARNING,
-	// 'log_path'         => APPPATH.'logs/',
-	// 'log_date_format'  => 'Y-m-d H:i:s',
+	 'log_threshold'    => Fuel::L_WARNING,
+	 'log_path'         => APPPATH.'logs/',
+	 'log_date_format'  => 'Y-m-d H:i:s',
 
 	/**
 	 * Security settings
@@ -310,7 +311,7 @@ return array(
 		 * add it like 'validation' => 'forms'.
 		 * If you don't want the lang in a group use null as groupname.
 		 */
-		'language'  => array('message', 'games'),
+		'language'  => array('message', 'games', 'report'),
 	),
 
 );

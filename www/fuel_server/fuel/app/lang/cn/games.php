@@ -26,6 +26,8 @@ return array(
     'NOT_WIN' => '未中奖',
     'BET' => '下注',
     'PAYOUT' => '派彩',
+    'IN' => '存款',
+    'OUT' => '提款',
     'OPEN_PERIOD' => '开盘中',
     'CLOSE_PERIOD' => '关盘',
     

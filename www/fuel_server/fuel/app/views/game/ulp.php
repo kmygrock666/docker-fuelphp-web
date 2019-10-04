@@ -154,6 +154,7 @@
             $('#s').text(d.rate.s);
             $('#d').text(d.rate.d);
             update_round(d.round_number);
+            clearAll(true);
         }
     }
 

@@ -80,6 +80,7 @@ class SDPlay extends GamePlay{
                 {
                     $payout = $bet->amount * $this->getPlayRate() ;
                     $r = $deal->send_bonus($bet, $payout);
+                    if($r['code'] == 1) return $r['message'];
                     $flag = true;
                 }
                 else

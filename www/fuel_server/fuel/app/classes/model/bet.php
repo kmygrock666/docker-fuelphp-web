@@ -61,15 +61,22 @@ class Model_Bet extends Orm\Model
 
     }
 
-    public static function sum_member($uid, $start, $end)
+    public static function sum_member_by_condition($uid, $start, $end, $pid)
     {
         $expr_1 = DB::expr('sum(payout) as payout');
         $expr_2 = DB::expr('sum(amount) as amount');
         $expr_3 = DB::expr('count(user_id) as count');
         $query = DB::select('user_id', $expr_1, $expr_2, $expr_3)->from('bets');
-        if ( ! is_null($uid)) $query->where('user_id', $uid);
         $query->where('status', ">", 0);
-        $query->and_where_open()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->and_where_close();
+        if (is_null($pid))
+        {
+            if (!empty($uid)) $query->where('user_id', $uid);
+            $query->and_where_open()->where('created_at', '>=', $start)->where('created_at', '<=', $end)->and_where_close();
+        }
+        else
+        {
+            $query->where('period_id', $pid);
+        }
         $query->group_by('user_id');
         return $query->as_object('Model_Bet')->execute();
     }

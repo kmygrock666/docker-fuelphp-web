@@ -22,5 +22,6 @@ return array(
     'CN' => 'chinese',
     'REPORT' => '报表',
     'ANALYSIS' => '分析',
+    'AMOUNT' => 'amount',
     
 );

@@ -26,6 +26,8 @@ return array(
     'NOT_WIN' => 'not_win',
     'BET' => 'bet',
     'PAYOUT' => 'payout',
+    'IN' => 'in',
+    'OUT' => 'out',
     'OPEN_PERIOD' => 'open_period',
     'CLOSE_PERIOD' => 'close_period',
     

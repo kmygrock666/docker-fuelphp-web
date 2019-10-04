@@ -62,5 +62,6 @@
 <?php echo Asset::js('bootstrap.bundle.js') ?>
 <?php echo Asset::js('bootstrap.bundle.min.js') ?>
 <?php echo Asset::js('custom.js') ?>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
 </html>

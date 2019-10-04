@@ -84,6 +84,7 @@ class Deal
 
         }catch (Exception $e){
             DB::rollback_transaction();
+            Log::error("deal.php line 87 ".$e->getMessage());
             return $this->response_json(1, $e->getMessage());
         }
     }
@@ -99,8 +100,9 @@ class Deal
             $bet->payout = $payout;
             $bet->save();
             //get user amount
-            $user = Model_User::find($bet->uid);
+            $user = Model_User::find($bet->user_id);
             if($user == null) throw new Exception('no user');
+
             $before_amount = $user->amount;
             $after_amount = $user->amount + $payout;
             //update user
@@ -117,6 +119,7 @@ class Deal
         catch (Exception $e)
         {
             DB::rollback_transaction();
+            Log::error("deal.php line 121 ".$e->getMessage());
             return $this->response_json(1, $e->getMessage());
         }
     }

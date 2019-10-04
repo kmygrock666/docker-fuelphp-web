@@ -3,7 +3,7 @@
 class Model_User extends \Auth\Model\Auth_User 
 {
     // protected static $_table_name = 'user';
-    protected static $_has_many = array('bet', array('key_to' => 'uid'));
+//    protected static $_has_many = array('bet');
 
     protected static $_properties = array(
         'id',

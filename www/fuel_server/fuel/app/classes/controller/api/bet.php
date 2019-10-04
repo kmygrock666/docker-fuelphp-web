@@ -30,6 +30,7 @@ class Controller_Api_Bet extends Controller_Apibase
         if ($period->close == false && $period->time <= 60)
         {
             //限制n秒內不能連續下注
+            //TODO 注單配對待改善
             $userdata_redis = $this->redis->get($pid.":".$user_id[1]);
             if ($userdata_redis != null)
             {
