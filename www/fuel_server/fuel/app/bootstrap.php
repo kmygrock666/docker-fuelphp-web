@@ -14,6 +14,7 @@ Autoloader::add_classes(array(
 	'game\play\NumberPlay' => APPPATH.'game/play/numberPlay.php',
 	'game\play\Deal' => APPPATH.'game/play/deal.php',
 	'game\play\UltimatPassword' => APPPATH.'game/play/ultimatPassword.php',
+    'game\ws\webSocket' => APPPATH.'game/ws/webSocket.php',
 	
 ));
 

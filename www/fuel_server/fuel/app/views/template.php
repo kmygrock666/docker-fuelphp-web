@@ -26,9 +26,9 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo Lang::get($lang); ?></a>
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="?lang=en"><?php echo Lang::get('message.EN'); ?></a>
-                            <a class="dropdown-item" href="?lang=tw"><?php echo Lang::get('message.TW'); ?></a>
-                            <a class="dropdown-item" href="?lang=cn"><?php echo Lang::get('message.CN'); ?></a>
+                            <a class="dropdown-item" href="#" onclick="langChange('?lang=en')"><?php echo Lang::get('message.EN'); ?></a>
+                            <a class="dropdown-item" href="#" onclick="langChange('?lang=tw')"><?php echo Lang::get('message.TW'); ?></a>
+                            <a class="dropdown-item" href="#" onclick="langChange('?lang=cn')"><?php echo Lang::get('message.CN'); ?></a>
                         </div>
                     </li>
                 </ul>
@@ -49,7 +49,7 @@
     <!-- container -->
     <main role="main" class="container">
         <div id="container">
-            <?php echo $content; ?>
+            <?php echo empty($url)? $content : ''; ?>
         </div>
     </main>
     <!-- /.container -->
@@ -64,4 +64,7 @@
 <?php echo Asset::js('custom.js') ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+<script>
+    var url = <?php echo empty($url)? "''" : "'".$url."'";?>;
+</script>
 </html>

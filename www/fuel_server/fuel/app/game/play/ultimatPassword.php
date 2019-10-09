@@ -33,11 +33,11 @@ class UltimatPassword
         
     }
 
-    public function settle($name)
+    public function settle($name, $isSettle)
     {
         if (array_key_exists($name, $this->games))
         {
-            return $this->games[$name]->getResult();
+            return $this->games[$name]->getResult($isSettle);
         }
         return null;
     }

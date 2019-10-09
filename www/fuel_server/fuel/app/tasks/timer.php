@@ -50,9 +50,9 @@ class Timer
             if( ! Timer::getPeriodByDB($period_redis))
             {
                 $newPeriod = Timer::producePeriod();
-                $openWin = Timer::getNumber(1,40);
+                $openWin = Timer::getUltimatetNumber(1, 40);
                 $pid = Model_Period::insert_Period($newPeriod, $openWin);
-                $rate = Timer::getRateTable(1,40);
+                $rate = Timer::getRateTable(1, 40);
                 $r = Model_Round::insert_Round($pid, 1, $rate);
                 $period_redis = Timer::getFormate($pid, $newPeriod, $openWin, $r->id, $rate);
             }
@@ -64,7 +64,6 @@ class Timer
         else
         {
             $period = Timer::condition(json_decode($periodList));
-
             if ($period == null)
             {
                 $redis->del(Timer::$pid);
@@ -89,7 +88,7 @@ class Timer
     /**
      * 產生每回合獎號
      */
-    private static function getNumber($min, $max)
+    private static function getUltimatetNumber($min, $max)
     {
         return mt_rand($min, $max);
     }
@@ -98,8 +97,18 @@ class Timer
      */
     private static function getFormate($pid_, $period, $pwd, $r, $rate)
     {
-        return array('pid_' => $pid_,'pid' => $period,'close' => false,'time' => 1, 'totalTime' => 1, 
-        'pwd' => $pwd, 'round' => $r, 'round_number' => array(), 'next' => 0, 'min' => 1, 'max' => 40, 'rate' => $rate);
+        return array('pid_' => $pid_,  //期數id
+                     'pid' => $period, //期數
+                     'close' => false, //期數開關盤
+                     'time' => 1, //目前秒數
+                     'totalTime' => 1,  //總秒數
+                     'pwd' => $pwd, //終極密碼
+                     'round' => $r,  //回合數id
+                     'round_number' => array(), //每回合獎號
+                     'next' => 0,  //該回合開出號碼
+                     'min' => 1,
+                     'max' => 40,
+                     'rate' => $rate); // 該回合賠率
     }
     /**
      * 遊戲規則
@@ -118,17 +127,13 @@ class Timer
             }
         }
         else
-        {   //每一期限制時間
-            if ($val->totalTime == Timer::$period_deadline) 
+        {   //停止下注
+            if($val->time == Timer::$stop_time)
             {
-                $val->close = true;
-                $val->time = 0;
-            }//停止下注
-            else if($val->time == Timer::$stop_time) 
-            {
-                // 開下一回區間
-                $next_range_number = Timer::getNumber($val->min, $val->max);
+                // 開出新回合號碼
+                $next_range_number = Timer::getUltimatetNumber($val->min, $val->max);
                 Model_Round::save_status($val->round, $next_range_number);
+
                 $val->next = $next_range_number;
                 array_push($val->round_number, $val->next);
 
@@ -142,8 +147,6 @@ class Timer
             else if ($val->time == (Timer::$wait_time + Timer::$stop_time)) 
             {
                 $val->time = 0;
-                //refresh redis round
-                Timer::getNewNumber($val, $val->next);
                 //insert next new round
                 if( ! $val->close)
                 {
@@ -160,14 +163,16 @@ class Timer
         return $val;
     }
 
+
     private static function getNewNumber(&$val, $number)
     {
+        // 系統取號 ＝＝ 終極號碼
         if($number == $val->pwd)
         {
             $val->close = true;
             $val->time = 0;
         }
-        else if($number > $val->pwd)
+        if($number > $val->pwd)
         {
             $val->max = $number - 1;
         }
@@ -176,7 +181,15 @@ class Timer
             $val->min = $number + 1;
         }
 
+        // 剩餘一個號碼
         if(($val->max - $val->min) == 0)
+        {
+            $val->close = true;
+            $val->time = 0;
+        }
+
+        //每一期限制時間
+        if ($val->totalTime == (Timer::$period_deadline - Timer::$wait_time))
         {
             $val->close = true;
             $val->time = 0;
@@ -184,20 +197,32 @@ class Timer
         return $val;
     }
     
-    private static function sendOut($val, $number)
+    private static function sendOut(&$val, $number)
     {
         $ultimatPasswordFactory = UltimatPassword::getInstance();
         $ultimatPasswordFactory->create_play($val->pid, $val->round, $val->pwd, $val->max, $val->min, $number);
-        $sdp_response = $ultimatPasswordFactory->settle('SDP');
-        $np_response = $ultimatPasswordFactory->settle('NP');
+        $sdp_response = $ultimatPasswordFactory->settle('SDP', true);
+        //refresh redis round
+        Timer::getNewNumber($val, $number);
 
-        if (is_bool($sdp_response) && is_bool($np_response))
-            Model_Round::save_settle_status($val->round);
-        // Debug::dump(Date::forge($round->updated_at)->format("%Y-%m-%d %H:%M:%S"));exit();
-        if ($np_response)
+        if(is_bool($sdp_response))
         {
-            return true;
+            //不判斷輸贏 ()
+            if($sdp_response and ! $val->close)
+                $np_response = $ultimatPasswordFactory->settle('NP', false);
+            else//判斷輸贏
+                $np_response = $ultimatPasswordFactory->settle('NP', true);
+
+            if (is_bool($np_response))
+            {
+                Model_Round::save_settle_status($val->round);
+                if ($np_response) return true;
+            }
+
         }
+
+        // Debug::dump(Date::forge($round->updated_at)->format("%Y-%m-%d %H:%M:%S"));exit();
+
         return false;
     }
 

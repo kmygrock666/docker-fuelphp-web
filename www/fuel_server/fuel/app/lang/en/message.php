@@ -20,8 +20,8 @@ return array(
     'EN' => 'english',
     'TW' => 'taiwan',
     'CN' => 'chinese',
-    'REPORT' => '报表',
-    'ANALYSIS' => '分析',
+    'REPORT' => 'report',
+    'ANALYSIS' => 'analysis',
     'AMOUNT' => 'amount',
     
 );

@@ -1,19 +1,19 @@
 <div>
     <div>
-        <?php echo Lang::get('game.PERIOD'); ?>
+        <?php echo Lang::get('games.PERIOD'); ?>
         <span id="pid"><?php echo $period; ?></span>
         <span id="time" style="position:absolute;right:200px">倒数 <?php echo $time % 60; ?></span>
         <div>
-        <p>赔率 </p>
-            <span>终极密码<span id="n"><?php echo $rate->n; ?></span></span>&nbsp;
-            <span>单<span id="s"><?php echo $rate->s; ?></span></span>&nbsp;
-            <span>双<span id="d"><?php echo $rate->d; ?></span></span>&nbsp;
+        <p><?php echo Lang::get('games.RATIO'); ?> </p>
+            <span><?php echo Lang::get('games.ULTIMATE_PASSWORD'); ?> <span id="n"><?php echo $rate->n; ?></span></span>&nbsp;
+            <span><?php echo Lang::get('games.SINGLE'); ?> <span id="s"><?php echo $rate->s; ?></span></span>&nbsp;
+            <span><?php echo Lang::get('games.DOUBLE'); ?> <span id="d"><?php echo $rate->d; ?></span></span>&nbsp;
         </div>
         <div id="round" style="float:left">
             <?php
                 foreach($round_number as $k => $r)
                 {
-                    echo '<p> 第 ' + ($k + 1) + ' 回合 獎號： ' + $r+ ' </p>';
+                    echo '<p>' + ($k + 1) + Lang::get('games.ROUND_AWARD') + $r+ ' </p>';
                 }
             ?>
         </div>
@@ -29,14 +29,14 @@
         ?>
     </div>
     <div class="single">
-        <div class="circle" id="single"><a href="#" onClick="selected('single')"><span>单</span></a></div>
-        <div class="circle" id="double"><a href="#" onClick="selected('double')"><span>双</span></a></div>
+        <div class="circle" id="single"><a href="#" onClick="selected('single')"><span><?php echo Lang::get('games.SINGLE'); ?></span></a></div>
+        <div class="circle" id="double"><a href="#" onClick="selected('double')"><span><?php echo Lang::get('games.DOUBLE'); ?></span></a></div>
     </div>
 </div>
 <div class="se">
         <div class="input-group mb-3" style="float:left;">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">下注金额</label>
+                <label class="input-group-text" for="inputGroupSelect01"><?php echo Lang::get('games.AMOUNT'); ?></label>
             </div>
             <select class="custom-select" id="inputGroupSelect01">
                 <option value="5">5</option>
@@ -44,8 +44,8 @@
                 <option value="15">15</option>
                 <option value="20">20</option>
             </select>
-            <button type="button" class="btn btn-primary ml-3" onclick="sendAll()">確認</button>
-            <button type="button" class="btn btn-primary ml-3" onclick="clearAll(true)">清除</button>
+            <button type="button" class="btn btn-primary ml-3" onclick="sendAll()"><?php echo Lang::get('games.CONFIRM'); ?></button>
+            <button type="button" class="btn btn-primary ml-3" onclick="clearAll(true)"><?php echo Lang::get('games.CLEAR'); ?></button>
         </div>
         
         <!-- <div class="input-group mb-3">
@@ -56,8 +56,8 @@
         </div> -->
     <div>
 
-    <button type="button" class="btn btn-primary" onclick="change(1)">选号</button>
-    <button type="button" class="btn btn-info" onclick="change(2)">单双</button>
+    <button type="button" class="btn btn-primary" onclick="change(1)"><?php echo Lang::get('games.NUMBER'); ?></button>
+    <button type="button" class="btn btn-info" onclick="change(2)"><?php echo Lang::get('games.SD'); ?></button>
 </div>
 
 <script>
@@ -66,6 +66,7 @@
     var last_period_enable = true;
     var selectPlayType = 1;
     var total_amount = 0;
+    var lang = <?php echo $lang; ?>;
     $(function() {
         getLastPeriod();
         if(st_) getStatus();
@@ -117,7 +118,7 @@
                 {
                     if (d.status == "bet")
                     {
-                        $('#time').text("计时 "+ d.time);
+                        $('#time').text(lang.time+ " " + d.time);
                         refresh(d);
                         if(last_period_enable)
                             getLastPeriod();
@@ -126,14 +127,14 @@
                     }
                     else if(d.status == "stop")
                     {
-                        $('#time').text("结算中 "+ d.time);
+                        $('#time').text(lang.settle + " " + d.time);
                         status = false;
                         runOpen();
                     }
                 }
                 else
                 {
-                    $('#time').text("下一盘 "+ d.time);
+                    $('#time').text(lang.next + " " + d.time);
                     $('#b' + d.pwd).addClass("winPwd");
                     refresh(d);
                     runOpen();
@@ -162,8 +163,8 @@
         $('#round').html('');
         var html = '';
         round_number.forEach(function(e, index){
-            let sd = (e % 2 == 0) ?"雙":"單";
-            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + sd + ' </p>';
+            let sd = (e % 2 == 0) ? lang.single : lang.double;
+            html += '<p>' + (index + 1) + lang.round_arawd + '： '+ e + "/" + sd + ' </p>';
         });
          
         $('#round').append(html);
@@ -171,11 +172,11 @@
 
     function update_last_period(period) {
         $('#history').html('');
-        var html = '<p> 上一期 期數：' + period.pid;
-        html += '<p> ' + ' 終極密碼：' + period.open + '</p>';
+        var html = '<p>'+ lang.previous + ' : ' + period.pid;
+        html += '<p> ' + lang.ultimate_password +' ：' + period.open + '</p>';
         period.round.forEach(function(e, index){
-            let sd = (e % 2 == 0) ?"雙":"單";
-            html += '<p> 第 ' + (index + 1) + ' 回合 獎號： ' + sd + ' </p>';
+            let sd = (e % 2 == 0) ? lang.single : lang.double;
+            html += '<p>' + (index + 1) + lang.round_arawd + '： '+ e + "/" + sd + ' </p>';
         });
         
         $('#history').append(html);
@@ -195,7 +196,7 @@
         let amount = $('#inputGroupSelect01').val();
         if (checkAmount(amount)) 
         {
-            alert('余额不足');
+            alert(lang.insufficient_balance);
             return;
         }
         if (doubleCheck("下注"))
@@ -210,14 +211,11 @@
                     {
                         var object = msg.data;
                         resfreshBalance(object.amount);
-                        alert("下注成功");
+                        alert(msg.message);
                     }
                     else
                     {
-                        if(msg.code == 6)
-                            alert("下注失败: 請物頻繁下注");
-                        else    
-                            alert("下注失败: " + msg.message);
+                        alert(msg.message);
                     }
                     console.log(msg);
                 }
@@ -241,16 +239,14 @@
                     {
                         object.forEach(function(e){
                             addBalance(e['payout']);
-                            if(e['type'] == 1)
+                            var text = e['num'];
+                            console.log(e);
+                            if(e['type'] == 2)
                             {
-                                alert("下注号码 " + e['num'] + " 中奖金额" + e['payout']);
+                                if(e['num'] == 0) text = lang.double;
+                                else text = lang.single;
                             }
-                            else
-                            {
-                                var text = "单";
-                                if(e['num'] == 0) text = "双";
-                                alert("下注单双 " + text + " 中奖金额" + e['payout']);
-                            }
+                            alert(lang.bet_data+": " + text + " ,"+ lang.bet_data+ ": " + e['payout']);
                             
                         })
                     }
@@ -290,7 +286,7 @@
     }
 
     function doubleCheck(message){
-        var msg = '確認' + message;
+        var msg = message;
         if (confirm(msg) == true){ 
             return true; 
         }else{ 
@@ -303,7 +299,7 @@
         let amount = $('#inputGroupSelect01').val();
         if (checkAmount(number)) 
         {
-            alert('余额不足');
+            alert(lang.insufficient_balance);
             return;
         }
         disableElement(true);
@@ -326,22 +322,71 @@
     function sendAll(){
         let amount = $('#inputGroupSelect01').val();
         let data = new Array();
+        let showData = '';
+        let win = 0;
+        let lose = 0;
+        let profit = 0;
+        let n_rate = $('#n').text();
+        let s_rate = $('#s').text();
+        let d_rate = $('#d').text();
 
         if (selectPlayType == 1)
         {
+            showData = lang.number + " : ";
             for (var i = 1; i <= 40; i++) {
                 if ($('#b' + i).hasClass("selected")){
                     data.push(i);
+                    showData += i + ",";
                 }
             }
+            win = n_rate * amount;
+            lose = data.length * amount;
+            profit = (win - lose).toFixed(3);
         }
         else
         {
-            if($('#single').hasClass("selected")) data.push('s');
-            if($('#double').hasClass("selected")) data.push('d');
+            showData = lang.sd + " : ";
+            let s_w = 0;
+            let d_w = 0;
+            if($('#single').hasClass("selected")) {
+                data.push('s');
+                showData += lang.single + ",";
+                s_w = (s_rate * amount).toFixed(3);
+                win =  s_w + "/";
+            }
+
+            if($('#double').hasClass("selected")){
+                data.push('d');
+                showData += lang.double + ",";
+                d_w = (d_rate * amount).toFixed(3);
+                win += d_w + "/";
+            }
+            win = win.substring(0, win.lastIndexOf("/"));
+            lose = data.length * amount;
+            if(s_w > 0 && d_w > 0){
+                profit = (s_w - lose).toFixed(3) + "/" + (d_w - lose).toFixed(3);
+            }else if(s_w > 0){
+                profit = (s_w - lose).toFixed(3);;
+            }else if(d_w > 0){
+                profit = (d_w - lose).toFixed(3);;
+            }
         }
 
-        if (doubleCheck("下注"))
+        if(data.length == 0) {
+            alert(lang.not_bet);
+            return;
+        }
+
+        let lastindex = showData.lastIndexOf(",");
+        if (lastindex > -1)
+            showData = showData.substring(0, lastindex);
+
+
+        showData += "/ " + lang.lose + ": " + lose;
+        showData += "/ " + lang.win + ": " + win;
+        showData += "/ " + lang.profit + ": " + profit;
+
+        if (doubleCheck(showData))
         {
             $.ajax({
                 url: "api/bet/sends",
@@ -353,15 +398,12 @@
                     {
                         var object = msg.data;
                         resfreshBalance(object.amount);
-                        alert("下注成功");
+                        alert(msg.message);
                         clearAll(false);
                     }
                     else
                     {
-                        if(msg.code == 6)
-                            alert("下注失败: 請物頻繁下注");
-                        else    
-                            alert("下注失败: " + msg.message);
+                        alert(msg.message);
                         clearAll(true);
                     }
                     console.log(msg);

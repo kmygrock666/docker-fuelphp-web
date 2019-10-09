@@ -11,7 +11,10 @@ RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/$P
     && rm -rf /usr/src/php #如果这段不加构建的镜像将大100M 
 # mysql install
 RUN docker-php-ext-install pdo pdo_mysql mysqli 
-
+# install zip
+RUN apt-get update && apt-get install -y zlib1g-dev \
+    && docker-php-ext-install zip \
+    && apt-get install telnet
 COPY php.ini /usr/local/etc/php/conf.d/
 
 # composer

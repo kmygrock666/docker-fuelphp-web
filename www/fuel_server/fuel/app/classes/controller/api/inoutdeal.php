@@ -1,10 +1,8 @@
 <?php
 
-use Auth\Auth;
 use Fuel\Core\DB;
-use Fuel\Core\Debug;
 use Fuel\Core\Input;
-use game\play\Deal;
+use Fuel\Core\Lang;
 
 class Controller_Api_InOutDeal extends Controller_Apibase
 {
@@ -17,24 +15,22 @@ class Controller_Api_InOutDeal extends Controller_Apibase
         $type = Input::post('type', null);
 
         if ((is_null($account) || is_null($money) || is_null($type)) or (empty($account) || empty($money) || empty($type)))
-            return $this->response(array('code' => '1', 'message' => 'params is error'));
+            return $this->response(array('code' => '1', 'message' => Lang::get('error.ER1')));
         if (!is_numeric($money))
-            return $this->response(array('code' => '2', 'message' => 'amount is not number'));
+            return $this->response(array('code' => '2', 'message' => Lang::get('error.ER2')));
         if ( ! in_array($type, $operate_type))
-            return $this->response(array('code' => '3', 'message' => 'undefine type'));
+            return $this->response(array('code' => '3', 'message' => Lang::get('error.ER3')));
 
-        $message = 'save money success';
         if($type == 4)
         {
             $money = $money * -1;
-            $message = 'withdrawal money success';
         }
 
         try {
             DB::start_transaction();
 
             $user = Model_User::find_by_username($account);
-            if (is_null($user)) throw new Exception('no account');
+            if (is_null($user)) throw new Exception(Lang::get('error.ER4'));
             $before_amount = $user->amount;
             $after_amount = $before_amount + $money;
             $user->amount = $after_amount;
@@ -47,9 +43,10 @@ class Controller_Api_InOutDeal extends Controller_Apibase
         } catch (Exception $e) {
 
             DB::rollback_transaction();
-            return $this->response(array('code' => '3', 'message' => $e->getMessage()));
+            \Fuel\Core\Log::error('inoutdeal, line 46 error : '.$e->getMessage());
+            return $this->response(array('code' => '3', 'message' => Lang::get('error.ER5')));
         }
 
-        return $this->response(array('code' => '0', 'message' => $message));
+        return $this->response(array('code' => '0', 'message' => Lang::get('error.ER4'), 'data' => array('after' => $after_amount)));
     }
 }

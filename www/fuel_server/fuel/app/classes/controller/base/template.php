@@ -23,17 +23,18 @@ class Controller_Base_Template extends Controller_Template
         if (Auth::member(6))
         {
             array_push($data, array('title' => 'message.REPORT', 'href' => '#', 'active' => '', 'url' => 'report/report/report'));
-            array_push($data, array('title' => 'message.ANALYSIS', 'href' => '#', 'active' => '', 'url' => 'report/report/analysis'));
+//            array_push($data, array('title' => 'message.ANALYSIS', 'href' => '#', 'active' => '', 'url' => 'report/report/analysis'));
         }
 
         $user_profile_fields = Auth::get_profile_fields();
         $this->template->title = 'LG';
         $this->template->nav = $data;
         $this->template->lang = "message.".strtoupper(Lang::get_lang());
+        $this->template->url = Session::get_flash('url');
         $this->template->username = $user_profile_fields['nickname'];
-        $this->template->amount = round($user_profile_fields['amount'],4);
+        $this->template->amount = number_format($user_profile_fields['amount'],3);
         $this->template->header = View::forge('baseTemplate/header');
-        $this->template->content = View::forge('index/index');
+        $this->template->content = Presenter::forge('index/index');
         $this->template->footer = View::forge('baseTemplate/footer');
     }
 }

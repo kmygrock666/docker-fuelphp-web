@@ -12,8 +12,8 @@ class Controller_Mem_Search extends Controller_Base
 
 	public function get_record()
 	{
-		$types = array('1' => Lang::get('games.NUMBER'), '2' => Lang::get('games.SINGLE_DOUBLE'));//1.號碼 2.單爽
-		$winType = array('0' => Lang::get('games.NOT_OPEN'),'1' => Lang::get('games.WIN'), '2' => Lang::get('games.NOT_WIN'));//0.未開講 1.中獎 2.未中獎
+		$types = array('1' => Lang::get('games.NUMBER'), '2' => Lang::get('games.SD'));//1.號碼 2.單雙
+		$winType = array('0' => Lang::get('games.NOT_OPEN'),'1' => Lang::get('games.WIN'), '2' => Lang::get('games.NOT_WIN'), '3' => Lang::get('games.NOT_LOST_NOT_WIN'));//0.未開講 1.中獎 2.未中獎
 		$singleOrDouble = array('0' => Lang::get('games.DOUBLE'), '1' => Lang::get('games.SINGLE')); //0.單 1.雙
 		
 		$data = array();
@@ -33,20 +33,20 @@ class Controller_Mem_Search extends Controller_Base
 			$bet->bet_number = $bet->type == 1?  $bet->bet_number : $singleOrDouble[$bet->bet_number];
 			$bet->type = $types[$bet->type];
 			$bet->status = $winType[$bet->status];
-		}			
-		
+		}
 		// echo \DB::last_query();
 		// Debug::dump($start_get, $end_get, $start, $end);exit();
 		return View::forge('mem/record', $data);
 	}
 
 	public function get_deal()
-	{
+	{   // 1.下注 2.派彩 3.存款 4.提款 5.不判斷輸贏
 		$deal_types = array(
 		    '1' => Lang::get('games.BET'),
             '2' => Lang::get('games.PAYOUT'),
             '3' => Lang::get('games.IN'),
-            '4' => Lang::get('games.OUT')); // 1.下注 2.派彩 3.存款 4.提款
+            '4' => Lang::get('games.OUT'),
+            '5' => Lang::get('games.NOT_LOST_NOT_WIN'));
 
 		$user_id = Auth::get_user_id();
 		$start_get = Input::get('start', date('Y-m-d',time())." 00:00:00");

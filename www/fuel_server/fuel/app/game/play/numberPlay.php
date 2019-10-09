@@ -30,12 +30,12 @@ class NumberPlay extends GamePlay{
         return $this->getPlayRate();
     }
 
-    public function getResult()
+    public function getResult($isSettle)
     {
-        return $this->getBets();
+        return $this->getBets($isSettle);
     }
 
-    private function getBets()
+    private function getBets($isSettle)
     {
         $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round, 0);
         $flag = false;
@@ -49,17 +49,23 @@ class NumberPlay extends GamePlay{
             
             foreach($bets as $bet)
             {
-                if($bet->bet_number == $this->answer)
+                //進行輸贏判斷
+                if($isSettle)
                 {
-                    $payout = $bet->amount * $this->getPlayRate() ;
-                    $r = $deal->send_bonus($bet, $payout);
-                    if($r['code'] == 1) return $r['message'];
-                    $flag = true;
+                    if ($bet->bet_number == $this->answer) {
+                        $payout = $bet->amount * $this->getPlayRate();
+                        $r = $deal->send_bonus($bet, $payout);
+                        if ($r['code'] == 1) return $r['message'];
+                        $flag = true;
+                    } else {
+                        $bet->status = 2;
+                        $bet->save();
+                    }
                 }
                 else
                 {
-                    $bet->status = 2;
-                    $bet->save();
+                    $r = $deal->refund($bet);
+                    if ($r['code'] == 1) return $r['message'];
                 }
             }
         }

@@ -4,15 +4,15 @@ use game\BetImpl;
 
 abstract class GamePlay implements BetImpl {
 
-    protected $gt;
-    protected $all_number = 1;
-    protected $optional_number = 1;
+    protected $gt; //遊戲類型
+    protected $all_number = 1; //全部
+    protected $optional_number = 1; //可下數量
     protected $max = 40;
     protected $min = 1;
-    protected $answer = 1;
-    protected $pid = 0;
-    protected $round = 0;
-    protected $number = 0;
+    protected $answer = 1; //終極密碼
+    protected $pid = 0; //期數
+    protected $round = 0; //回合數
+    protected $number = 0; // 每回合號碼
 
     protected function getPlayRate()
     {
@@ -27,6 +27,7 @@ abstract class GamePlay implements BetImpl {
         $this->answer = $ans;
         $this->max = $max;
         $this->min = $min;
+        $this->all_number = $max - $min + 1;
         $this->number = $number;
         $this->init();
     }

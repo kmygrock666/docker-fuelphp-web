@@ -24,7 +24,7 @@
         {
           $sd = ($b->round_open[$i] % 2 == 0)? Lang::get('games.DOUBLE'):Lang::get('games.SINGLE');
           $html_id .= "<p>".$b->round_id[$i]."</p>";
-          $html_open .= "<p>".$sd."</p>";
+          $html_open .= "<p>".$b->round_open[$i]."/".$sd."</p>";
           $html_rate .= "<p>".Lang::get('games.NUMBER')."：".$b->round_ratio[$i]['n'].Lang::get('games.SINGLE')."：".$b->round_ratio[$i]['s'].Lang::get('games.DOUBLE')."：".$b->round_ratio[$i]['d']."</p>";
         }
         echo "<td>".$html_id."</td>";

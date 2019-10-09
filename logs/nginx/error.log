@@ -256,3 +256,102 @@
 2019/10/03 17:53:28 [warn] 6#0: *6631 an upstream response is buffered to a temporary file /var/cache/nginx/fastcgi_temp/1/00/0000000001 while reading upstream, client: 172.19.0.1, server: localhost, request: "GET /report/report/report HTTP/1.1", upstream: "fastcgi://172.19.0.6:9000", host: "localhost"
 2019/10/04 09:20:04 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/10/04 09:20:04 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/07 09:21:05 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/07 09:21:05 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/08 09:33:49 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/08 09:33:49 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/08 17:47:33 [error] 6#0: *19778 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET /api/games/st HTTP/1.1", upstream: "fastcgi://172.19.0.6:9000", host: "localhost", referrer: "http://localhost/"
+2019/10/08 17:47:38 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/08 17:47:38 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 08:25:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 08:25:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 09:01:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 09:01:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 09:02:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 09:02:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 09:59:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 09:59:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:26:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:26:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:34:24 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:34:24 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:39:54 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:39:54 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:40:57 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:40:57 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:40:57 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:44:18 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:44:18 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:59:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:59:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 11:59:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:07:25 [emerg] 1#0: invalid host in upstream "127.0.0.1:8080/" in /etc/nginx/conf.d/socket.conf:10
+2019/10/09 12:08:20 [emerg] 1#0: invalid host in upstream "127.0.0.1:8080/" in /etc/nginx/conf.d/socket.conf:10
+2019/10/09 12:09:05 [emerg] 1#0: invalid host in upstream "127.0.0.1:8080/" in /etc/nginx/conf.d/socket.conf:10
+2019/10/09 12:09:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:09:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:09:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:10:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:10:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:10:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:14:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:14:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:14:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:29:27 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 12:29:27 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 13:52:18 [emerg] 1#0: "http" directive is not allowed here in /etc/nginx/conf.d/socket.conf:1
+2019/10/09 13:54:33 [emerg] 1#0: invalid URL prefix in /etc/nginx/conf.d/socket.conf:21
+2019/10/09 13:54:58 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 13:54:58 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 13:54:58 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:18:40 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:18:40 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:18:40 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:20:33 [emerg] 1#0: duplicate upstream "websocket" in /etc/nginx/conf.d/socket.conf:7
+2019/10/09 14:21:53 [emerg] 1#0: duplicate upstream "websocket" in /etc/nginx/conf.d/socket.conf:7
+2019/10/09 14:26:40 [emerg] 1#0: unknown directive "ssl_certificate/etc/ssl/myapp-mobi-ssl.crt" in /etc/nginx/conf.d/socket.conf:19
+2019/10/09 14:27:29 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:27:29 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:30:13 [emerg] 1#0: BIO_new_file("/etc/ssl/myapp-mobi-ssl.crt") failed (SSL: error:02001002:system library:fopen:No such file or directory:fopen('/etc/ssl/myapp-mobi-ssl.crt','r') error:2006D080:BIO routines:BIO_new_file:no such file)
+2019/10/09 14:30:56 [emerg] 1#0: "http" directive is not allowed here in /etc/nginx/conf.d/socket.conf:1
+2019/10/09 14:31:17 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:31:17 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:35:15 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:35:15 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:35:15 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:38:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:38:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:38:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:44:00 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:44:00 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:44:00 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:51:40 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:51:40 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 14:51:40 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:12:54 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:12:54 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:12:54 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:13:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:13:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:13:08 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:23:44 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:23:44 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:23:44 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:23:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:23:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:23:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:26:35 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:26:35 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:26:35 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:26:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:26:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:26:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:59:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:59:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 15:59:48 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:01:31 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:01:31 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:01:31 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:02:09 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:02:09 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:02:09 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored

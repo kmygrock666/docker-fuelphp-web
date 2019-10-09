@@ -26,6 +26,8 @@
             <?php echo Form::label(Lang::get('message.CONFIRM_PASSWORD'), 'password'); ?>
             <?php echo Form::input('password_confirm', Input::post('confirm'), ['class' => 'form-control']); ?>
         </div>
+        <!----------error---------->
+        <p style="color:red"><?php echo Session::get_flash('error') ?></p>
         <!----------------------------------- SEND ------------------------------->
         <div class="actions">
             <?php echo Form::submit('REGISTER', Lang::get('message.REGISTER'), ['class' => 'btn btn-primary']); ?>
@@ -33,6 +35,7 @@
         <!----------------------------------- CLOSE FORM ------------------------------->
         <?php echo Form::close('/user/register'); ?>
         <p><?php echo Lang::get('message.LOGIN_MESSAGE'); ?><a href="/user/login"><?php echo Lang::get('message.LOGIN'); ?></a>
+
     </div>
 
 </div>

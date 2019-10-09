@@ -82,8 +82,8 @@
     })
 
     function completeAndRedirect(form_id){
-        console.log(form_id);
-        console.log($('#' + form_id).serialize());
+        // console.log(form_id);
+        // console.log($('#' + form_id).serialize());
         touch('report/report/report?' + $('#' + form_id).serialize());
         return false;
     }

@@ -9,7 +9,7 @@ class Controller_Api_Games extends Controller_Apibase
 		$wait_time = Config::get('myconfig.period.wait_time');
         $periodList = $this->redis->get($pid);
 
-        if($periodList == null) return $this->response(array('code' => '1', 'message' => 'failure'));
+        if($periodList == null) return $this->response(array('code' => '1', 'message' => Lang::get('error.ER6')));
 
         $period = json_decode($periodList);
 
@@ -57,7 +57,7 @@ class Controller_Api_Games extends Controller_Apibase
     {
         $data = array();
         $period = Model_Period::find_period_lastest(true);
-        if($period == null) return $this->response(array('code' => '1', 'message' => 'period not found'));
+        if($period == null) return $this->response(array('code' => '1', 'message' => Lang::get('error.ER6')));
         $data['pid'] = $period->pid;
         $data['open'] = $period->open_win;
         $data['round'] = array();

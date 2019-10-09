@@ -29,7 +29,7 @@ class Controller_User extends Controller_Template
                 }
                 else
                 {
-                    Session::set_flash('error', 'no user account');
+                    Session::set_flash('error', 'no user account or password error');
                     Response::redirect('user/login');
                 }
             } 
@@ -80,31 +80,34 @@ class Controller_User extends Controller_Template
             if ($val->run()) 
             {
                 $auth = Auth::instance();
-                $create_user = $auth->create_user(
-                    $val->validated('username'),
-                    $val->validated('password'),
-                    $val->validated('email'),
-                    1,
-                    array('nickname' => $val->validated('username'),'amount' => 500)
-                );
-                if($create_user)
-                {
-                    Session::set_flash('success', 'User created');
-                    $auth = Auth::instance();
-                    if($auth->login($val->validated('email'), $val->validated('username')) | Auth::check())
-                    {
-                        $current_user = Model_User::find_by_username(Auth::get_screen_name());
-                        Session::set_flash('success', 'Welcome '.$current_user->username);
-                        Response::redirect('');
+                try {
+                    $create_user = $auth->create_user(
+                        $val->validated('username'),
+                        $val->validated('password'),
+                        $val->validated('email'),
+                        1,
+                        array('nickname' => $val->validated('username'), 'amount' => 500)
+                    );
+                    if ($create_user) {
+                        Session::set_flash('success', 'User created');
+                        $auth = Auth::instance();
+                        if ($auth->login($val->validated('email'), $val->validated('username')) | Auth::check()) {
+                            $current_user = Model_User::find_by_username(Auth::get_screen_name());
+                            Session::set_flash('success', 'Welcome ' . $current_user->username);
+                            Response::redirect('');
+                        } else {
+                            Response::redirect('user/login');
+                        }
+                    } else {
+                        Session::set_flash('error', 'There was an error creating a new user');
                     }
-                    else
-                    {
-                        Response::redirect('user/login');
-                    }
-                }
-                else
-                {
-                    Session::set_flash('error', 'There was an error creating a new user');
+                }catch(Exception $e){
+                    Session::set_flash('error', $e->getMessage());
+                    $data['error'] = $val->error();
+                    $this->template->title = 'Registed';
+                    $this->template->header = View::forge('baseTemplate/header');
+                    $this->template->footer = View::forge('baseTemplate/footer');
+                    $this->template->content = View::forge('user/register', $data);
                 }
             }
             else

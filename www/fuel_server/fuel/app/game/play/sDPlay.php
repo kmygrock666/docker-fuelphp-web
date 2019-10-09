@@ -17,6 +17,8 @@ class SDPlay extends GamePlay{
 
     protected function init()
     {
+        $this->even = 0;
+        $this->odd = 0;
         $this->getSingleDouble();
     }
 
@@ -41,9 +43,9 @@ class SDPlay extends GamePlay{
         return array($even, $odd);
     }
 
-    public function getResult()
+    public function getResult($isSettle)
     {
-        return $this->getBets();
+        return $this->getBets($isSettle);
     }
 
     private function setSelected($cmd)
@@ -59,10 +61,11 @@ class SDPlay extends GamePlay{
             if($i % 2 == 0) $this->even ++;
             else $this->odd ++;
         }
+
         $this->all_number = $this->even + $this->odd;
     }
 
-    private function getBets()
+    private function getBets($isSettle)
     {
         $sd = $this->setSingle_or_double();
         $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round, 0);

@@ -28,6 +28,7 @@ class Controller_Game_Ulp extends Controller_Base
 			
 		}
 		
-		return View::forge('game/ulp', $data);
+//		return View::forge('game/ulp', $data);
+        return Presenter::forge('game/ulp', 'view', null, View::forge('game/ulp', $data));
 	}
 }

@@ -10,7 +10,8 @@ use Fuel\Core\Debug;
 
 class Deal 
 {
-    //amount_logs 1:下注,2:派彩
+    //amount_logs 1:下注,2:派彩,3:不判斷輸贏
+    //單筆下注
     public function bet_deal($amount, $user_id, $user_bet, $rid, $pid, $type){
         try{
             DB::start_transaction();
@@ -46,7 +47,7 @@ class Deal
             return $this->response_json(1, $e->getMessage());
         }
     }
-
+    //批量下注
     public function bet_deal_bacth($amount, $user_id, $user_bet, $rid, $pid, $type){
         try{
             DB::start_transaction();
@@ -88,7 +89,7 @@ class Deal
             return $this->response_json(1, $e->getMessage());
         }
     }
-
+    //派彩
     public function send_bonus($bet, $payout)
     {
         try
@@ -120,6 +121,40 @@ class Deal
         {
             DB::rollback_transaction();
             Log::error("deal.php line 121 ".$e->getMessage());
+            return $this->response_json(1, $e->getMessage());
+        }
+    }
+    //  退款
+    public function refund($bet)
+    {
+        try
+        {
+            DB::start_transaction();
+
+            //insert bet
+            $bet->status = 3;
+            $bet->save();
+            //get user amount
+            $user = Model_User::find($bet->user_id);
+            if($user == null) throw new Exception('no user');
+
+            $before_amount = $user->amount;
+            $after_amount = $user->amount + $bet->amount;
+            //update user
+            $user->amount = $after_amount;
+            $user->save();
+            //insert amount_log
+            $amount_log_result = Model_Amount_Log::insert_amount_logs(5, $before_amount, $bet->amount, $bet->id, $user->id);
+
+
+            DB::commit_transaction();
+            return $this->response_json(0, 'success');
+
+        }
+        catch (Exception $e)
+        {
+            DB::rollback_transaction();
+            Log::war("deal.php line 157 ".$e->getMessage());
             return $this->response_json(1, $e->getMessage());
         }
     }
