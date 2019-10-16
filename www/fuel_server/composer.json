@@ -138,7 +138,8 @@
         "fuelphp/upload": "2.0.1",
         "monolog/monolog": "1.5.*",
         "michelf/php-markdown": "1.4.0",
-        "cboden/Ratchet": "0.2.*"
+        "cboden/Ratchet": "^0.4",
+        "react/zmq": "0.2.*|0.3.*"
     },
     "suggest": {
         "dwoo/dwoo" : "Allow Dwoo templating with the Parser package",

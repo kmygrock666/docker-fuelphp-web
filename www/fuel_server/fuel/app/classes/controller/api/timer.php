@@ -21,4 +21,20 @@ class Controller_Api_Timer extends Controller_Apibase
         $this->redis->del($this->pid);
         return $this->response(array('code' => '0', 'message' => 'Success delete'));
     }
+
+    public function get_pusher()
+    {
+        // post.php ???
+        // This all was here before  ;)
+        $entryData = array(
+            'category' => "kittensCategory",
+            'title'    => "title_kittensCategory",
+            'article'  => "article_kittensCategory",
+            'when'     => time()
+        );
+
+        \game\ws\WsPublish::send($entryData);
+
+
+    }
 }

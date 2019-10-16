@@ -14,7 +14,10 @@ Autoloader::add_classes(array(
 	'game\play\NumberPlay' => APPPATH.'game/play/numberPlay.php',
 	'game\play\Deal' => APPPATH.'game/play/deal.php',
 	'game\play\UltimatPassword' => APPPATH.'game/play/ultimatPassword.php',
-    'game\ws\webSocket' => APPPATH.'game/ws/webSocket.php',
+    'game\ws\WebSocket' => APPPATH.'game/ws/webSocket.php',
+    'game\ws\Pusher' => APPPATH.'game/ws/pusher.php',
+    'game\ws\WampServerSocket' => APPPATH.'game/ws/wampServerSocket.php',
+    'game\ws\WsPublish' => APPPATH.'game/ws/wsPublish.php',
 	
 ));
 

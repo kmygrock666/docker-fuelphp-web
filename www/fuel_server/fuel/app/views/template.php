@@ -58,13 +58,14 @@
         <?php echo $footer; ?>
     </footer>
 </body>
-<?php echo Asset::js('jquery-3.4.1.js') ?>
-<?php echo Asset::js('bootstrap.bundle.js') ?>
-<?php echo Asset::js('bootstrap.bundle.min.js') ?>
-<?php echo Asset::js('custom.js') ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
+
+<?php echo Asset::js('require.js', array("data-main" => "assets/js/main"))?>
+
+
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>-->
 <script>
     var url = <?php echo empty($url)? "''" : "'".$url."'";?>;
 </script>
+
 </html>

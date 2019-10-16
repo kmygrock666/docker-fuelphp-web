@@ -154,7 +154,7 @@ class Deal
         catch (Exception $e)
         {
             DB::rollback_transaction();
-            Log::war("deal.php line 157 ".$e->getMessage());
+            Log::error("deal.php line 157 ".$e->getMessage());
             return $this->response_json(1, $e->getMessage());
         }
     }

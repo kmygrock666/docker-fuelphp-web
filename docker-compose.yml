@@ -21,6 +21,7 @@ services:
     # restart: always
     ports: # 外部露出開放的 port 對應到 docker container 的 port
       - ${NGINX_PORTS}
+      - 8080:8080
     volumes: # 要從本地資料夾 mount 掛載進去的資料
       # - ${HOME_DIR}/www/:/usr/share/nginx/html
       - ${HOME_DIR}/logs/nginx:/var/log/nginx

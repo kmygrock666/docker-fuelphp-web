@@ -15,6 +15,13 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli
 RUN apt-get update && apt-get install -y zlib1g-dev \
     && docker-php-ext-install zip \
     && apt-get install telnet
+#zmq
+RUN apt-get update && apt-get install -y zlib1g-dev libzmq-dev wget git \
+    && pecl install zmq-beta \
+    && docker-php-ext-install zip \
+    && docker-php-ext-enable zmq
+
+
 COPY php.ini /usr/local/etc/php/conf.d/
 
 # composer

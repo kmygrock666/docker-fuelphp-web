@@ -16,8 +16,11 @@
     </div>
 </div>
 <input type="button" id="button" value="Send" onclick="send();" />
-<input type="button" id="button" value="Connect" onclick="connect();" />
+<input type="button" id="button" value="ConnectIos" onclick="connect();" />
+<input type="button" id="button" value="SendWamp" onclick="sendWamp();" />
+<input type="button" id="button" value="ConnectWamp" onclick="connectWamp();" />
 <script>
+
     function completeAndRedirect(form_id){
         // console.log(form_id);
         // console.log($('#' + form_id).serialize());
@@ -43,7 +46,7 @@
     }
     var conn;
     function connect(){
-        conn = new WebSocket('ws://localhost');
+        conn = new WebSocket('ws://localhost:8080');
         conn.onopen = function(e) {
             console.log("Connection established!");
         };
@@ -54,7 +57,38 @@
     }
 
     function send() {
-        var message = document.getElementById("text").value;
+        var message = "123";
         conn.send(message);
     }
+    var conn;
+    function connectWamp(){
+        conn = new ab.Session('ws://localhost:8080',
+            function() {
+                console.log('ConnectionWamp established!');
+                conn.subscribe('kittensCategory', function(topic, data) {
+                    // This is where you would add the new article to the DOM (beyond the scope of this tutorial)
+                    console.log('New article published to category "' + topic + '" : ' + data.title);
+                });
+                conn.onConnect = function (e) {
+                    console.log("ConnectionWamp established!");
+                }
+                conn.
+            },
+            function() {
+                console.warn('WebSocket connection closed');
+            },
+            {'skipSubprotocolCheck': true}
+        );
+    }
+    function sendWamp() {
+        var message = "123";
+        // conn.call('com.myapp.add2', [2, 3]).then(
+        //     function (result) {
+        //         console.log("Got result:", result);
+        //     }
+        // );
+        conn._send(message);
+        conn.publish('com.myapp.hello', ['Hello, world!']);
+    }
+
 </script>

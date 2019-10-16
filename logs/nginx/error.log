@@ -355,3 +355,108 @@
 2019/10/09 17:02:09 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/10/09 17:02:09 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
 2019/10/09 17:02:09 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:17:44 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:17:44 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:17:44 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:20:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:20:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/09 17:20:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:29:14 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:29:14 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:29:14 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:35:42 [emerg] 1#0: invalid URL prefix in /etc/nginx/conf.d/socket.conf:21
+2019/10/14 09:38:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:38:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:38:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:46:55 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:46:55 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:46:55 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:55:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:55:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:56:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:56:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 09:56:33 [error] 6#0: *1 open() "/usr/share/nginx/html/socket" failed (2: No such file or directory), client: 172.19.0.1, server: localhost, request: "GET /socket HTTP/1.1", host: "localhost"
+2019/10/14 09:56:52 [error] 6#0: *2 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.19.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "http://localhost/"
+2019/10/14 09:57:01 [error] 6#0: *2 open() "/usr/share/nginx/html/socket" failed (2: No such file or directory), client: 172.19.0.1, server: localhost, request: "GET /socket HTTP/1.1", host: "localhost"
+2019/10/14 09:57:27 [error] 6#0: *5 open() "/usr/share/nginx/html/socket" failed (2: No such file or directory), client: 172.19.0.1, server: localhost, request: "GET /socket HTTP/1.1", host: "localhost"
+2019/10/14 10:04:11 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:04:11 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:04:17 [error] 6#0: *3 open() "/usr/share/nginx/html/socket" failed (2: No such file or directory), client: 172.19.0.1, server: localhost, request: "GET /socket HTTP/1.1", host: "localhost"
+2019/10/14 10:04:34 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:04:34 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:04:34 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:15:01 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:15:01 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:21:38 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:21:38 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:21:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:21:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:21:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:22:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:22:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:22:36 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:22:36 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 10:22:36 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:32:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:32:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:32:19 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:32:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:32:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:36:16 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:36:16 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:40:23 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:40:23 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:40:23 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:59:50 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:59:50 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 11:59:50 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:03:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:03:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:04:02 [error] 6#0: *7 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:9000/", host: "localhost:8080"
+2019/10/14 12:04:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:04:51 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:07:57 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:07:57 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:07:57 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:08:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 12:08:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:33:46 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:33:46 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:41:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:41:39 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:45:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:45:53 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:56:20 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:56:20 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:57:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 13:57:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 14:02:24 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 14:02:24 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 17:52:23 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 17:52:23 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 18:03:03 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/14 18:03:03 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 09:29:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 09:29:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 09:47:14 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 09:47:14 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 09:53:38 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 09:53:38 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 10:17:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 10:17:25 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 11:55:55 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 11:55:55 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 13:34:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 13:34:43 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/15 14:17:59 [error] 6#0: *49 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.21.0.6:8080/", host: "localhost:8080"
+2019/10/15 14:18:31 [error] 6#0: *51 connect() failed (111: Connection refused) while connecting to upstream, client: 172.21.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.21.0.6:8080/", host: "localhost:8080"
+2019/10/15 14:19:05 [error] 6#0: *53 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.21.0.6:8080/", host: "localhost:8080"
+2019/10/15 14:21:53 [error] 6#0: *58 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.21.0.6:8080/", host: "localhost:8080"
+2019/10/15 16:11:24 [error] 6#0: *125 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.2, server: localhost, request: "GET /user/login HTTP/1.1", upstream: "http://172.21.0.6:8080/user/login", host: "192.168.134.251:8080"
+2019/10/15 16:11:24 [error] 6#0: *125 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.2, server: localhost, request: "GET /favicon.ico HTTP/1.1", upstream: "http://172.21.0.6:8080/favicon.ico", host: "192.168.134.251:8080", referrer: "http://192.168.134.251:8080/user/login"
+2019/10/15 16:11:32 [error] 6#0: *125 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.2, server: localhost, request: "GET /user HTTP/1.1", upstream: "http://172.21.0.6:8080/user", host: "192.168.134.251:8080"
+2019/10/15 16:11:32 [error] 6#0: *125 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.2, server: localhost, request: "GET /favicon.ico HTTP/1.1", upstream: "http://172.21.0.6:8080/favicon.ico", host: "192.168.134.251:8080", referrer: "http://192.168.134.251:8080/user"
+2019/10/15 16:34:46 [error] 6#0: *2440 connect() failed (111: Connection refused) while connecting to upstream, client: 172.21.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.21.0.6:8080/", host: "localhost:8080"
+2019/10/16 08:45:03 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/16 08:45:03 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/16 17:09:34 [error] 6#0: *402 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.21.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.21.0.5:8080/", host: "localhost:8080"
