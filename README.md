@@ -16,4 +16,5 @@ docker exec -i app_php-fpm5.5_1 bash -c "cd /var/www/fuel_server && php oil refi
 docker exec -i app_php-fpm5.5_1 bash -c "cd /var/www/fuel_server && php oil refine migrate:current"
 websocket
 docker exec -i app_php-fpm5.5_1 bash -c "cd /var/www/fuel_server && php oil refine react"
+docker exec -i app_php-fpm5.5_1 bash -c "cd /var/www/fuel_server && php oil refine react:pusher"
 

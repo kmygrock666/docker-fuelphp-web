@@ -7,8 +7,19 @@ use Fuel\Core\Log;
 
 class Pusher implements WampServerInterface
 {
-    protected $subscribedTopics = array();
+    protected $subscribedTopics = array(
+        'bet' => array(), //下注返回
+        'period' => array(), //期數
+        'winner' => array(), //中獎通知
+    );
+
+    protected $connected_user = array();
+
     public function onSubscribe(ConnectionInterface $conn, $topic) {
+//        Log::error("onSubscribe->".$topic->getId()." topic=> ". print_r($topic, true));
+        if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
+            return;
+        }
         $this->subscribedTopics[$topic->getId()] = $topic;
     }
 
@@ -24,18 +35,19 @@ class Pusher implements WampServerInterface
         }
 
         $topic = $this->subscribedTopics[$entryData['category']];
-
+//        Log::error("onBlogEntry->". print_r($topic, true));
         // re-send the data to all the clients subscribed to that category
         $topic->broadcast($entryData);
     }
 
     public function onOpen(ConnectionInterface $conn) {
-        $conn->send(json_encode('onOpen'));
+        $conn->send(json_encode('conection success!!'));
     }
 
     public function onClose(ConnectionInterface $conn) {
         Log::error("onClose");
-        $conn->send('onClose');
+        unset($this->connected_user[$conn->resourceId]);
+//        $conn->send('onClose');
     }
 
     public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
@@ -46,8 +58,20 @@ class Pusher implements WampServerInterface
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible) {
         // In this application if clients send data it's because the user hacked around in console
-        Log::error(sprintf("onPublish, topic: %s, event: %s, exclude: %s, eligible: %s", $topic, json_encode($event), json_encode($exclude), json_encode($eligible)));
-        $conn->send(json_encode('onPublish'));
+        $getData = json_decode($event, true);
+        if (array_key_exists('tp', $getData)){
+            switch ($getData['tp']) {
+                case '0':
+                    if(array_key_exists('user_id', $getData))
+                        $this->connected_user[$conn->resourceId] = $getData['user_id'];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        Log::error(sprintf("onPublish, topic: %s, event: %s, resourceId: %s, eligible: %s", $topic, json_encode($event), $conn->resourceId, json_encode($eligible)));
+//        $conn->send(json_encode('onPublish'));
 //        $conn->close();
     }
 

@@ -32,8 +32,9 @@ class Controller_Api_Timer extends Controller_Apibase
             'article'  => "article_kittensCategory",
             'when'     => time()
         );
-
-        \game\ws\WsPublish::send($entryData);
+        \game\ws\WsPublish::send('up', 'bet', array());
+        \game\ws\WsPublish::send('up', 'period', array());
+        \game\ws\WsPublish::send('up', 'winner', array());
 
 
     }

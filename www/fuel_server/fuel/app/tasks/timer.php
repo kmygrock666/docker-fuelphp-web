@@ -6,14 +6,13 @@ use ___PHPSTORM_HELPERS\object;
 use Fuel\Core\Redis_Db;
 use Model_Period;
 use Model_Round;
-use game\play\NumberPlay;
-use game\play\SDPlay;
 use Fuel\Core\Autoloader;
 use Fuel\Core\Config;
 use Fuel\Core\Debug;
 use Fuel\Core\Date;
 use Fuel\Core\DB;
 use game\play\UltimatPassword;
+use game\ws\WsPublish;
 
 class Timer
 {
@@ -70,6 +69,7 @@ class Timer
             }
             else
             {
+//                WsPublish::send("up", );
                 $redis->set(Timer::$pid, json_encode($period));
             }
         }

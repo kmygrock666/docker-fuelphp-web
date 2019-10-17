@@ -59,7 +59,7 @@
     <button type="button" class="btn btn-primary" onclick="change(1)"><?php echo Lang::get('games.NUMBER'); ?></button>
     <button type="button" class="btn btn-info" onclick="change(2)"><?php echo Lang::get('games.SD'); ?></button>
 </div>
-
+    <?php echo Asset::js('cs.js')?>
 <script>
     var status = true;
     var open_result = true;

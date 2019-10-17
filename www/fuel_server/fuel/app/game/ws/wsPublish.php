@@ -32,9 +32,21 @@ class WsPublish
         return self::$brodcast;
     }
 
-
-    public static function send($entryData)
+    /**
+     * @param $gameType 遊戲類別
+     * @param $category 推播類型
+     * @param $data 預傳資料
+     * @throws \ZMQSocketException
+     */
+    public static function send($gameType, $category, $data)
     {
+        $entryData = array(
+            'gameType' => $gameType,
+            'category' => $category,
+            'title'    => $category,
+            'entryData'  => $data,
+            'when'     => time()
+        );
         if(WsPublish::getInstance()->getbrodcast()){
             WsPublish::getInstance()->getbrodcast()->send(json_encode($entryData));
             echo "success";

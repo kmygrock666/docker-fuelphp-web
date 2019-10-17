@@ -12,8 +12,17 @@ class Controller_Game_Ulp extends Controller_Base
 		$wait_time = Config::get('myconfig.period.wait_time');
 		$periodList = $this->redis->get($pid);
 		$period = json_decode($periodList);
-		$data = array('period' => '','time' => '','max' => '','min' => '','total' => 40, 'round_number' => array(), 'rate' => array('n'=> 0, 's'=> 0, 'd' => 0));
+		$data = array('period' => '',
+                      'time' => '',
+                      'max' => '',
+                      'min' => '',
+                      'total' => 40,
+                      'round_number' => array(),
+                      'rate' => array('n'=> 0, 's'=> 0, 'd' => 0),
+                      'userid' => Auth::get('id'));
+
 		$data['rate'] = (object) $data['rate'];
+
 		if($period != null)
 		{
 			$data['period'] = $period->pid;
@@ -29,6 +38,6 @@ class Controller_Game_Ulp extends Controller_Base
 		}
 		
 //		return View::forge('game/ulp', $data);
-        return Presenter::forge('game/ulp', 'view', null, View::forge('game/ulp', $data));
+        return Presenter::forge('game/ulp', 'view', null, View::forge('game/ulp_ws', $data));
 	}
 }

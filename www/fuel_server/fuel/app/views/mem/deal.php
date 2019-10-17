@@ -25,6 +25,3 @@
     ?>
   </tbody>
 </table>
-<script>
-    var d = new when.defer();
-</script>

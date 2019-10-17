@@ -11,17 +11,18 @@ require.config({
         "moment": "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/moment.min",
         "daterangepicker": "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min"
 
-    },
+    }
     // packages: [
     //     { name: 'when', location: 'assets/js/when-master/', main: 'when' }
     // ],
-    shim: {
+    // shim: {
         // "autobahn": {
         //     deps: ["when"]
         // }
-    }
+    // }
 });
-require(["jquery-3.4.1",
+require([
+        "jquery-3.4.1",
         "bootstrap.bundle",
         "bootstrap.bundle.min",
         "custom",

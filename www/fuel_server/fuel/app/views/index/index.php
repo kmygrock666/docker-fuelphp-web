@@ -72,7 +72,7 @@
                 conn.onConnect = function (e) {
                     console.log("ConnectionWamp established!");
                 }
-                conn.
+
             },
             function() {
                 console.warn('WebSocket connection closed');
@@ -80,6 +80,7 @@
             {'skipSubprotocolCheck': true}
         );
     }
+
     function sendWamp() {
         var message = "123";
         // conn.call('com.myapp.add2', [2, 3]).then(
