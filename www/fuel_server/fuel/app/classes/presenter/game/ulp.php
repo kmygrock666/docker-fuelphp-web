@@ -16,7 +16,7 @@ class Presenter_Game_Ulp extends Presenter
             'round_arawd' => Lang::get('games.ROUND_AWARD'),
             'previous' => Lang::get('games.PREVIOUS'),
             'ultimate_password' => Lang::get('games.ULTIMATE_PASSWORD'),
-            'insufficient_balance' => Lang::get('games.ULTIMATE_PASSWORD'),
+            'insufficient_balance' => Lang::get('games.INSUFFICIENT_BALANCE'),
             'bet_data' => Lang::get('games.BET_DATA'),
             'bet_amount' => Lang::get('games.BET_AMOUNT'),
             'number' => Lang::get('games.NUMBER'),

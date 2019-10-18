@@ -8,7 +8,9 @@ function connect(url, userdata){
                 resolve();
             },
             function() {
+                st_ = true;
                 console.warn('WebSocketWampServer connection closed');
+
             },
             {'skipSubprotocolCheck': true}
         );

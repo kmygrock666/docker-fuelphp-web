@@ -36,20 +36,24 @@ class WsPublish
      * @param $gameType 遊戲類別
      * @param $category 推播類型
      * @param $data 預傳資料
+     * @param $exclude 排除 ids
+     * @param $eligible 包含 ids
      * @throws \ZMQSocketException
      */
-    public static function send($gameType, $category, $data)
+    public static function send($gameType, $category, $data, array $exclude = array(), array $eligible = array())
     {
         $entryData = array(
             'gameType' => $gameType,
             'category' => $category,
             'title'    => $category,
-            'entryData'  => $data,
+            'data'  => $data,
+            'exclude' => $exclude,
+            'eligible' => $eligible,
             'when'     => time()
         );
         if(WsPublish::getInstance()->getbrodcast()){
             WsPublish::getInstance()->getbrodcast()->send(json_encode($entryData));
-            echo "success";
+            return;
         }
     }
 }

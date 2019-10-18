@@ -2,13 +2,20 @@
 namespace game\play;
 use game\play\SDPlay;
 use game\play\NumberPlay;
+use game\play\Games;
 
 class UltimatPassword
 {
     private  static $instance;
-    protected $games = array();
+    protected $games = array(); //遊戲實例
+    protected $game_operate;
 
-    private function __construct() { }
+
+    private function __construct()
+    {
+        $this->game_operate = new Games();
+    }
+
     private function __clone() { }
 
     public static function getInstance()
@@ -32,7 +39,7 @@ class UltimatPassword
         }
         
     }
-
+    //結算
     public function settle($name, $isSettle)
     {
         if (array_key_exists($name, $this->games))
@@ -41,7 +48,7 @@ class UltimatPassword
         }
         return null;
     }
-
+    //取賠率
     public function getRate($name)
     {
         if (array_key_exists($name, $this->games))
@@ -49,6 +56,16 @@ class UltimatPassword
             return $this->games[$name]->getRate();
         }
         return null;
+    }
+    //取期數
+    public function getPeriod()
+    {
+        return $this->game_operate->getPeriodTimer();
+    }
+    //取歷史紀錄
+    public function getHistory()
+    {
+        return $this->game_operate->get_historyPeriod();
     }
 
 

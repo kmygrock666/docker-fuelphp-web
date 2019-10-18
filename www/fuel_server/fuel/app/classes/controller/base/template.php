@@ -32,7 +32,7 @@ class Controller_Base_Template extends Controller_Template
         $this->template->lang = "message.".strtoupper(Lang::get_lang());
         $this->template->url = Session::get_flash('url');
         $this->template->username = $user_profile_fields['nickname'];
-        $this->template->amount = number_format($user_profile_fields['amount'],3);
+        $this->template->amount = round($user_profile_fields['amount'], 2);
         $this->template->header = View::forge('baseTemplate/header');
         $this->template->content = Presenter::forge('index/index');
         $this->template->footer = View::forge('baseTemplate/footer');

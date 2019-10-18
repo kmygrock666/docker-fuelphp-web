@@ -4,6 +4,7 @@ namespace Fuel\Tasks;
 
 use ___PHPSTORM_HELPERS\object;
 use Fuel\Core\Redis_Db;
+use game\play\GamePusher;
 use Model_Period;
 use Model_Round;
 use Fuel\Core\Autoloader;
@@ -54,22 +55,22 @@ class Timer
                 $rate = Timer::getRateTable(1, 40);
                 $r = Model_Round::insert_Round($pid, 1, $rate);
                 $period_redis = Timer::getFormate($pid, $newPeriod, $openWin, $r->id, $rate);
+                GamePusher::history("up");
             }
             
             //start timing
-
             $redis->set(Timer::$pid,json_encode($period_redis));
         }
         else
         {
             $period = Timer::condition(json_decode($periodList));
+            GamePusher::period("up");
             if ($period == null)
             {
                 $redis->del(Timer::$pid);
             }
             else
             {
-//                WsPublish::send("up", );
                 $redis->set(Timer::$pid, json_encode($period));
             }
         }
@@ -100,8 +101,8 @@ class Timer
         return array('pid_' => $pid_,  //期數id
                      'pid' => $period, //期數
                      'close' => false, //期數開關盤
-                     'time' => 1, //目前秒數
-                     'totalTime' => 1,  //總秒數
+                     'time' => 0, //目前秒數
+                     'totalTime' => 0,  //總秒數
                      'pwd' => $pwd, //終極密碼
                      'round' => $r,  //回合數id
                      'round_number' => array(), //每回合獎號

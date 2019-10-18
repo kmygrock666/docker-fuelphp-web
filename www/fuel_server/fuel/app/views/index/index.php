@@ -65,14 +65,15 @@
         conn = new ab.Session('ws://localhost:8080',
             function() {
                 console.log('ConnectionWamp established!');
-                conn.subscribe('kittensCategory', function(topic, data) {
+                conn.subscribe('history', function(topic, data) {
                     // This is where you would add the new article to the DOM (beyond the scope of this tutorial)
                     console.log('New article published to category "' + topic + '" : ' + data.title);
+                    console.log(data);
                 });
                 conn.onConnect = function (e) {
                     console.log("ConnectionWamp established!");
                 }
-
+                senduser();
             },
             function() {
                 console.warn('WebSocket connection closed');
@@ -80,16 +81,19 @@
             {'skipSubprotocolCheck': true}
         );
     }
+    function senduser(){
+        var message = '{"gt": "up","userId": 2 }';
+        conn.publish('user', message);
+    }
 
     function sendWamp() {
-        var message = "123";
         // conn.call('com.myapp.add2', [2, 3]).then(
         //     function (result) {
         //         console.log("Got result:", result);
         //     }
         // );
-        conn._send(message);
-        conn.publish('com.myapp.hello', ['Hello, world!']);
+        // conn._send(message);
+        conn.publish('history' , '[]');
     }
 
 </script>

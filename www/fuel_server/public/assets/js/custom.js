@@ -48,3 +48,4 @@ function checkAmount(betAmount)
     return (parseFloat(before) - parseFloat(betAmount)) < 0;
 }
 
+

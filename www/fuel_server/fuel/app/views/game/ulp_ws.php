@@ -63,35 +63,46 @@
 <script>
     var status = true;
     var open_result = true;
-    var last_period_enable = true;
     var selectPlayType = 1;
     var total_amount = 0;
     var lang = <?php echo $lang; ?>;
-    wsConnect(<?php echo $userid; ?>);
+
 
     $(function() {
-        // getLastPeriod();
-        // if(st_) getStatus();
-        // st_ = false;
+        if(st_) {
+            wsConnect(<?php echo $userid; ?>);
+        }
+        st_ = false;
     });
 
     async function wsConnect(id){
-        await connect('ws://localhost:8080', '{"tp": 0,"user_id": ' + id + '}');
+        await connect('ws://localhost:8080', '{"gt": "up","userId": ' + id + '}');
         subscribeTopic("bet", bet_callback);
         subscribeTopic("period", period_callback);
+        subscribeTopic("history", history_callback);
         subscribeTopic("winner", winner_callback);
+        // send_ws('history', '[]');
     }
 
-    function bet_callback(topic, data){
-        console.log("bet_callback : " + topic + " / " + data.title);
+    function bet_callback(topic, req){
+        console.log("bet_callback : " + topic + " / " + req.title);
     }
 
-    function period_callback(topic, data){
-        console.log("period_callback : " + topic + " / " + data.title);
+    function period_callback(topic, req){
+        // console.log("period_callback : " + topic + " / " + req.title);
+        setStatus(req.data);
+        console.log(req.data);
     }
 
-    function winner_callback(topic, data){
-        console.log("winner_callback : " + topic + " / " + data.title);
+    function history_callback(topic, req){
+        // console.log("history_callback : " + topic + " / " + req.title);
+        // console.log(req);
+        update_last_period(req.data);
+
+    }
+
+    function winner_callback(topic, req){
+        console.log("winner_callback : " + topic + " / " + req.title);
     }
 
 
@@ -120,52 +131,24 @@
         clearAll(true);
     }
 
-    function getStatus() {
-        $.ajax({
-            url: "api/games/st",
-            type: 'get',
-            dataType: "json",
-        }).done(function(response) {
-            // console.log(response);
-            setTimeout("getStatus()", 1000);
-            if(response.code > 0)
-            {
-                console.log(response.message);
+    function setStatus(d) {
+        if(d.close == false) {
+            if (d.status == "bet") {
+                $('#time').text(lang.time+ " " + d.time);
+                refresh(d);
+                status = true;
+                open_result = true;
+            } else if (d.status == "stop") {
+                $('#time').text(lang.settle + " " + d.time);
+                status = false;
+                runOpen();
             }
-            else
-            {
-                var d = response.data;
-                console.log(d);
-                if(d.close == false)
-                {
-                    if (d.status == "bet")
-                    {
-                        $('#time').text(lang.time+ " " + d.time);
-                        refresh(d);
-                        if(last_period_enable)
-                            getLastPeriod();
-                        status = true;
-                        open_result = true;
-                    }
-                    else if(d.status == "stop")
-                    {
-                        $('#time').text(lang.settle + " " + d.time);
-                        status = false;
-                        runOpen();
-                    }
-                }
-                else
-                {
-                    $('#time').text(lang.next + " " + d.time);
-                    $('#b' + d.pwd).addClass("winPwd");
-                    refresh(d);
-                    runOpen();
-                    last_period_enable = true;
-                }
-                
-            }
-        });
-
+        } else {
+            $('#time').text(lang.next + " " + d.time);
+            $('#b' + d.pwd).addClass("winPwd");
+            refresh(d);
+            runOpen();
+        }
     }
 
     function refresh(d){
@@ -202,7 +185,6 @@
         });
         
         $('#history').append(html);
-        last_period_enable = false;
     }
 
     function runOpen(){
@@ -284,29 +266,6 @@
         })
     }
 
-    function getLastPeriod() {
-        $.ajax({
-            url: "api/games/lastPeriod",
-            type: 'get',
-            dataType: "json",
-            data:{},
-            success: function (msg) {
-                console.log(msg);
-                if(msg.code == 0)
-                {
-                    update_last_period(msg.data);
-                }
-                else
-                {
-                    console.log(msg.message);
-                }
-            },
-            error: function(error){
-                console.log(error);
-            }
-        })
-    }
-
     function doubleCheck(message){
         var msg = message;
         if (confirm(msg) == true){ 
@@ -319,6 +278,7 @@
     function selected(number){
         
         let amount = $('#inputGroupSelect01').val();
+
         if (checkAmount(number)) 
         {
             alert(lang.insufficient_balance);
