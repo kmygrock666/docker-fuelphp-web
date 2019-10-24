@@ -13,6 +13,7 @@ abstract class GamePlay implements BetImpl {
     protected $pid = 0; //期數
     protected $round = 0; //回合數
     protected $number = 0; // 每回合號碼
+    protected $winner_user = array(); //中獎user
 
     protected function getPlayRate()
     {

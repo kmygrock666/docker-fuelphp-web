@@ -1,6 +1,7 @@
 <?php
 namespace game\ws;
 
+use Fuel\Core\Debug;
 use game\play\UltimatPassword;
 use Ratchet\Wamp\WampServerInterface;
 use Ratchet\ConnectionInterface;
@@ -16,12 +17,11 @@ class Pusher implements WampServerInterface
 
     public function __construct()
     {
-        $this->subscribedTopics = array(
-            Config::get('myconfig.topic.bet') => array(), //下注返回
-            Config::get('myconfig.topic.period') => array(), //期數
-            Config::get('myconfig.topic.history') => array(), //歷史紀錄
-            Config::get('myconfig.topic.winner') => array(), //中獎通知
-        );
+        //下注返回,期數,歷史紀錄,中獎通知
+        $topics = Config::get('myconfig.topic');
+        foreach ($topics as $t) {
+            $this->subscribedTopics[$t] = array();
+        }
     }
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
@@ -48,8 +48,8 @@ class Pusher implements WampServerInterface
         $exclude_arr = array();
         $eligible_arr = array();
         foreach ($this->connected_user as $sessionId => $userId) {
-            if (in_array($userId, $exclude)) array_push($exclude_arr, $sessionId);
-            if (in_array($userId, $eligible)) array_push($eligible_arr, $sessionId);
+            if (in_array($userId['uid'], $exclude)) array_push($exclude_arr, $sessionId);
+            if (in_array($userId['uid'], $eligible)) array_push($eligible_arr, $sessionId);
         }
 
         unset($entryData['exclude']);
@@ -93,7 +93,7 @@ class Pusher implements WampServerInterface
             }
 
         } elseif (array_key_exists($conn->WAMP->sessionId, $this->connected_user)) {
-            if (WsController::process($conn, $topic, $getData, $this->connected_user[$conn->WAMP->sessionId]['gt'])) {
+            if (WsController::process($conn, $topic, $getData, $this->connected_user[$conn->WAMP->sessionId])) {
             } else {
                 $conn->send(json_encode('[1]'));
             }

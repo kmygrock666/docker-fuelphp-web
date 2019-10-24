@@ -1,30 +1,23 @@
 <div>
     <div>
         <?php echo Lang::get('games.PERIOD'); ?>
-        <span id="pid"><?php echo $period; ?></span>
-        <span id="time" style="position:absolute;right:200px">倒数 <?php echo $time % 60; ?></span>
+        <span id="pid"></span>
+        <span id="time" style="position:absolute;right:200px">倒数 </span>
         <div>
         <p><?php echo Lang::get('games.RATIO'); ?> </p>
-            <span><?php echo Lang::get('games.ULTIMATE_PASSWORD'); ?> <span id="n"><?php echo $rate->n; ?></span></span>&nbsp;
-            <span><?php echo Lang::get('games.SINGLE'); ?> <span id="s"><?php echo $rate->s; ?></span></span>&nbsp;
-            <span><?php echo Lang::get('games.DOUBLE'); ?> <span id="d"><?php echo $rate->d; ?></span></span>&nbsp;
+            <span><?php echo Lang::get('games.ULTIMATE_PASSWORD'); ?> <span id="n"></span></span>&nbsp;
+            <span><?php echo Lang::get('games.SINGLE'); ?> <span id="s"></span></span>&nbsp;
+            <span><?php echo Lang::get('games.DOUBLE'); ?> <span id="d"></span></span>&nbsp;
         </div>
         <div id="round" style="float:left">
-            <?php
-                foreach($round_number as $k => $r)
-                {
-                    echo '<p>' + ($k + 1) + Lang::get('games.ROUND_AWARD') + $r+ ' </p>';
-                }
-            ?>
+
         </div>
         <div id="history" style="float:right"></div>
     </div>
     <div class="ball">
         <?php
         for ($i = 1; $i <= $total; $i++) {
-            $class = "disablediv";
-            if($i >= $min and $i <= $max) $class = '';
-            echo '<div class="circle '.$class.'" id="b' . $i . '"><a href="#" onClick="selected(' . $i . ')"><span>' . $i . '</span></a></div>';
+            echo '<div class="circle" id="b' . $i . '"><a href="#" onClick="selected(' . $i . ')"><span>' . $i . '</span></a></div>';
         }
         ?>
     </div>
@@ -66,26 +59,43 @@
     var selectPlayType = 1;
     var total_amount = 0;
     var lang = <?php echo $lang; ?>;
-
-
+    openModal();
+    // closeModal();
+    $("#loadingModal").modal('toggle');
     $(function() {
+
         if(st_) {
             wsConnect(<?php echo $userid; ?>);
+        } else {
+            send_ws('history', '[]');
         }
         st_ = false;
     });
 
     async function wsConnect(id){
-        await connect('ws://localhost:8080', '{"gt": "up","userId": ' + id + '}');
+        await connect('ws://10.0.2.15:8080', '{"gt": "up","userId": ' + id + '}');
         subscribeTopic("bet", bet_callback);
         subscribeTopic("period", period_callback);
         subscribeTopic("history", history_callback);
         subscribeTopic("winner", winner_callback);
-        // send_ws('history', '[]');
+        send_ws('history', '[]');
     }
 
     function bet_callback(topic, req){
-        console.log("bet_callback : " + topic + " / " + req.title);
+        // console.log("bet_callback : " + topic + " / " + req.title);
+        console.log(req);
+        if(req.code == 0)
+        {
+            var object = req.data;
+            resfreshBalance(object.amount);
+            alert(req.message);
+            clearAll(false);
+        }
+        else
+        {
+            alert(req.message);
+            clearAll(true);
+        }
     }
 
     function period_callback(topic, req){
@@ -96,13 +106,15 @@
 
     function history_callback(topic, req){
         // console.log("history_callback : " + topic + " / " + req.title);
-        // console.log(req);
+        console.log(req);
         update_last_period(req.data);
 
     }
 
     function winner_callback(topic, req){
-        console.log("winner_callback : " + topic + " / " + req.title);
+        // console.log("winner_callback : " + topic + " / " + req.title);
+        // console.log(req);
+        showResult(req);
     }
 
 
@@ -132,27 +144,24 @@
     }
 
     function setStatus(d) {
+        refresh(d);
         if(d.close == false) {
             if (d.status == "bet") {
                 $('#time').text(lang.time+ " " + d.time);
-                refresh(d);
                 status = true;
                 open_result = true;
             } else if (d.status == "stop") {
                 $('#time').text(lang.settle + " " + d.time);
                 status = false;
-                runOpen();
             }
         } else {
             $('#time').text(lang.next + " " + d.time);
             $('#b' + d.pwd).addClass("winPwd");
-            refresh(d);
-            runOpen();
         }
     }
 
     function refresh(d){
-        if($('#round>p').length != d.round_number.length)
+        if($('#pid').text() == "" || $('#round>p').length != d.round_number.length)
         {
             $('#pid').text(d.pid);
             enable_ball(d.min, d.max);
@@ -168,7 +177,7 @@
         $('#round').html('');
         var html = '';
         round_number.forEach(function(e, index){
-            let sd = (e % 2 == 0) ? lang.single : lang.double;
+            let sd = (e % 2 == 0) ? lang.double : lang.single;
             html += '<p>' + (index + 1) + lang.round_arawd + '： '+ e + "/" + sd + ' </p>';
         });
          
@@ -180,90 +189,26 @@
         var html = '<p>'+ lang.previous + ' : ' + period.pid;
         html += '<p> ' + lang.ultimate_password +' ：' + period.open + '</p>';
         period.round.forEach(function(e, index){
-            let sd = (e % 2 == 0) ? lang.single : lang.double;
+            let sd = (e % 2 == 0) ? lang.double : lang.single;
             html += '<p>' + (index + 1) + lang.round_arawd + '： '+ e + "/" + sd + ' </p>';
         });
         
         $('#history').append(html);
     }
 
-    function runOpen(){
-        if(open_result)
-        {
-            getResult();
-        }
-    }
-
-    function send(number) {
-        let type = 1;
-        if (isNaN(number)) type = 2;
-        let amount = $('#inputGroupSelect01').val();
-        if (checkAmount(amount)) 
-        {
-            alert(lang.insufficient_balance);
-            return;
-        }
-        if (doubleCheck("下注"))
-        {
-            $.ajax({
-                url: "api/bet/send",
-                type: 'get',
-                dataType: "json",
-                data:{'b':number, 't': type, m: amount},
-                success: function (msg) {
-                    if(msg.code == 0)
-                    {
-                        var object = msg.data;
-                        resfreshBalance(object.amount);
-                        alert(msg.message);
-                    }
-                    else
-                    {
-                        alert(msg.message);
-                    }
-                    console.log(msg);
-                }
-            })
-        }
-    }
-
-    function getResult() {
-        $.ajax({
-            url: "api/bet/result",
-            type: 'get',
-            dataType: "json",
-            data:{},
-            success: function (msg) {
-                console.log(msg);
-                if(msg.code == 0)
-                {
-                    open_result = false;
-                    var object = msg.data;
-                    if(object.length > 0)
-                    {
-                        object.forEach(function(e){
-                            addBalance(e['payout']);
-                            var text = e['num'];
-                            console.log(e);
-                            if(e['type'] == 2)
-                            {
-                                if(e['num'] == 0) text = lang.double;
-                                else text = lang.single;
-                            }
-                            alert(lang.bet_data+": " + text + " ,"+ lang.bet_data+ ": " + e['payout']);
-                            
-                        })
-                    }
-                }
-                else
-                {
-                    console.log(msg.message);
-                }
-            },
-            error: function(error){
-                console.log(error);
+    function showResult(msg) {
+        var e = msg.data;
+        console.log(e)
+        if (e != '[]') {
+            // console.log("showResult")
+            addBalance(e['payout']);
+            var text = e['num'];
+            if (e['type'] == 2) {
+                if (e['num'] == 0) text = lang.double;
+                else text = lang.single;
             }
-        })
+            alert(lang.bet_data + ": " + text + " ," + lang.bet_data + ": " + e['payout']);
+        }
     }
 
     function doubleCheck(message){
@@ -305,7 +250,7 @@
         let amount = $('#inputGroupSelect01').val();
         let data = new Array();
         let showData = '';
-        let win = 0;
+        let win = '';
         let lose = 0;
         let profit = 0;
         let n_rate = $('#n').text();
@@ -343,7 +288,11 @@
                 d_w = (d_rate * amount).toFixed(3);
                 win += d_w + "/";
             }
-            win = win.substring(0, win.lastIndexOf("/"));
+
+            if (win != '') {
+                win = win.substring(0, win.lastIndexOf("/"));
+            }
+
             lose = data.length * amount;
             if(s_w > 0 && d_w > 0){
                 profit = (s_w - lose).toFixed(3) + "/" + (d_w - lose).toFixed(3);
@@ -370,27 +319,12 @@
 
         if (doubleCheck(showData))
         {
-            $.ajax({
-                url: "api/bet/sends",
-                type: 'post',
-                dataType: "json",
-                data:{b : data, t : selectPlayType, m : amount},
-                success: function (msg) {
-                    if(msg.code == 0)
-                    {
-                        var object = msg.data;
-                        resfreshBalance(object.amount);
-                        alert(msg.message);
-                        clearAll(false);
-                    }
-                    else
-                    {
-                        alert(msg.message);
-                        clearAll(true);
-                    }
-                    console.log(msg);
-                }
-            })
+            let bd = {
+                "b": data,
+                "t": selectPlayType,
+                "m": amount
+            }
+            send_ws('bet', JSON.stringify(bd));
         }
     }
 

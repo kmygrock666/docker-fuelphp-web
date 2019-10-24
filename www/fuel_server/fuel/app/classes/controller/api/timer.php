@@ -11,13 +11,16 @@ class Controller_Api_Timer extends Controller_Apibase
         // $redis->del($this->pid);
         $pid = Config::get('myconfig.period.pid');
         $periodList = $this->redis->get($pid);
-        var_dump($periodList);echo "<br>";
+        var_dump($periodList);
+        echo "<br>";
     }
 
     public function get_close()
     {
         $periodList = $this->redis->get($this->pid);
-        if($periodList == null) return $this->response(array('code' => '1', 'message' => 'no data'));
+        if ($periodList == null) {
+            return $this->response(array('code' => '1', 'message' => 'no data'));
+        }
         $this->redis->del($this->pid);
         return $this->response(array('code' => '0', 'message' => 'Success delete'));
     }
@@ -32,9 +35,9 @@ class Controller_Api_Timer extends Controller_Apibase
             'article'  => "article_kittensCategory",
             'when'     => time()
         );
-        \game\ws\WsPublish::send('up', 'bet', array());
-        \game\ws\WsPublish::send('up', 'period', array());
-        \game\ws\WsPublish::send('up', 'winner', array());
+//        \game\ws\WsPublish::send('up', 'bet', array());
+//        \game\ws\WsPublish::send('up', 'period', array());
+        \game\ws\WsPublish::send('up', 'winner', array(), array(), array(3));
 
 
     }

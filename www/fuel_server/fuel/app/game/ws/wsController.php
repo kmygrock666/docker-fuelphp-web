@@ -2,6 +2,7 @@
 
 
 namespace game\ws;
+use Auth\Auth;
 use Fuel\Core\Log;
 use game\play\GamePusher;
 use Fuel\Core\Config;
@@ -30,12 +31,17 @@ class WsController
      * @param $event 傳遞資料
      * @param $gt 那一款遊戲
      */
-    public static function process($conn, $topic, $event, $gt)
+    public static function process($conn, $topic, $event, $gd)
     {
         $boolean = false;
+        Log::error(json_encode(Auth::get_user_id()));
         switch ($topic) {
             case Config::get('myconfig.topic.history'):
-                $conn->event($topic, array('data' =>GamePusher::getData($gt, $topic)));
+                $conn->event($topic, array('data' => GamePusher::getData($gd['gt'], $topic)));
+                $boolean = true;
+                break;
+            case Config::get('myconfig.topic.bet'):
+                $conn->event($topic, GamePusher::bet($gd['gt'], $event, $gd['uid']));
                 $boolean = true;
                 break;
             default:
@@ -43,4 +49,5 @@ class WsController
         }
         return $boolean;
     }
+
 }

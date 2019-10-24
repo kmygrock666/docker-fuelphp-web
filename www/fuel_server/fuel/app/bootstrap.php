@@ -18,7 +18,7 @@ Autoloader::add_classes(array(
     'game\ws\Pusher' => APPPATH.'game/ws/pusher.php',
     'game\ws\WampServerSocket' => APPPATH.'game/ws/wampServerSocket.php',
     'game\ws\WsPublish' => APPPATH.'game/ws/wsPublish.php',
-    'game\play\Games' => APPPATH.'game/play/games.php',
+    'game\play\GamesProcess' => APPPATH.'game/play/gamesProcess.php',
     'game\play\GamePusher' => APPPATH.'game/play/gamePusher.php',
     'game\ws\WsController' => APPPATH.'game/ws/wsController.php',
 	

@@ -30,8 +30,14 @@ class NumberPlay extends GamePlay{
         return $this->getPlayRate();
     }
 
+    function getWinnerUser()
+    {
+        return $this->winner_user;
+    }
+
     public function getResult($isSettle)
     {
+        $this->winner_user = array();
         return $this->getBets($isSettle);
     }
 
@@ -56,6 +62,7 @@ class NumberPlay extends GamePlay{
                         $payout = $bet->amount * $this->getPlayRate();
                         $r = $deal->send_bonus($bet, $payout);
                         if ($r['code'] == 1) return $r['message'];
+                        $this->winner_user[$bet->user_id] = $bet;
                         $flag = true;
                     } else {
                         $bet->status = 2;

@@ -16,12 +16,22 @@ class Controller_Apibase extends Controller_Rest
 
     public function authCheck()
     {
-        if(Auth::check()){
-            return true;
+        $url = Input::uri();
+        $geturl = explode("/", $url);
+        $power = array('timer');
+        if(in_array($geturl[2], $power)) {
+            if (Auth::member(6)) {
+                return true;
+            }
+        } else {
+            if (Auth::check()) {
+                return true;
+            }
         }
+
         return false;
         // 檢查管理者
     }
 
-	
+
 }

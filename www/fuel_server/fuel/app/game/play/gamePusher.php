@@ -4,6 +4,8 @@
 namespace game\play;
 
 use Fuel\Core\Config;
+use Fuel\Core\Debug;
+use Fuel\Core\Log;
 use game\ws\WsPublish;
 
 class GamePusher
@@ -22,32 +24,42 @@ class GamePusher
 
         return $instance;
     }
-
-    public static function bet($gameTpye, array $exclude = array(), array $eligible = array())
+    //下注返回
+    public static function bet($gameTpye, $request, $userId)
     {
-
+        $gameClass = GamePusher::getGameInstance($gameTpye);
+        return $gameClass->betGame($request, $userId);
     }
-
+    //期數
     public static function period($gameTpye, array $exclude = array(), array $eligible = array())
     {
-        WsPublish::send($gameTpye, Config::get('myconfig.topic.period'), GamePusher::getGameInstance($gameTpye)->getPeriod());
+        $key = Config::get('myconfig.topic.period');
+        WsPublish::send($gameTpye, $key, GamePusher::getData($gameTpye, $key));
     }
-
+    //歷史紀錄
     public static function history($gameTpye, array $exclude = array(), array $eligible = array())
     {
-        WsPublish::send($gameTpye, Config::get('myconfig.topic.history'), GamePusher::getGameInstance($gameTpye)->getHistory());
+        $key = Config::get('myconfig.topic.history');
+        WsPublish::send($gameTpye, $key, GamePusher::getData($gameTpye, $key));
     }
-
+    //中獎
     public static function winner($gameTpye, array $exclude = array(), array $eligible = array())
     {
-
+        $getWin = GamePusher::getGameInstance($gameTpye)->getWinnerUser();
+        foreach ($getWin as $type) {
+            foreach ($type as $b) {
+                WsPublish::send($gameTpye, Config::get('myconfig.topic.winner'), $b['data'], array(), $b['id']);
+            }
+        }
     }
-
+    //取得data
     public static function getData($gamyType, $command)
     {
         switch ($command) {
-            case 'history':
+            case Config::get('myconfig.topic.history'):
                 return GamePusher::getGameInstance($gamyType)->getHistory();
+            case Config::get('myconfig.topic.period'):
+                return GamePusher::getGameInstance($gamyType)->getPeriod();
             default:
                 break;
         }

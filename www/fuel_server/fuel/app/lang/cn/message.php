@@ -23,5 +23,5 @@ return array(
     'REPORT' => '报表',
     'ANALYSIS' => '分析',
     'AMOUNT' => '金额',
-    
+    'WELCOME' => '欢迎来到终极密码游戏',
 );

@@ -1,8 +1,10 @@
 <?php
 namespace game\play;
+use Fuel\Core\Debug;
+use Fuel\Core\Log;
 use game\play\SDPlay;
 use game\play\NumberPlay;
-use game\play\Games;
+use game\play\GamesProcess;
 
 class UltimatPassword
 {
@@ -13,7 +15,7 @@ class UltimatPassword
 
     private function __construct()
     {
-        $this->game_operate = new Games();
+        $this->game_operate = new GamesProcess();
     }
 
     private function __clone() { }
@@ -60,12 +62,25 @@ class UltimatPassword
     //取期數
     public function getPeriod()
     {
-        return $this->game_operate->getPeriodTimer();
+        return $this->game_operate->processPeriodTimer();
     }
     //取歷史紀錄
     public function getHistory()
     {
-        return $this->game_operate->get_historyPeriod();
+        return $this->game_operate->processHistoryPeriod();
+    }
+    //取得中獎會員
+    public function getWinnerUser()
+    {
+        $win = array();
+        $win['SDP'] = $this->game_operate->processWinnerUsers($this->games['SDP']->getWinnerUser());
+        $win['NP'] = $this->game_operate->processWinnerUsers($this->games['NP']->getWinnerUser());
+        return $win;
+    }
+    //下注
+    public  function betGame($betData, $userId)
+    {
+        return $this->game_operate->processBetGame($betData, $userId);
     }
 
 

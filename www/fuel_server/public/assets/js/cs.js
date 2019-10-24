@@ -5,6 +5,7 @@ function connect(url, userdata){
             function() {
                 console.log('ConnectionWampServer established!');
                 send_ws('user', userdata);
+                closeModal();
                 resolve();
             },
             function() {

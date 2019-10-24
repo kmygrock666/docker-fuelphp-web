@@ -1,5 +1,5 @@
 <div class="starter-template">
-    <h1>Weclome to the ultimate password game</h1>
+    <h1><?php echo $welcome; ?> </h1>
     <p class="lead">
         <?php
             echo $direction;
@@ -15,10 +15,10 @@
         </form>
     </div>
 </div>
-<input type="button" id="button" value="Send" onclick="send();" />
-<input type="button" id="button" value="ConnectIos" onclick="connect();" />
-<input type="button" id="button" value="SendWamp" onclick="sendWamp();" />
-<input type="button" id="button" value="ConnectWamp" onclick="connectWamp();" />
+<!--<input type="button" id="button" value="Send" onclick="send();" />-->
+<!--<input type="button" id="button" value="ConnectIos" onclick="connect();" />-->
+<!--<input type="button" id="button" value="SendWamp" onclick="sendWamp();" />-->
+<!--<input type="button" id="button" value="ConnectWamp" onclick="connectWamp();" />-->
 <script>
 
     function completeAndRedirect(form_id){

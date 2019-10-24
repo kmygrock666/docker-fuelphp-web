@@ -29,7 +29,9 @@ class Presenter_Index_Index extends  Presenter
             $html .= '<button type="submit" class="btn btn-primary">'.Lang::get("games.CONFIRM").'</button>';
 
             $direction = Lang::get("games.DIRECTION");
+            $welcome = Lang::get("message.WELCOME");
         }
+        $this->welcome = $welcome;
         $this->set('power', $html,false);
         $this->set('direction', $direction,false);
     }

@@ -48,4 +48,15 @@ function checkAmount(betAmount)
     return (parseFloat(before) - parseFloat(betAmount)) < 0;
 }
 
+function openModal()
+{
+    $("#loadingModal").modal('show');
+}
+
+function closeModal()
+{
+    $('#loadingModal').modal('hide');
+    $('.modal-backdrop').remove();
+}
+
 

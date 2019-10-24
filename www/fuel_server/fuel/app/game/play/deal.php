@@ -4,9 +4,9 @@ use Model_Bet;
 use Model_User;
 use Model_Amount_Log;
 use Fuel\Core\DB;
-use Auth;
+use Auth\Auth;
 use Exception;
-use Fuel\Core\Debug;
+use Fuel\Core\Log;
 
 class Deal 
 {
@@ -53,28 +53,26 @@ class Deal
             DB::start_transaction();
             
             //get user amount
-            $user_id = Auth::get_user_id();
-            $current_user = Auth::get_profile_fields();
-            if(count($current_user) == 0) throw new Exception('no loggin');
+//            $user_id = Auth::get_user_id();
+//            $current_user = Auth::get_profile_fields();
+            $current_user = Model_User::find($user_id);
+            if($current_user == null) throw new Exception('no user');
 
+            $before_amount = $current_user->amount;
             $total_amount = $amount * count($user_bet);
-            $before_amount = $current_user['amount'];
             $after_amount =  $before_amount - $total_amount;
             if($after_amount < 0) throw new Exception('balance not enough');
             //update user
-            Auth::update_user(
-                array(
-                    'amount' => $after_amount
-                )
-            );
+            $current_user->amount = $after_amount;
+            $current_user->save();
 
             foreach($user_bet as $b)
             {
                 //insert bet
-                $bet_id = Model_Bet::insert_bet_LastId($user_id[1], $b, $rid, $pid, $type, $amount);
+                $bet_id = Model_Bet::insert_bet_LastId($user_id, $b, $rid, $pid, $type, $amount);
                 if($bet_id == null) throw new Exception('insert data error ,no bet id');
                 //insert amount_log
-                Model_Amount_Log::insert_amount_logs(1, $before_amount, $amount * -1, $bet_id, $user_id[1]);
+                Model_Amount_Log::insert_amount_logs(1, $before_amount, $amount * -1, $bet_id, $user_id);
                 $before_amount -= $amount;
             }
             
@@ -90,7 +88,7 @@ class Deal
         }
     }
     //派彩
-    public function send_bonus($bet, $payout)
+    public function send_bonus(&$bet, $payout)
     {
         try
         {

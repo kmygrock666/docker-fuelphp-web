@@ -43,8 +43,14 @@ class SDPlay extends GamePlay{
         return array($even, $odd);
     }
 
+    function getWinnerUser()
+    {
+        return $this->winner_user;
+    }
+
     public function getResult($isSettle)
     {
+        $this->winner_user = array();
         return $this->getBets($isSettle);
     }
 
@@ -84,6 +90,7 @@ class SDPlay extends GamePlay{
                     $payout = $bet->amount * $this->getPlayRate() ;
                     $r = $deal->send_bonus($bet, $payout);
                     if($r['code'] == 1) return $r['message'];
+                    $this->winner_user[$bet->id] = $bet;
                     $flag = true;
                 }
                 else

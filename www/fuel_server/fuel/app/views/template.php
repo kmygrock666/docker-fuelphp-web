@@ -51,6 +51,13 @@
         <div id="container">
             <?php echo empty($url)? $content : ''; ?>
         </div>
+        <div class="modal fade" id="loadingModal" >
+            <div style="width: 200px;height:20px; z-index: 20000; position: absolute; text-align: center; left: 50%; top: 50%;margin-left:-100px;margin-top:-10px">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
     </main>
     <!-- /.container -->
 

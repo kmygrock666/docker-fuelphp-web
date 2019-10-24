@@ -23,5 +23,6 @@ return array(
     'REPORT' => '報表',
     'ANALYSIS' => '分析',
     'AMOUNT' => '金額',
+    'WELCOME' => '歡迎來到終極密碼遊戲',
     
 );

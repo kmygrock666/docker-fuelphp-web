@@ -23,5 +23,6 @@ return array(
     'REPORT' => 'report',
     'ANALYSIS' => 'analysis',
     'AMOUNT' => 'amount',
+    'WELCOME' => 'Weclome to the ultimate password game',
     
 );

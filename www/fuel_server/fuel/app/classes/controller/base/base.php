@@ -8,11 +8,11 @@ class Controller_Base extends Controller
 
     public function before()
     {
-        if( ! Auth::check()){
+        if ( ! Auth::check()) {
             Response::redirect('user/login');
         }
         $this->redis = Redis_Db::instance();
     }
 
-	
+
 }

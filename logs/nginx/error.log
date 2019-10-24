@@ -493,3 +493,32 @@
 2019/10/18 16:58:16 [error] 6#0: *896 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
 2019/10/18 16:59:16 [error] 6#0: *901 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
 2019/10/18 16:59:35 [error] 6#0: *913 recv() failed (104: Connection reset by peer) while proxying upgraded connection, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 09:31:26 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/21 09:31:26 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/21 09:41:57 [error] 6#0: *43 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.2, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "192.168.134.251:8080"
+2019/10/21 09:45:36 [error] 6#0: *365 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 13:31:17 [error] 6#0: *854 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 13:31:23 [error] 6#0: *858 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 13:33:04 [error] 6#0: *884 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 13:33:07 [error] 6#0: *888 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 13:33:09 [error] 6#0: *892 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 13:35:26 [error] 6#0: *916 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/21 13:39:52 [error] 6#0: *977 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "localhost:8080"
+2019/10/22 09:34:52 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/22 09:34:52 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/22 09:42:19 [error] 6#0: *18 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8080/", host: "10.0.2.15:8080"
+2019/10/22 09:42:23 [error] 6#0: *22 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8080/", host: "10.0.2.15:8080"
+2019/10/23 08:43:26 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/23 08:43:26 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/23 08:51:49 [error] 6#0: *17 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 08:54:31 [error] 6#0: *23 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 08:55:24 [error] 6#0: *28 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 08:55:40 [error] 6#0: *36 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 08:55:50 [error] 6#0: *40 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 09:29:42 [error] 6#0: *46 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 09:29:54 [error] 6#0: *51 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 09:32:06 [error] 6#0: *57 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/23 09:32:42 [error] 6#0: *61 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
+2019/10/24 09:24:00 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/24 09:24:00 [warn] 1#0: conflicting server name "localhost" on 0.0.0.0:80, ignored
+2019/10/24 09:38:09 [error] 6#0: *21 connect() failed (111: Connection refused) while connecting to upstream, client: 10.0.2.15, server: localhost, request: "GET / HTTP/1.1", upstream: "http://172.19.0.5:8080/", host: "10.0.2.15:8080"
