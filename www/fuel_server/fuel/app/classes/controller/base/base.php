@@ -8,6 +8,7 @@ class Controller_Base extends Controller
 
     public function before()
     {
+        //判斷是否已登入
         if ( ! Auth::check()) {
             Response::redirect('user/login');
         }

@@ -1,5 +1,7 @@
 <?php
+
 namespace game\ws;
+
 require __DIR__ . '/../../../vendor/autoload.php';
 
 use Fuel\Core\Log;
@@ -14,6 +16,7 @@ use Ratchet\WebSocket\WsServer;
 use Ratchet\Wamp\WampServer;
 use ZMQContext;
 use game\ws\WsPublish;
+
 class WampServerSocket
 {
     public static function run()
@@ -37,7 +40,9 @@ class WampServerSocket
             echo "Error->" . $e->getMessage();
         }
     }
-
+    /*
+     * 連線websocket
+     */
     public static function connect_borcats()
     {
         $context = new ZMQContext();

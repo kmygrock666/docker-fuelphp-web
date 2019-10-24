@@ -15,12 +15,17 @@ abstract class GamePlay implements BetImpl {
     protected $number = 0; // 每回合號碼
     protected $winner_user = array(); //中獎user
 
+    /*
+     * 賠率
+     */
     protected function getPlayRate()
     {
         $c = pow(10, 2);
         return floor(((1 / ($this->optional_number / $this->all_number)) * 0.92) * $c) / $c;
     }
-
+    /*
+     * 期數資料
+     */
     public function setGameParams($pid, $r, $ans, $max, $min, $number)
     {
         $this->pid = $pid;

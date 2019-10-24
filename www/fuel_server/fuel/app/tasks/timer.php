@@ -46,7 +46,7 @@ class Timer
         $periodList = $redis->get(Timer::$pid);
         $period_redis = '';
         if ($periodList == null) {
-            //find db period
+            //找 db 期數
             if ( ! Timer::getPeriodByDB($period_redis)) {
                 $newPeriod = Timer::producePeriod();
                 $openWin = Timer::getUltimatetNumber(1, 40);
@@ -88,7 +88,7 @@ class Timer
         return mt_rand($min, $max);
     }
     /**
-     * 初始化
+     * 初始化 redis 資料
      */
     private static function getFormate($pid_, $period, $pwd, $r, $rate)
     {
@@ -110,6 +110,8 @@ class Timer
      * 每局最多 3分30秒
      * 有人中獎(選號中獎)或僅剩一球即結束該局
      * 結束後10秒再開新局，可下注60秒
+     * @param $val redis 期數資料
+     * @return null
      */
     private static function condition($val)
     {
@@ -136,7 +138,7 @@ class Timer
                 //等n秒後，開下一局
             } else if ($val->time == (Timer::$wait_time + Timer::$stop_time)) {
                 $val->time = 0;
-                //insert next new round
+                //新增下一回合
                 if( ! $val->close) {
                     $rate = Timer::getRateTable($val->min, $val->max);
                     $r = Model_Round::insert_Round($val->pid_, 0, $rate);
@@ -151,7 +153,11 @@ class Timer
         return $val;
     }
 
-
+    /** 當回合取到的號碼條件判斷
+     * @param $val 期數資料
+     * @param $number 當回合數號碼
+     * @return mixed
+     */
     private static function getNewNumber(&$val, $number)
     {
         // 系統取號 ＝＝ 終極號碼
@@ -178,7 +184,12 @@ class Timer
         }
         return $val;
     }
-    //結算
+
+    /** 結算
+     * @param $val 期數資料
+     * @param $number 當回合開獎
+     * @return bool
+     */
     private static function sendOut(&$val, $number)
     {
         $ultimatPasswordFactory = UltimatPassword::getInstance();
@@ -200,13 +211,17 @@ class Timer
             }
 
         }
-        GamePusher::winner("up");
 
-        // Debug::dump(Date::forge($round->updated_at)->format("%Y-%m-%d %H:%M:%S"));exit();
+        GamePusher::winner("up");
 
         return false;
     }
 
+    /** 取賠率
+     * @param $min 最小
+     * @param $max 最大
+     * @return array
+     */
     private static function getRateTable($min, $max)
     {
         $ultimatPasswordFactory = UltimatPassword::getInstance();
@@ -218,6 +233,10 @@ class Timer
         return array('n' => $number, 's' => $single, 'd' => $double);
     }
 
+    /** 取db期數
+     * @param $period_redis 期數資料
+     * @return bool
+     */
     private static function getPeriodByDB(&$period_redis)
     {
         $periodData = Model_Period::find_period_lastest(false);
@@ -232,7 +251,6 @@ class Timer
             ksort($round);
             $round = array_values($round);
             $round_count = count($round);
-            // Debug::dump($round);exit();
             //未結算回合
             if($round[$round_count - 1]->is_settle == true) {
                 $response = Timer::settle($periodData, $round);
@@ -274,6 +292,11 @@ class Timer
         return true;
     }
 
+    /** 撈db資料 結算
+     * @param $periodData 期數資料
+     * @param $round 當其回合id
+     * @return bool
+     */
     private static function settle($periodData, $round)
     {
         $r_count = count($round);
@@ -288,4 +311,3 @@ class Timer
     }
 }
 
-/* End of file tasks/robots.php */

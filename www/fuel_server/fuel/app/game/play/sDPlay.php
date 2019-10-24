@@ -10,10 +10,10 @@ use Model_Round;
 use Model_Bet;
 use game\play\Deal;
 
-class SDPlay extends GamePlay{
-
-    protected $even = 0;
-    protected $odd = 0;
+class SDPlay extends GamePlay
+{
+    protected $even = 0; //雙數
+    protected $odd = 0; //單數
 
     protected function init()
     {
@@ -22,6 +22,15 @@ class SDPlay extends GamePlay{
         $this->getSingleDouble();
     }
 
+    /**
+     * SDPlay constructor.
+     * @param $pid 期數
+     * @param $r 回合id
+     * @param $ans 終極密碼
+     * @param $max 最大號碼
+     * @param $min 最小號碼
+     * @param $number 當回合開講號碼
+     */
     function __construct($pid, $r, $ans, $max, $min, $number)
     {
         $this->gt = 2;
@@ -56,49 +65,54 @@ class SDPlay extends GamePlay{
 
     private function setSelected($cmd)
     {
-        if($cmd == 0) $this->optional_number = $this->even; //double
-        else $this->optional_number = $this->odd; //single
+        if ($cmd == 0) {
+            $this->optional_number = $this->even;
+        } //double
+        else {
+            $this->optional_number = $this->odd;
+        } //single
     }
 
     private function getSingleDouble()
     {
-        for($i = $this->min ; $i <= $this->max; $i++)
-        {
-            if($i % 2 == 0) $this->even ++;
-            else $this->odd ++;
+        for ($i = $this->min; $i <= $this->max; $i++) {
+            if ($i % 2 == 0) {
+                $this->even++;
+            } else {
+                $this->odd++;
+            }
         }
 
         $this->all_number = $this->even + $this->odd;
     }
 
+    /** sDPlay結算
+     * @param $isSettle 是否結算
+     * @return bool
+     */
     private function getBets($isSettle)
     {
         $sd = $this->setSingle_or_double();
         $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round, 0);
         $flag = false;
-        if($bets->count() == 0)
-        {
+        if ($bets->count() == 0) {
             echo "not found from SDPlay<br>";
-        }
-        else
-        {
+        } else {
             $deal = new Deal();
-            foreach($bets as $bet)
-            {
-                if ($bet->bet_number == $sd)
-                {
-                    $payout = $bet->amount * $this->getPlayRate() ;
+            foreach ($bets as $bet) {
+                if ($bet->bet_number == $sd) {
+                    $payout = $bet->amount * $this->getPlayRate();
                     $r = $deal->send_bonus($bet, $payout);
-                    if($r['code'] == 1) return $r['message'];
+                    if ($r['code'] == 1) {
+                        return $r['message'];
+                    }
                     $this->winner_user[$bet->id] = $bet;
                     $flag = true;
-                }
-                else
-                {
+                } else {
                     $bet->status = 2;
                     $bet->save();
                 }
-                
+
             }
         }
         return $flag;
@@ -107,9 +121,12 @@ class SDPlay extends GamePlay{
     private function setSingle_or_double()
     {
         $isSingleDouble = $this->number % 2;
-        if($isSingleDouble == 0) $this->optional_number = $this->even; //double
-        else $this->optional_number = $this->odd; //single
+        if ($isSingleDouble == 0) {
+            $this->optional_number = $this->even;
+        } //double
+        else {
+            $this->optional_number = $this->odd;
+        } //single
         return $isSingleDouble;
     }
-
 }

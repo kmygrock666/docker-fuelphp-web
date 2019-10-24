@@ -1,7 +1,7 @@
 <?php
 
-
 namespace game\play;
+
 use Fuel\Core\Config;
 use Fuel\Core\Log;
 use Fuel\Core\Redis_Db;
@@ -35,14 +35,14 @@ class GamesProcess
         $period = json_decode($periodList);
 
         $data = array(
-            'pid' => $period->pid,
-            'close' => $period->close,
-            'time' => $period->time,
+            'pid'          => $period->pid,
+            'close'        => $period->close,
+            'time'         => $period->time,
             // 'totalTime' => $period->totalTime,
-            'min' => $period->min,
-            'max' => $period->max,
-            'rate' => $period->rate,
-            'status' => 'bet',
+            'min'          => $period->min,
+            'max'          => $period->max,
+            'rate'         => $period->rate,
+            'status'       => 'bet',
             'round_number' => $period->round_number,
         );
 
@@ -83,15 +83,15 @@ class GamesProcess
     public function processWinnerUsers($userdata)
     {
         $data = array();
-        foreach($userdata as $key => $bet) {
-                $tmp = array();
-                $betdata = array();
-                $betdata['type'] = $bet->type;
-                $betdata['num'] = $bet->bet_number;
-                $betdata['payout'] = $bet->payout;
-                $tmp['data'] = $betdata;
-                $tmp['id'] = array($bet->user_id);
-                array_push($data, $tmp);
+        foreach ($userdata as $key => $bet) {
+            $tmp = array();
+            $betdata = array();
+            $betdata['type'] = $bet->type;
+            $betdata['num'] = $bet->bet_number;
+            $betdata['payout'] = $bet->payout;
+            $tmp['data'] = $betdata;
+            $tmp['id'] = array($bet->user_id);
+            array_push($data, $tmp);
         }
         return $data;
     }
@@ -107,8 +107,8 @@ class GamesProcess
         }
 
         $singleDoubleCode = array(
-          's' => 1,
-          'd' => 0,
+            's' => 1,
+            'd' => 0,
         );
         $period = json_decode($periodList);
 
@@ -168,7 +168,7 @@ class GamesProcess
                             $error++;
                             foreach ($old_bet as $k => $b) {
                                 if ($b !== $user_bet[$k]) {
-                                    $error --;
+                                    $error--;
                                     break;
                                 }
                             }

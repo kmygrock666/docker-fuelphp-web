@@ -8,10 +8,20 @@ use game\GamePlay;
 use game\play\Deal;
 use Model_Bet;
 
-class NumberPlay extends GamePlay{
-
-    protected function init() {  }
-
+class NumberPlay extends GamePlay
+{
+    protected function init()
+    {
+    }
+    /**
+     * SDPlay constructor.
+     * @param $pid 期數
+     * @param $r 回合id
+     * @param $ans 終極密碼
+     * @param $max 最大號碼
+     * @param $min 最小號碼
+     * @param $number 當回合開講號碼
+     */
     function __construct($pid, $r, $ans, $max, $min, $number)
     {
         $this->gt = 1;
@@ -40,39 +50,39 @@ class NumberPlay extends GamePlay{
         $this->winner_user = array();
         return $this->getBets($isSettle);
     }
-
+    /** NumberPlay結算
+     * @param $isSettle 是否結算
+     * @return bool
+     */
     private function getBets($isSettle)
     {
         $bets = Model_Bet::find_bet($this->pid, $this->gt, $this->round, 0);
         $flag = false;
-        if($bets->count() == 0)
-        {
+        if ($bets->count() == 0) {
             echo "not found from NumberPlay <br>";
-        }
-        else
-        {
+        } else {
             $deal = new Deal();
-            
-            foreach($bets as $bet)
-            {
+
+            foreach ($bets as $bet) {
                 //進行輸贏判斷
-                if($isSettle)
-                {
+                if ($isSettle) {
                     if ($bet->bet_number == $this->answer) {
                         $payout = $bet->amount * $this->getPlayRate();
                         $r = $deal->send_bonus($bet, $payout);
-                        if ($r['code'] == 1) return $r['message'];
+                        if ($r['code'] == 1) {
+                            return $r['message'];
+                        }
                         $this->winner_user[$bet->user_id] = $bet;
                         $flag = true;
                     } else {
                         $bet->status = 2;
                         $bet->save();
                     }
-                }
-                else
-                {
+                } else {
                     $r = $deal->refund($bet);
-                    if ($r['code'] == 1) return $r['message'];
+                    if ($r['code'] == 1) {
+                        return $r['message'];
+                    }
                 }
             }
         }
@@ -80,5 +90,4 @@ class NumberPlay extends GamePlay{
         return $flag;
 
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace game\ws;
 
 use Fuel\Core\Debug;
@@ -24,32 +25,47 @@ class Pusher implements WampServerInterface
         }
     }
 
-    public function onSubscribe(ConnectionInterface $conn, $topic) {
+    public function onSubscribe(ConnectionInterface $conn, $topic)
+    {
 //        Log::error("onSubscribe->".$topic->getId()." topic=> ". count($this->subscribedTopics));
-        if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
+        if ( ! array_key_exists($topic->getId(), $this->subscribedTopics)) {
             return;
         }
         $this->subscribedTopics[$topic->getId()] = $topic;
     }
 
-    public function onUnSubscribe(ConnectionInterface $conn, $topic) {
+    public function onUnSubscribe(ConnectionInterface $conn, $topic)
+    {
     }
 
-    public function onBlogEntry($entry) {
+    /**
+     * 推播
+     * @param $entry 推播資料
+     */
+    public function onBlogEntry($entry)
+    {
         $entryData = json_decode($entry, true);
-//        Log::error("onBlogEntry->$entryData: ". print_r($entryData, true));
-        if ( ! array_key_exists($entryData['category'], $this->subscribedTopics))  return;
+
+        if ( ! array_key_exists($entryData['category'], $this->subscribedTopics)) {
+            return;
+        }
         // If the lookup topic object isn't set there is no one to publish to
         $topic = $this->subscribedTopics[$entryData['category']];
-        if ( ! count($topic)) return;
+        if ( ! count($topic)) {
+            return;
+        }
 
         $exclude = $entryData['exclude'];
         $eligible = $entryData['eligible'];
         $exclude_arr = array();
         $eligible_arr = array();
         foreach ($this->connected_user as $sessionId => $userId) {
-            if (in_array($userId['uid'], $exclude)) array_push($exclude_arr, $sessionId);
-            if (in_array($userId['uid'], $eligible)) array_push($eligible_arr, $sessionId);
+            if (in_array($userId['uid'], $exclude)) {
+                array_push($exclude_arr, $sessionId);
+            }
+            if (in_array($userId['uid'], $eligible)) {
+                array_push($eligible_arr, $sessionId);
+            }
         }
 
         unset($entryData['exclude']);
@@ -60,32 +76,38 @@ class Pusher implements WampServerInterface
         $topic->broadcast($entryData, $exclude_arr, $eligible_arr);
     }
 
-    public function onOpen(ConnectionInterface $conn) {
+    public function onOpen(ConnectionInterface $conn)
+    {
         $conn->send(json_encode('conection success!!'));
     }
 
-    public function onClose(ConnectionInterface $conn) {
+    public function onClose(ConnectionInterface $conn)
+    {
         Log::error("onClose");
         unset($this->connected_user[$conn->WAMP->sessionId]);
 //        $conn->send('onClose');
     }
 
-    public function onCall(ConnectionInterface $conn, $id, $topic, array $params) {
+    public function onCall(ConnectionInterface $conn, $id, $topic, array $params)
+    {
         // In this application if clients send data it's because the user hacked around in console
         Log::error("onCall");
         $conn->callError($id, $topic, 'You are not allowed to make calls')->close();
     }
 
-    public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible) {
+    public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible)
+    {
         // In this application if clients send data it's because the user hacked around in console
         $getData = json_decode($event, true);
         if ($topic == "user") {
             if (array_key_exists('gt', $getData) and array_key_exists('userId', $getData)) {
-                if(WsController::checkOnline($this->connected_user, $getData['userId'])) {
+                if (WsController::checkOnline($this->connected_user, $getData['userId'])) {
                     Log::error("close line 86");
                     $conn->callError('1001', $topic, 'already login')->close();
                 } else {
-                    $this->connected_user[$conn->WAMP->sessionId] = array('gt' => $getData['gt'], 'uid' => $getData['userId']);
+                    $this->connected_user[$conn->WAMP->sessionId] = array('gt'  => $getData['gt'],
+                                                                          'uid' => $getData['userId']
+                    );
                     $conn->send(json_encode('[success]'));
                 }
             } else {
@@ -101,13 +123,12 @@ class Pusher implements WampServerInterface
             $conn->send(json_encode('[2]'));
         }
 
-
-
 //        Log::error(sprintf("onPublish, topic: %s, event: %s, resourceId: %s, eligible: %s", $topic, json_encode($event), $conn->resourceId, json_encode($eligible)));
 //        $conn->send(json_encode('onPublish'));
 //        $conn->close();
     }
 
-    public function onError(ConnectionInterface $conn, \Exception $e) {
+    public function onError(ConnectionInterface $conn, \Exception $e)
+    {
     }
 }

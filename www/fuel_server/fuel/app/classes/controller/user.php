@@ -26,21 +26,15 @@ class Controller_User extends Controller_Template
                 if ($auth->login($val->validated('username'), $val->validated('password'))) {
                     Session::set_flash('success', 'You have logged in');
                     Response::redirect('/');
-                }
-                else
-                {
+                } else {
                     Session::set_flash('error', 'no user account or password error');
                     Response::redirect('user/login');
                 }
-            } 
-            else 
-            {
+            } else {
                 Session::set_flash('error', 'Login Error');
                 Response::redirect('user/login');
             }
-        }
-        else 
-        {
+        } else {
             $data = [];
             $this->template->title = 'Login';
             $this->template->header = View::forge('baseTemplate/header');
@@ -52,33 +46,28 @@ class Controller_User extends Controller_Template
 
     public function get_logout()
     {
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             Auth::logout();
             Session::set_flash('success', 'You are logged out');
             Response::redirect('/');
-        }
-        else
-        {
+        } else {
             Response::redirect('/');
         }
     }
 
-    public function action_register(){
-        if(Auth::check())
-        {
+    public function action_register()
+    {
+        if (Auth::check()) {
             Response::redirect('/');
         }
 
-        if (Input::method() == 'POST' && Input::post('REGISTER'))
-        {
+        if (Input::method() == 'POST' && Input::post('REGISTER')) {
             $val = Validation::forge();
             $val->add_field('username', 'Your username', 'required|min_length[3]|max_length[50]');
             $val->add_field('email', 'Your email', 'required|min_length[3]|max_length[50]');
             $val->add_field('password', 'Your password', 'required|min_length[3]|max_length[50]');
             $val->add_field('password_confirm', 'Confirm your password', 'required|min_length[3]|max_length[50]');
-            if ($val->run()) 
-            {
+            if ($val->run()) {
                 $auth = Auth::instance();
                 try {
                     $create_user = $auth->create_user(
@@ -101,7 +90,7 @@ class Controller_User extends Controller_Template
                     } else {
                         Session::set_flash('error', 'There was an error creating a new user');
                     }
-                }catch(Exception $e){
+                } catch (Exception $e) {
                     Session::set_flash('error', $e->getMessage());
                     $data['error'] = $val->error();
                     $this->template->title = 'Registed';
@@ -109,9 +98,7 @@ class Controller_User extends Controller_Template
                     $this->template->footer = View::forge('baseTemplate/footer');
                     $this->template->content = View::forge('user/register', $data);
                 }
-            }
-            else
-            {
+            } else {
                 Session::set_flash('error', 'There has an error input');
                 $data['error'] = $val->error();
                 $this->template->title = 'Registed';
@@ -119,14 +106,12 @@ class Controller_User extends Controller_Template
                 $this->template->footer = View::forge('baseTemplate/footer');
                 $this->template->content = View::forge('user/register', $data);
             }
-        }
-        else
-        {
+        } else {
             $data = [];
             $this->template->title = 'Registed';
             $this->template->header = View::forge('baseTemplate/header');
             $this->template->footer = View::forge('baseTemplate/footer');
             $this->template->content = View::forge('user/register', $data);
-        } 
+        }
     }
 }

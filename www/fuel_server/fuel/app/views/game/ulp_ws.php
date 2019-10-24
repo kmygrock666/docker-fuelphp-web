@@ -144,9 +144,10 @@
     }
 
     function setStatus(d) {
-        refresh(d);
+
         if(d.close == false) {
             if (d.status == "bet") {
+                refresh(d);
                 $('#time').text(lang.time+ " " + d.time);
                 status = true;
                 open_result = true;

@@ -21,7 +21,7 @@ class Controller_Base_Template extends Controller_Template
             array_push($data,
                 array('title' => 'message.PERIOD_SEARCH', 'href' => '#', 'active' => '', 'url' => 'mem/search/period'));
         }
-
+        //管理權限
         if (Auth::member(6)) {
             array_push($data,
                 array('title' => 'message.REPORT', 'href' => '#', 'active' => '', 'url' => 'report/report/report'));

@@ -1,7 +1,7 @@
 <?php
 
-
 namespace game\ws;
+
 use Auth\Auth;
 use Fuel\Core\Log;
 use game\play\GamePusher;
@@ -49,5 +49,4 @@ class WsController
         }
         return $boolean;
     }
-
 }

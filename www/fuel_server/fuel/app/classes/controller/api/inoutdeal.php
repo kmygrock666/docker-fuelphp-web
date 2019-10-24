@@ -17,17 +17,18 @@ class Controller_Api_InOutDeal extends Controller_Apibase
         if ((is_null($account) || is_null($money) || is_null($type)) or (empty($account) || empty($money) || empty($type))) {
             return $this->response(array('code' => '1', 'message' => Lang::get('error.ER1')));
         }
-        if (!is_numeric($money)) {
+        if ( ! is_numeric($money)) {
             return $this->response(array('code' => '2', 'message' => Lang::get('error.ER2')));
         }
-        if (!in_array($type, $operate_type)) {
+        if ( ! in_array($type, $operate_type)) {
             return $this->response(array('code' => '3', 'message' => Lang::get('error.ER3')));
         }
 
+        //提款，金額為負
         if ($type == 4) {
             $money = $money * -1;
         }
-
+        //執行提款 交易
         try {
             DB::start_transaction();
 
@@ -51,9 +52,10 @@ class Controller_Api_InOutDeal extends Controller_Apibase
             return $this->response(array('code' => '3', 'message' => Lang::get('error.ER5')));
         }
 
-        return $this->response(array('code'    => '0',
-                                     'message' => Lang::get('error.ER4'),
-                                     'data'    => array('after' => $after_amount)
+        return $this->response(array(
+            'code'    => '0',
+            'message' => Lang::get('error.ER4'),
+            'data'    => array('after' => $after_amount)
         ));
     }
 }

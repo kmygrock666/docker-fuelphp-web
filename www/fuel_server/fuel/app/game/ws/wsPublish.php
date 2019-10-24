@@ -1,8 +1,6 @@
 <?php
 
-
 namespace game\ws;
-
 
 use Fuel\Core\Debug;
 use Fuel\Core\Log;
@@ -18,12 +16,15 @@ class WsPublish
         self::$brodcast = WampServerSocket::connect_borcats();
     }
 
-    private function __clone() { }
+    private function __clone()
+    {
+    }
 
     public static function getInstance()
     {
-        if ( ! self::$instance)
+        if ( ! self::$instance) {
             self::$instance = new WsPublish();
+        }
         return self::$instance;
     }
 
@@ -38,7 +39,6 @@ class WsPublish
      * @param $data 預傳資料
      * @param $exclude 排除 ids
      * @param $eligible 包含 ids
-     * @throws \ZMQSocketException
      */
     public static function send($gameType, $category, $data, array $exclude = array(), array $eligible = array())
     {
@@ -46,12 +46,12 @@ class WsPublish
             'gameType' => $gameType,
             'category' => $category,
             'title'    => $category,
-            'data'  => $data,
-            'exclude' => $exclude,
+            'data'     => $data,
+            'exclude'  => $exclude,
             'eligible' => $eligible,
             'when'     => time()
         );
-        if(WsPublish::getInstance()->getbrodcast()){
+        if (WsPublish::getInstance()->getbrodcast()) {
             WsPublish::getInstance()->getbrodcast()->send(json_encode($entryData));
             return;
         }
